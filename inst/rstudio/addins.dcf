@@ -1,0 +1,9 @@
+Name: Paste as tribble
+Description: Pastes a table from the clipboard to the editor as a tribble definition
+Binding: tribble_paste
+Interactive: false
+
+Name: Paste as vector
+Description: Pastes data from the clipboard to the editor as character vector
+Binding: vector_paste
+Interactive: false
