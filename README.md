@@ -14,12 +14,20 @@ At the moment this package contains functional versions of these R Studio addins
 * `tribble_paste` works well with csv's, plain excel files, and html tables, but is currently brittle with respect to irregular table structures like merged cells. 
 * Some kinds of Excel formatting can trip up `tribble_paste`, I am working on diagnosing this issue currently.
 
-##Installation
+# Installation
 
 1. Get the package: `devtools::install_github("milesmcbain/datapasta")`
 2. Set the keyboard shortcuts using **Tools** -> **Addins** -> **Browse Addins**, then click **Keyboard Shortcuts...**
 
-##Prior art
+# Prior art
 
-This package is made mpossible by [mdlincon's clipr](https://github.com/mdlincoln/clipr) and [hadley's tibble](https://github.com/hadley/tibble). I especially appreciate `clipr's` thoughtful approach to the clipboard on Linux, which pretty much every other R clipboard package just nope'd out on. 
+This package is made mpossible by [mdlincon's clipr](https://github.com/mdlincoln/clipr) and [hadley's tibble](https://github.com/hadley/tibble). I especially appreciate `clipr's` thoughtful approach to the clipboard on Linux, which pretty much every other R clipboard package just nope'd out on.
+
+# Usage 
+## tribble_paste
+![pow!](https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/tribble_paste.gif)
+
+## vector_paste 
+![blam!](https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/vector_paste.gif)
+
 
