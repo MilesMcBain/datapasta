@@ -6,12 +6,22 @@
 #' @export
 #'
 vector_paste <- function(){
-  clipboard_table <- clipr::read_clip()
+  clipboard_string <- clipr::read_clip()
   nspc <- .rs.readUiPref('num_spaces_for_tab')
   context <- rstudioapi::getActiveDocumentContext()
   context_row <- context$selection[[1]]$range$end["row"]
   indent_context <- nchar(context$contents[context_row])
 
+  clipboard_vector <- unlist(
+    strsplit(
+      x = clipboard_string,
+      split = "\t|,|\\|",
+      perl= TRUE)
+    )
 
-  studioapi::insertText("tba")
+  vector_form <- paste0("c(",
+    paste0('"',clipboard_vector,'"', collapse = ","),
+    ")"
+  )
+  rstudioapi::insertText(vector_form)
 }
