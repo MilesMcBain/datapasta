@@ -3,7 +3,7 @@
 datapasta is about reducing resistance associated with copying and pasting data into R Studio. It is a response to the realisation that I often found myself using Sublime as an intermediate text munging step when copying data. Hopefully addins in this package will remove such intermediate steps from our copy-pasta workflows.  
 
 At the moment this package contains functional versions of these R Studio addins:
-* `tribble_paste()` which pastes a table on the clipboard as a nicely formatted call to `tribble()`
+* `tribble_paste()` which pastes a table on the clipboard as a nicely formatted call to `tibble::tribble()`
     - Recomend `ctrl + shift + t` as shortcut.
 * `vector_paste()` which will paste delimited data as a character vector definition, e.g. `c("a", "1")` etc.
     - Recommend `ctrl + shift + v` as shortcut.
@@ -21,7 +21,7 @@ At the moment this package contains functional versions of these R Studio addins
 
 # Prior art
 
-This package is made mpossible by [mdlincon's clipr](https://github.com/mdlincoln/clipr) and [hadley's tibble](https://github.com/hadley/tibble). I especially appreciate `clipr's` thoughtful approach to the clipboard on Linux, which pretty much every other R clipboard package just nope'd out on.
+This package is made possible by [mdlincon's clipr](https://github.com/mdlincoln/clipr) and [hadley's tibble](https://github.com/hadley/tibble). I especially appreciate `clipr's` thoughtful approach to the clipboard on Linux, which pretty much every other R clipboard package just nope'd out on.
 
 # Usage 
 ## tribble_paste
