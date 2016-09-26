@@ -1,4 +1,12 @@
-# datapasta
+# The Goods 
+## tribble_paste
+![pow!](https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/tribble_paste.gif)
+
+## vector_paste 
+![blam!](https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/vector_paste.gif)
+
+
+# Introducing datapasta
 
 datapasta is about reducing resistance associated with copying and pasting data into R Studio. It is a response to the realisation that I often found myself using Sublime as an intermediate text munging step when copying data. Hopefully addins in this package will remove such intermediate steps from our copy-pasta workflows.  
 
@@ -23,11 +31,5 @@ At the moment this package contains functional versions of these R Studio addins
 
 This package is made possible by [mdlincon's clipr](https://github.com/mdlincoln/clipr) and [hadley's tibble](https://github.com/hadley/tibble). I especially appreciate `clipr's` thoughtful approach to the clipboard on Linux, which pretty much every other R clipboard package just nope'd out on.
 
-# Usage 
-## tribble_paste
-![pow!](https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/tribble_paste.gif)
-
-## vector_paste 
-![blam!](https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/vector_paste.gif)
 
 
