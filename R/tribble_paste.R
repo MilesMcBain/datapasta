@@ -4,7 +4,8 @@
 #' @export
 #'
 tribble_paste <- function(){
-  clipboard_table <- clipr::read_clip_tbl()
+  clipboard_table <- read_clip_tbl_guess()
+
   nspc <- .rs.readUiPref('num_spaces_for_tab')
   context <- rstudioapi::getActiveDocumentContext()
   context_row <- context$selection[[1]]$range$end["row"]
@@ -19,8 +20,9 @@ tribble_paste <- function(){
                            max( vapply(X = col,
                                        FUN = nchar,
                                        FUN.VALUE = numeric(1)
-                                )
-                           )
+                                ),
+                            na.rm=TRUE
+                            )
                          }
 
   )
@@ -93,6 +95,47 @@ pad_to <-function(char_vec, char_length){
   paste0(strrep(" ",char_length - nchar(char_vec)),char_vec)
 }
 
+guess_sep <- function(char_vec){
+  candidate_seps <- c(",","\t","\\|,;")
+  table_sample <- char_vec[1:min(length(char_vec),10)]
+ med_split_length <-
+   lapply(
+      lapply(
+        lapply(candidate_seps,
+           function(sep, table_sample){
+            splits <- strsplit(table_sample, split = sep)
+            split_lengths <- lapply(X = splits, FUN = length)
+           },
+           table_sample
+        ),
+      unlist),
+    median)
+ sep <- candidate_seps[which.max(unlist(med_split_length))]
+ sep
+}
 
+read_clip_tbl_guess <- function (x = read_clip(), ...)
+{
+  if (is.null(x))
+    return(NULL)
+  if(length(x) < 2)  #You're just a header row.
+    return(NULL)
+  .dots <- list(...)
+  .dots$file <- textConnection(paste0(x, collapse = "\n"))
+  if (is.null(.dots$header))
+    .dots$header <- TRUE
+  if (is.null(.dots$sep)){
+    .dots$sep <- guess_sep(x)
+  }
+  if (is.null(.dots$colClasses))
+    .dots$colClasses <- "character"
+  if (is.null(.dots$stringsAsFactors))
+    .dots$stringsAsFactors <- FALSE
+  if (is.null(.dots$na.strings))
+    .dots$na.strings <- c("NA", "")
+  if (is.null(.dots$strip.white))
+    .dots$strip.white <- TRUE
+  do.call(utils::read.table, args = .dots)
+}
 
 
