@@ -19,7 +19,8 @@ tribble_paste <- function(){
                            max( vapply(X = col,
                                        FUN = nchar,
                                        FUN.VALUE = numeric(1)
-                                )
+                                ),
+                           na.rm = TRUE
                            )
                          }
 
