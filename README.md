@@ -19,8 +19,7 @@ At the moment this package contains functional versions of these R Studio addins
 # Pitfalls
 
 * Data is not parsed from string to any other format. This is challenging to do robustly in an efficient manner. Ideas on this are welcome!
-* `tribble_paste` works well with csv's, plain excel files, and html tables, but is currently brittle with respect to irregular table structures like merged cells. 
-* Some kinds of Excel formatting can trip up `tribble_paste`, I am working on diagnosing this issue currently.
+* `tribble_paste` works well with csv's, excel files, and html tables, but is currently brittle with respect to irregular table structures like merged cells. 
 
 # Installation
 
@@ -31,5 +30,7 @@ At the moment this package contains functional versions of these R Studio addins
 
 This package is made possible by [mdlincon's clipr](https://github.com/mdlincoln/clipr) and [hadley's tibble](https://github.com/hadley/tibble). I especially appreciate `clipr's` thoughtful approach to the clipboard on Linux, which pretty much every other R clipboard package just nope'd out on.
 
+#Future developments
+I'm currenly testing a version of `tribble_paste()` in the `dev` brach that can guess the delimeter of tables on the clipboard. The hope is that quite soon it will be possible to paste from raw csv's, tsv's, pipe delmited files etc that we all ocasionally run into online. 
 
 
