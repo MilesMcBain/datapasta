@@ -1,8 +1,8 @@
 Package: datapasta
-Title: Tools for pasting data from the clipboard into Rstudio.
-Version: 0.1.1
+Title: Tools for data copy-pasta.
+Version: 0.2.0
 Authors@R: person("Miles", "McBain", email = "miles.mcbain@gmail.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Description: Two Rstudio addins to make copy-pasting vectors and tables into rstudio painless.
 Depends:
     R (>= 3.3.0),
     clipr (>= 0.2.1)
