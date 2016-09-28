@@ -20,7 +20,9 @@ vector_paste <- function(){
     )
 
   vector_form <- paste0("c(",
-    paste0('"',clipboard_vector,'"', collapse = ","),
+    paste0(
+      ifelse(is.na(clipboard_vector), yes = "NA", no = paste0('"',clipboard_vector,'"'))
+      , collapse = ", "),
     ")"
   )
   rstudioapi::insertText(vector_form)
