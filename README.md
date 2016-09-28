@@ -21,6 +21,12 @@ At the moment this package contains functional versions of these R Studio addins
 * Data is not parsed from string to any other format. This is challenging to do robustly in an efficient manner. Ideas on this are welcome!
 * `tribble_paste` works well with csv's, excel files, and html tables, but is currently brittle with respect to irregular table structures like merged cells. 
 
+# Prerequisites
+* Linux users will need to install either `xsel` or `xclip`. These applications provide an interface to X selections (clipboard-like).
+    - For example: `sudo apt-get install xsel` - it's 72kb...
+* Windows and MacOS have nothing extra to do.
+
+
 # Installation
 
 1. Get the package: `devtools::install_github("milesmcbain/datapasta")`
