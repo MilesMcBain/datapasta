@@ -13,13 +13,15 @@ datapasta is about reducing resistance associated with copying and pasting data 
 At the moment this package contains functional versions of these R Studio addins:
 * `tribble_paste()` which pastes a table on the clipboard as a nicely formatted call to `tibble::tribble()`
     - Recomend `ctrl + shift + t` as shortcut.
+    - Table can be delimited with tab, comma, pipe or semicolon. 
 * `vector_paste()` which will paste delimited data as a character vector definition, e.g. `c("a", "1")` etc.
     - Recommend `ctrl + shift + v` as shortcut.
 
 # Pitfalls
 
 * Data is not parsed from string to any other format. This is challenging to do robustly in an efficient manner. Ideas on this are welcome!
-* `tribble_paste` works well with csv's, excel files, and html tables, but is currently brittle with respect to irregular table structures like merged cells. 
+* `tribble_paste` works well with csv's, excel files, and html tables, but is currently brittle with respect to irregular table structures like merged cells.
+* Quoted csv data, where the quotes contain commas will not be parsed correctly.
 
 # Prerequisites
 * Linux users will need to install either `xsel` or `xclip`. These applications provide an interface to X selections (clipboard-like).
