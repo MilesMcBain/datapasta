@@ -4,7 +4,16 @@
 #' @export
 #'
 tribble_paste <- function(){
-  clipboard_table <- clipr::read_clip_tbl()
+  clipboard_table <- tryCatch({read_clip_tbl_guess()},
+                               error = function(e) {
+                                 return(NULL)
+                               })
+  if(is.null(clipboard_table)){
+    message("Could not paste clipboard as tibble. Text could not be parsed as table.")
+    return(NULL)
+  }
+
+
   nspc <- .rs.readUiPref('num_spaces_for_tab')
   context <- rstudioapi::getActiveDocumentContext()
   context_row <- context$selection[[1]]$range$end["row"]
@@ -59,7 +68,7 @@ tribble_paste <- function(){
                                    paste0(
                                      mapply(
                                        pad_to,
-                                       paste0('"',col,'"'),
+                                       ifelse(is.na(col), yes="NA", no=paste0('"',col,'"')),
                                        col_widths
                                      ),
                                      ","
@@ -94,6 +103,64 @@ pad_to <-function(char_vec, char_length){
   paste0(strrep(" ",char_length - nchar(char_vec)),char_vec)
 }
 
+#' guess_sep
+#'
+#' @param char_vec a table from the clipboard in character vector form.
+#'
+#' @description Guesses the seprator based on a simple heuristic over the first 10 or less rows:
+#' The separator chosen is the one that leads to the most columns, whilst parsing the same number of columns for each line (var=0).
+#' Options are in c(",","\t","\\|,;")
+#
+#'
+#' @return the separator selected to parse char_vec as a table
+#'
+guess_sep <- function(char_vec){
+  candidate_seps <- c(",","\t","\\|,;")
+  table_sample <- char_vec[1:min(length(char_vec),10)]
+ splits <-
+      lapply(
+        lapply(candidate_seps,
+           function(sep, table_sample){
+            splits <- strsplit(table_sample, split = sep)
+            split_lengths <- lapply(X = splits, FUN = length)
+           },
+           table_sample
+        ),
+      unlist)
+ sep_scores <- ( !as.logical( unlist( lapply(splits, var) ) ) ) * unlist( lapply(splits, max) )
+ #Seps that have cols with any variance get score 0.
+ sep <- candidate_seps[which.max(sep_scores)]
+ sep
+}
 
+#' read_clip_table_guess
+#'
+#' @param x
+#' @param ... arguments passed to read.table
+#'
+#' @return a parsed table from the clipboard. Separator is guessed.
+read_clip_tbl_guess <- function (x = clipr::read_clip(), ...)
+{
+  if (is.null(x))
+    return(NULL)
+  if(length(x) < 2)  #You're just a header row, get outta here!
+    return(NULL)
+  .dots <- list(...)
+  .dots$file <- textConnection(paste0(x, collapse = "\n"))
+  if (is.null(.dots$header))
+    .dots$header <- TRUE
+  if (is.null(.dots$sep)){
+    .dots$sep <- guess_sep(x)
+  }
+  if (is.null(.dots$colClasses))
+    .dots$colClasses <- "character"
+  if (is.null(.dots$stringsAsFactors))
+    .dots$stringsAsFactors <- FALSE
+  if (is.null(.dots$na.strings))
+    .dots$na.strings <- c("NA", "")
+  if (is.null(.dots$strip.white))
+    .dots$strip.white <- TRUE
+  do.call(utils::read.table, args = .dots)
+}
 
 
