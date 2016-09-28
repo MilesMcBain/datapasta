@@ -39,6 +39,6 @@ At the moment this package contains functional versions of these R Studio addins
 This package is made possible by [mdlincon's clipr](https://github.com/mdlincoln/clipr) and [hadley's tibble](https://github.com/hadley/tibble). I especially appreciate `clipr's` thoughtful approach to the clipboard on Linux, which pretty much every other R clipboard package just nope'd out on.
 
 #Future developments
-I'm currenly testing a version of `tribble_paste()` in the `dev` branch that can guess the delimeter of tables on the clipboard. The hope is that quite soon it will be possible to paste from raw csv's, tsv's, pipe delmited files etc that we all ocasionally run into online. 
+I'm looking at ways to address the pitfalls. The current priority is handling data types as I think that has the most utility. Feel free to contribute your ideas for solving these problems to the open issues.
 
 
