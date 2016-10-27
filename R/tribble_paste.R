@@ -20,7 +20,7 @@ tribble_paste <- function(){
   indent_context <- nchar(context$contents[context_row])
 
 
-  #Find the max length of data in each column
+  #Find the max length of data as string in each column
   col_widths <- vapply(X = clipboard_table,
                        FUN.VALUE = numeric(1),
                        FUN =
@@ -34,7 +34,7 @@ tribble_paste <- function(){
                          }
 
   )
-  #Set the column width depending on the max length or the header, whichever is longer.
+  #Set the column width depending on the max length of data as string or the header, whichever is longer.
   col_widths <- mapply(max,
                        col_widths+2, #+2 for quotes ""
                        nchar(names(clipboard_table))+1) #+1 for "~"
@@ -58,8 +58,12 @@ tribble_paste <- function(){
                       )
                     ), "\n"
                 )
-
-
+ 
+  #Parse data types from string using readr::parse_guess    
+  clipboard_table_types <- map_df(clipboard_table, readr::guess_parser)
+ 
+    
+  #Write correct data types    
   body_rows <- lapply(X = as.data.frame(t(clipboard_table), stringsAsFactors = FALSE),
                       FUN =
                         function(col){
@@ -81,6 +85,10 @@ tribble_paste <- function(){
 
                         }
   )
+  
+
+  
+  
   #Need to remove the final comma that will break everything.
   body_rows <- paste0(as.vector(body_rows),collapse = "")
   body_rows <- gsub(pattern = ",\n$", replacement = "\n", x = body_rows)
@@ -145,6 +153,9 @@ read_clip_tbl_guess <- function (x = clipr::read_clip(), ...)
     return(NULL)
   if(length(x) < 2)  #You're just a header row, get outta here!
     return(NULL)
+  empty_lines <- which(x == "")
+  if(length(empty_lines) > 0)
+    x <-  x[-which(x == "")]     
   .dots <- list(...)
   .dots$file <- textConnection(paste0(x, collapse = "\n"))
   if (is.null(.dots$header))
