@@ -4,6 +4,7 @@
 #' @export
 #'
 tribble_paste <- function(){
+
   clipboard_table <- tryCatch({read_clip_tbl_guess()},
                                error = function(e) {
                                  return(NULL)
@@ -12,6 +13,7 @@ tribble_paste <- function(){
     message("Could not paste clipboard as tibble. Text could not be parsed as table.")
     return(NULL)
   }
+  
 
 
   nspc <- .rs.readUiPref('num_spaces_for_tab')
@@ -60,7 +62,7 @@ tribble_paste <- function(){
                 )
  
   #Parse data types from string using readr::parse_guess    
-  clipboard_table_types <- map_df(clipboard_table, readr::guess_parser)
+  clipboard_table_types <- lapply(clipboard_table, readr::guess_parser)
  
     
   #Write correct data types    
@@ -71,8 +73,9 @@ tribble_paste <- function(){
                             paste0(
                                    paste0(
                                      mapply(
-                                       pad_to,
-                                       ifelse(is.na(col), yes="NA", no=paste0('"',col,'"')),
+                                       render_type_pad_to,
+                                       col,
+                                       clipboard_table_types,
                                        col_widths
                                      ),
                                      ","
@@ -95,8 +98,8 @@ tribble_paste <- function(){
 
   #Footer
   footer <- paste0(strrep(" ",indent_context+nspc),")")
-
-  rstudioapi::insertText(paste0(header, names_row, body_rows, footer))
+  output <- paste0(header, names_row, body_rows, footer)
+  rstudioapi::insertText(output)
 }
 
 
@@ -109,6 +112,38 @@ tribble_paste <- function(){
 #'
 pad_to <-function(char_vec, char_length){
   paste0(strrep(" ",char_length - nchar(char_vec)),char_vec)
+}
+
+#' render_type_pad_to
+#' @description Based on a type and length, render a character string as the type in text.
+#' Pad to the desired length.
+#' 
+#' @param char_vec a character vector
+#' @param char_type a string type from readr::guess_parser
+#' @param char_length a string length to pad to.
+#'
+#' @return
+#'
+render_type_pad_to <- function(char_vec, char_type, char_length){
+    if(is.na(char_vec)){
+        output <- switch(char_type,
+                         "integer" = "NaN",
+                         "double" = "NaN",
+                         "logical" = "NA",
+                         "character" = "NA",
+                         "NA"
+                  )
+    }else{
+        output <- switch(char_type,
+                         "integer" = as.integer(char_vec),
+                         "double" = as.double(char_vec),
+                         "logical" = as.logical(char_vec),
+                         "character" = paste0('"',char_vec,'"'),
+                         paste0('"',char_vec,'"')
+                  )    
+        
+    }
+    pad_to(output, char_length)
 }
 
 #' guess_sep

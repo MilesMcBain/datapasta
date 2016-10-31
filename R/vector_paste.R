@@ -18,6 +18,8 @@ vector_paste <- function(){
       split = "\t|,|\\|",
       perl= TRUE)
     )
+  
+  vector_type <- readr::guess_parser(clipboard_vector)
 
   vector_form <- paste0("c(",
     paste0(

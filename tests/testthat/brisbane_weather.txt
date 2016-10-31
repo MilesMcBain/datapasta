@@ -1,0 +1,12 @@
+Precis Icon	Location	Min	Max
+Possible shower.	Brisbane	17	29
+Mostly sunny.	Brisbane Airport	16	28
+Shower or two. Possible storm.	Beaudesert	14	30
+Possible shower.	Chermside	16	30
+Shower or two. Possible storm.	Gatton	14	32
+Possible shower or storm.	Ipswich	14	31
+Possible shower or storm.	Logan Central	16	30
+Mostly sunny.	Manly	18	26
+Possible shower.	Mount Gravatt	16	29
+Possible shower.	Oxley	15	30
+Mostly sunny.	Redcliffe	18	28

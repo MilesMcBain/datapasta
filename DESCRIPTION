@@ -7,7 +7,10 @@ Depends:
     R (>= 3.3.0),
     clipr (>= 0.2.1)
 Suggests:
-    tibble (>= 1.2)
+    tibble (>= 1.2),
+    testthat
+Imports:
+    readr (>= 1.0.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
