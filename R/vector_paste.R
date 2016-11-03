@@ -12,20 +12,36 @@ vector_paste <- function(){
   context_row <- context$selection[[1]]$range$end["row"]
   indent_context <- nchar(context$contents[context_row])
 
-  clipboard_vector <- unlist(
-    strsplit(
-      x = clipboard_string,
-      split = "\t|,|\\|",
-      perl= TRUE)
-    )
-  
+  if(length(clipboard_vector == 1)){
+      clipboard_vector <- unlist(
+        strsplit(
+          x = clipboard_string,
+          split = "\t|,|\\|",
+          perl= TRUE)
+        )
+  }else{
+      clipboard_vector <- clipboard_string
+  }
+   
   vector_type <- readr::guess_parser(clipboard_vector)
 
   vector_form <- paste0("c(",
     paste0(
-      ifelse(is.na(clipboard_vector), yes = "NA", no = paste0('"',clipboard_vector,'"'))
-      , collapse = ", "),
+      #ifelse(is.na(clipboard_vector), yes = "NA", no = paste0('"',clipboard_vector,'"'))
+      lapply(clipboard_vector, render_type, vector_type), 
+      collapse = ", "),
     ")"
   )
   rstudioapi::insertText(vector_form)
+}
+
+render_type <- function(char_vec, type_str){
+    output <- switch(type_str,
+                     "integer" = as.integer(char_vec),
+                     "double" = as.double(char_vec),
+                     "logical" = as.logical(char_vec),
+                     "character" = ifelse(is.na(char_vec), yes = "NA", no = paste0('"',char_vec,'"')),
+                     paste0('"',char_vec,'"')
+    )    
+    output
 }
