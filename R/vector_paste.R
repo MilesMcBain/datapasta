@@ -12,7 +12,7 @@ vector_paste <- function(){
   context_row <- context$selection[[1]]$range$end["row"]
   indent_context <- nchar(context$contents[context_row])
 
-  if(length(clipboard_vector == 1)){
+  if(length(clipboard_string == 1)){
       clipboard_vector <- unlist(
         strsplit(
           x = clipboard_string,
