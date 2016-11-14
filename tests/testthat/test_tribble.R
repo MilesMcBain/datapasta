@@ -19,6 +19,39 @@ test_that("Brisbane Weather Parse", {
                          "Mostly sunny.",        "Redcliffe", "18", "28"
         )
     ))
+    
+    expect_equal(
+        read_clip_tbl_guess(readr::read_lines(file = "./dates_currency.txt")),
+        as.data.frame(tibble::tribble(
+                                                 ~date,       ~id,  ~ammount,
+                                    "27/10/2016 21:00", "0001234",  "$18.50",
+                                    "28/10/2016 21:05", "0001235", "-$18.50"
+                                    )
+                      )
+        )
+    
+    expect_equal(read_clip_tbl_guess(readr::read_lines(file = "./pipe_delim.txt")),
+                 as.data.frame(tibble::tribble(
+                                             ~event,       ~id,  
+                                             "TYPE1", "01",
+                                             "type2,", "02"
+                                              )
+                 )
+    )
+    
+    expect_equal(read_clip_tbl_guess(readr::read_lines(file = "./semi_colon_delim.txt")),
+                 as.data.frame(tibble::tribble(
+                     ~event,       ~id,  
+                     "TYPE1", "01",
+                     "type2,", "02"
+                 )
+                 )
+    )
+    
+                  
+    
 })
+
+
 
 

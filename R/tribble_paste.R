@@ -158,7 +158,7 @@ render_type_pad_to <- function(char_vec, char_type, char_length){
 #' @return the separator selected to parse char_vec as a table
 #'
 guess_sep <- function(char_vec){
-  candidate_seps <- c(",","\t","\\|,;")
+  candidate_seps <- c(",","\t","\\|",";")
   table_sample <- char_vec[1:min(length(char_vec),10)]
  splits <-
       lapply(
@@ -173,6 +173,7 @@ guess_sep <- function(char_vec){
  sep_scores <- ( !as.logical( unlist( lapply(splits, var) ) ) ) * unlist( lapply(splits, max) )
  #Seps that have cols with any variance get score 0.
  sep <- candidate_seps[which.max(sep_scores)]
+ if(sep == "\\|") sep <- "|"
  sep
 }
 
