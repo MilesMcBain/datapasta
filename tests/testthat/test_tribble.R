@@ -1,6 +1,6 @@
 context("test tribble paste")
 
-test_that("Brisbane Weather Parse", {
+test_that("Brisbane Weather is parsed", {
 
     expect_equal(
         read_clip_tbl_guess(readr::read_lines(file = "./brisbane_weather.txt")),
@@ -19,7 +19,9 @@ test_that("Brisbane Weather Parse", {
                          "Mostly sunny.",        "Redcliffe", "18", "28"
         )
     ))
-    
+})
+
+test_that("Odd strings are parsed as strings", {    
     expect_equal(
         read_clip_tbl_guess(readr::read_lines(file = "./dates_currency.txt")),
         as.data.frame(tibble::tribble(
@@ -28,8 +30,10 @@ test_that("Brisbane Weather Parse", {
                                     "28/10/2016 21:05", "0001235", "-$18.50"
                                     )
                       )
-        )
-    
+    )
+})
+
+test_that("All delimeters work for parsing as table", {    
     expect_equal(read_clip_tbl_guess(readr::read_lines(file = "./pipe_delim.txt")),
                  as.data.frame(tibble::tribble(
                                              ~event,       ~id,  
@@ -52,6 +56,21 @@ test_that("Brisbane Weather Parse", {
     
 })
 
+test_that("Table rows with all missing are not ignored", {
+    
+    expect_equal(
+        read_clip_tbl_guess(readr::read_lines(file = "./tab_with_blank.txt")),
+        as.data.frame(tibble::tribble(
+                                    ~a,      ~b,
+                                    "2",    "hi",
+                                    "3", "there",
+                                     NA,      NA,
+                                    "4",  "robot"
+                                    )
+
+                      )
+        )
+})
 
 
 

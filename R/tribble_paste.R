@@ -189,9 +189,9 @@ read_clip_tbl_guess <- function (x = clipr::read_clip(), ...)
     return(NULL)
   if(length(x) < 2)  #You're just a header row, get outta here!
     return(NULL)
-  empty_lines <- which(x == "")
-  if(length(empty_lines) > 0)
-    x <-  x[-which(x == "")]     
+   empty_lines <- which(x == "" | grepl("^\t+$", x))
+   if(length(empty_lines) > 0)
+     x <-  x[-empty_lines]     
   .dots <- list(...)
   .dots$file <- textConnection(paste0(x, collapse = "\n"))
   if (is.null(.dots$header))

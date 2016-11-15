@@ -1,6 +1,7 @@
 #' vector_paste
 #'
-#' @description Pastes data from clipboard formatted as a character vector. Considers , | tab newline as delimeters
+#' @description Pastes data from clipboard as a horizontally formatted character vector on
+#' a single line. Considers , | tab newline as delimeters.
 #'
 #' @return nothing.
 #' @export
@@ -12,37 +13,53 @@ vector_paste <- function(){
 
   vector_form <- paste0("c(",
     paste0(
-      #ifelse(is.na(clipboard_vector), yes = "NA", no = paste0('"',clipboard_vector,'"'))
-      lapply(clipboard_vector, render_type, vector_type), 
+      lapply(clipboard_vector, render_type, vector_type),
       collapse = ", "),
     ")"
   )
   rstudioapi::insertText(vector_form)
+  vector_form
 }
 
+#' vector_paste_vertical
+#'
+#' @description Pastes data from clipboard as a vertically formatted character vector on
+#' a multiple lines. One line is used per element. Considers , | tab newline as delimeters.
+#'
+#' @return nothing.
+#' @export
+#'
 vector_paste_vertical <- function(){
   clipboard_vector <- parse_vector()
   vector_type <- attr(clipboard_vector, "type")
-  
+
   nspc <- .rs.readUiPref('num_spaces_for_tab')
   context <- rstudioapi::getActiveDocumentContext()
   context_row <- context$selection[[1]]$range$end["row"]
   indent_context <- nchar(context$contents[context_row])
-  
+
   vector_form <- paste0("c(",
                     paste0(
-                      #ifelse(is.na(clipboard_vector), yes = "NA", no = paste0('"',clipboard_vector,'"'))
-                      lapply(clipboard_vector, render_type, vector_type), 
-                      collapse = paste0(",\n",strrep(" ", indent_context + nspc))
+                      lapply(clipboard_vector, render_type, vector_type),
+                      collapse = paste0(",\n",strrep(" ", indent_context + 2)) #2 to align for 'c('
                     ),
                     ")"
-                  )     
+                  )
   rstudioapi::insertText(vector_form)
 }
 
+#' parse_vector
+#'
+#' @description Pastes data from clipboard as a vertically formatted character vector on
+#' a multiple lines. One line is used per element. Considers , | tab newline as delimeters.
+#'
+#' @return A vector parsed from the clipboard as ether a character string or a
+#' character vector. The type attribute contains the type guessed by `readr`.
+#'
+#'
 parse_vector <- function(){
   clipboard_string <- clipr::read_clip()
-  if(length(clipboard_string == 1)){
+  if(length(clipboard_string) == 1){
     clipboard_vector <- unlist(
       strsplit(
         x = clipboard_string,
@@ -53,11 +70,20 @@ parse_vector <- function(){
     clipboard_vector <- clipboard_string
   }
   vector_type <- readr::guess_parser(clipboard_vector)
-  
+
   attr(clipboard_vector, "type") <- vector_type
   clipboard_vector
 }
 
+#' render_type
+#'
+#' @description Renders a character vector as R types for pasting into Rstudio.
+#' Strings are quoted. Numbers, NaN, NA, logicals etc are not.
+#'
+#' @return A vector parsed from the clipboard as ether a character string or a
+#' character vector. The type attribute contains the type guessed by `readr`.
+#'
+#'
 render_type <- function(char_vec, type_str){
     output <- switch(type_str,
                      "integer" = as.integer(char_vec),
@@ -65,6 +91,6 @@ render_type <- function(char_vec, type_str){
                      "logical" = as.logical(char_vec),
                      "character" = ifelse(is.na(char_vec), yes = "NA", no = paste0('"',char_vec,'"')),
                      paste0('"',char_vec,'"')
-    )    
+    )
     output
 }
