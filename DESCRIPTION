@@ -8,10 +8,13 @@ Depends:
     clipr (>= 0.3.0)
 Suggests:
     tibble (>= 1.2),
-    testthat
+    testthat,
+    knitr,
+    rmarkdown
 Imports:
     readr (>= 1.0.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 5.0.1
+VignetteBuilder: knitr
