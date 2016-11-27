@@ -14,15 +14,16 @@ tribble_paste <- function(){
     else message("Could not paste clipboard as tibble. Text could not be parsed as table.")
     return(NULL)
   }
-  
-
 
   nspc <- .rs.readUiPref('num_spaces_for_tab')
   context <- rstudioapi::getActiveDocumentContext()
-  context_row <- context$selection[[1]]$range$end["row"]
-  indent_context <- nchar(context$contents[context_row])
-
-
+  context_row <- context$selection[[1]]$range$start["row"]
+  if(all(context$selection[[1]]$range$start == context$selection[[1]]$range$end)){
+    indent_context <- nchar(context$contents[context_row])
+  } else{
+    indent_context <- attr(regexpr("^\\s+", context$contents[context_row]),"match.length")+1 #first pos = 1 not 0
+  }
+  
   #Find the max length of data as string in each column
   col_widths <- vapply(X = clipboard_table,
                        FUN.VALUE = numeric(1),

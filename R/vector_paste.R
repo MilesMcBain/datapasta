@@ -35,8 +35,12 @@ vector_paste_vertical <- function(){
 
   nspc <- .rs.readUiPref('num_spaces_for_tab')
   context <- rstudioapi::getActiveDocumentContext()
-  context_row <- context$selection[[1]]$range$end["row"]
-  indent_context <- nchar(context$contents[context_row])
+  context_row <- context$selection[[1]]$range$start["row"]
+  if(all(context$selection[[1]]$range$start == context$selection[[1]]$range$end)){
+      indent_context <- nchar(context$contents[context_row])
+  } else{
+      indent_context <- attr(regexpr("^\\s+", context$contents[context_row]),"match.length")+1 #first pos = 1 not 0
+  }
 
   vector_form <- paste0("c(",
                     paste0(
