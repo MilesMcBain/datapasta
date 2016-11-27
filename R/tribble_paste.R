@@ -182,8 +182,11 @@ guess_sep <- function(char_vec){
 
 #' read_clip_table_guess
 #'
-#' @param x
+#' @param x contents of the clipboard
 #' @param ... arguments passed to read.table
+#' @description Similar to read_clip_tbl from clipr,
+#' however it will error if there are less than 2 rows
+#' and it tries to guess the separator.
 #'
 #' @return a parsed table from the clipboard. Separator is guessed.
 read_clip_tbl_guess <- function (x = clipr::read_clip(), ...)
