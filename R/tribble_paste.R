@@ -26,7 +26,7 @@ tribble_paste <- function(){
   col_widths <- vapply(X = clipboard_table,
                        FUN.VALUE = numeric(1),
                        FUN =
-                         function(col){
+                         function(col){nchar
                            max( vapply(X = col,
                                        FUN = nchar,
                                        FUN.VALUE = numeric(1)
@@ -138,7 +138,7 @@ render_type_pad_to <- function(char_vec, char_type, char_length){
                          "integer" = as.integer(char_vec),
                          "double" = as.double(char_vec),
                          "logical" = as.logical(char_vec),
-                         "character" = paste0('"',char_vec,'"'),
+                         "character" = ifelse(nchar(char_vec)!=0, paste0('"',char_vec,'"'), "NA"),
                          paste0('"',char_vec,'"')
                   )    
         
@@ -152,6 +152,7 @@ render_type_pad_to <- function(char_vec, char_type, char_length){
 #'
 #' @description Guesses the seprator based on a simple heuristic over the first 10 or less rows:
 #' The separator chosen is the one that leads to the most columns, whilst parsing the same number of columns for each line (var=0).
+#' The guessing algorithm ignores blank lines - which are lines that contain only the separator.
 #' Options are in c(",","\t","\\|,;")
 #
 #'
@@ -164,8 +165,10 @@ guess_sep <- function(char_vec){
       lapply(
         lapply(candidate_seps,
            function(sep, table_sample){
-            splits <- strsplit(table_sample, split = sep)
-            split_lengths <- lapply(X = splits, FUN = length)
+            blank_lines <- grepl(paste0("^",sep,"+$"), table_sample)
+            filtered_sample <- table_sample[!blank_lines]
+            line_splits <- strsplit(filtered_sample, split = sep)
+            split_lengths <- lapply(X = line_splits, FUN = length)
            },
            table_sample
         ),
@@ -189,11 +192,8 @@ read_clip_tbl_guess <- function (x = clipr::read_clip(), ...)
     return(NULL)
   if(length(x) < 2)  #You're just a header row, get outta here!
     return(NULL)
-   empty_lines <- which(x == "" | grepl("^\t+$", x))
-   if(length(empty_lines) > 0)
-     x <-  x[-empty_lines]     
   .dots <- list(...)
-  .dots$file <- textConnection(paste0(x, collapse = "\n"))
+  .dots$file <- textConnection(x)
   if (is.null(.dots$header))
     .dots$header <- TRUE
   if (is.null(.dots$sep)){

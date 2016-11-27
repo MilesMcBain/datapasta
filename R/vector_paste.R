@@ -89,7 +89,7 @@ render_type <- function(char_vec, type_str){
                      "integer" = as.integer(char_vec),
                      "double" = as.double(char_vec),
                      "logical" = as.logical(char_vec),
-                     "character" = ifelse(is.na(char_vec), yes = "NA", no = paste0('"',char_vec,'"')),
+                     "character" = ifelse(is.na(char_vec)|nchar(char_vec)==0, yes = "NA", no = paste0('"',char_vec,'"')),
                      paste0('"',char_vec,'"')
     )
     output

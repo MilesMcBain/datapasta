@@ -90,4 +90,3 @@ test_that("Vector_paste handles empty strings", {
   )
 })
 
-c("a", "6", "", "4")
