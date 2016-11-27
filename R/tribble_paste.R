@@ -4,13 +4,14 @@
 #' @export
 #'
 tribble_paste <- function(){
-
   clipboard_table <- tryCatch({read_clip_tbl_guess()},
                                error = function(e) {
                                  return(NULL)
                                })
+  
   if(is.null(clipboard_table)){
-    message("Could not paste clipboard as tibble. Text could not be parsed as table.")
+    if(!clipr::clipr_available()) message("Clipboard is not available. Is R running in RStudio Server or a C.I. machine?")
+    else message("Could not paste clipboard as tibble. Text could not be parsed as table.")
     return(NULL)
   }
   

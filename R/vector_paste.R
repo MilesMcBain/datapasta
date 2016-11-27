@@ -58,7 +58,16 @@ vector_paste_vertical <- function(){
 #'
 #'
 parse_vector <- function(){
-  clipboard_string <- clipr::read_clip()
+  clipboard_string <- tryCatch({clipr::read_clip()},
+                               error = function(e) {
+                                   return(NULL)
+                               })
+  if(is.null(clipboard_string)){
+      if(!clipr::clipr_available()) message("Clipboard is not available. Is R running in RStudio Server or a C.I. machine?")
+      else message("Could not paste clipboard as a vector. Text could not be parsed.")
+      return(NULL)
+  }
+  
   if(length(clipboard_string) == 1){
     clipboard_vector <- unlist(
       strsplit(
