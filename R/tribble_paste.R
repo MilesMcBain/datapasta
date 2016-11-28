@@ -175,7 +175,7 @@ guess_sep <- function(char_vec){
            table_sample
         ),
       unlist)
- sep_scores <- ( !as.logical( unlist( lapply(splits, var) ) ) ) * unlist( lapply(splits, max) )
+ sep_scores <- ( !as.logical( unlist( lapply(splits, stats::var) ) ) ) * unlist( lapply(splits, max) )
  #Seps that have cols with any variance get score 0.
  sep <- candidate_seps[which.max(sep_scores)]
  if(sep == "\\|") sep <- "|"
