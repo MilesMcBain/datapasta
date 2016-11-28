@@ -93,6 +93,9 @@ parse_vector <- function(){
 #' @description Renders a character vector as R types for pasting into Rstudio.
 #' Strings are quoted. Numbers, NaN, NA, logicals etc are not.
 #'
+#' @param char_vec a chracter vector containing text to be rendered as the type indicated by type_str
+#' @param type_str a string describing the type of char_vec
+#'
 #' @return A vector parsed from the clipboard as ether a character string or a
 #' character vector. The type attribute contains the type guessed by `readr`.
 #'

@@ -6,6 +6,11 @@
 \usage{
 render_type(char_vec, type_str)
 }
+\arguments{
+\item{char_vec}{a chracter vector containing text to be rendered as the type indicated by type_str}
+
+\item{type_str}{a string describing the type of char_vec}
+}
 \value{
 A vector parsed from the clipboard as ether a character string or a
 character vector. The type attribute contains the type guessed by `readr`.

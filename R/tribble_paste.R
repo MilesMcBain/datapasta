@@ -110,7 +110,7 @@ tribble_paste <- function(){
 #' @param char_vec character vector.
 #' @param char_length length to pad to.
 #'
-#' @return
+#' @return char_vec left-padded with spaces to char_length.
 #'
 pad_to <-function(char_vec, char_length){
   paste0(strrep(" ",char_length - nchar(char_vec)),char_vec)
@@ -124,7 +124,8 @@ pad_to <-function(char_vec, char_length){
 #' @param char_type a string type from readr::guess_parser
 #' @param char_length a string length to pad to.
 #'
-#' @return
+#' @return a string containing the representation of char_vec as char_type in the RStudio source editor,
+#' left-padded with spaces to char_length.
 #'
 render_type_pad_to <- function(char_vec, char_type, char_length){
     if(is.na(char_vec)){

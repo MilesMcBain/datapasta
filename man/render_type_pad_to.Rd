@@ -14,7 +14,8 @@ render_type_pad_to(char_vec, char_type, char_length)
 \item{char_length}{a string length to pad to.}
 }
 \value{
-
+a string containing the representation of char_vec as char_type in the RStudio source editor,
+left-padded with spaces to char_length.
 }
 \description{
 Based on a type and length, render a character string as the type in text.

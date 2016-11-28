@@ -12,7 +12,7 @@ pad_to(char_vec, char_length)
 \item{char_length}{length to pad to.}
 }
 \value{
-
+char_vec left-padded with spaces to char_length.
 }
 \description{
 Left pad string to a certain size. A helper function for getting spacing in table correct.
