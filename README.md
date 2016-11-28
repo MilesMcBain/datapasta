@@ -5,6 +5,7 @@
 ## vector_paste 
 ![blam!](https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/vector_paste.gif)
 
+## vector_paste_vertical()
 
 # Introducing datapasta
 
@@ -14,14 +15,21 @@ At the moment this package contains functional versions of these R Studio addins
 * `tribble_paste()` which pastes a table on the clipboard as a nicely formatted call to `tibble::tribble()`
     - Recomend `ctrl + shift + t` as shortcut.
     - Table can be delimited with tab, comma, pipe or semicolon. 
-* `vector_paste()` which will paste delimited data as a character vector definition, e.g. `c("a", "1")` etc.
-    - Recommend `ctrl + shift + v` as shortcut.
+* `vector_paste()` which will paste delimited data as a vector definition, e.g. `c("a", "b")` etc.
+    - Recommend `ctrl + alt + shift + v` as shortcut.
+* `vector_paste_vertical()` which will paste delimited data as a vertically formatted vector definition, e.g.
+```
+c("Mint",
+  "Fedora",
+  "Debian",
+  "Ubuntu",
+  "OpenSUSE")
+```
 
 # Pitfalls
-
-* Data is not parsed from string to any other format. This is challenging to do robustly in an efficient manner. Ideas on this are welcome!
-* `tribble_paste` works well with csv's, excel files, and html tables, but is currently brittle with respect to irregular table structures like merged cells.
+* `tribble_paste` works well with csv's, excel files, and html tables, but is currently brittle with respect to irregular table structures like merged cells or multi-line column headings. For some reason Wikipedia seems chock full of these. :(
 * Quoted csv data, where the quotes contain commas will not be parsed correctly.
+* The addin does not currently work in RStudio server. The instance not have access to the local clipboard.
 
 # Prerequisites
 * Linux users will need to install either `xsel` or `xclip`. These applications provide an interface to X selections (clipboard-like).
@@ -36,9 +44,9 @@ At the moment this package contains functional versions of these R Studio addins
 
 # Prior art
 
-This package is made possible by [mdlincon's clipr](https://github.com/mdlincoln/clipr) and [hadley's tibble](https://github.com/hadley/tibble). I especially appreciate `clipr's` thoughtful approach to the clipboard on Linux, which pretty much every other R clipboard package just nope'd out on.
+This package is made possible by [mdlincon's clipr](https://github.com/mdlincoln/clipr, and Hadley's packages [tibble](https://github.com/hadley/tibble) and [readr](https://github.com/hadley/tibble) (for data-type guessing). I especially appreciate `clipr's` thoughtful approach to the clipboard on Linux, which pretty much every other R clipboard package just nope'd out on.
 
 #Future developments
-I'm looking at ways to address the pitfalls. The current priority is handling data types as I think that has the most utility. Feel free to contribute your ideas for solving these problems to the open issues.
+I'm looking at ways to address the pitfalls. The next thing I will look at is some kind of support on RStudio server, since I use this often myself. Feel free to contribute your ideas for solving these problems to the open issues.
 
 

@@ -1,0 +1,109 @@
+---
+title: "How to Datapasta"
+author: "Miles McBain"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{How to Datapasta}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Datapasta provides three Rstudio addins that give you complete freedom copy and paste data into your RStudio scource editor, formatted for immeddiate use. Note: repeated use has been known to cause **titilation** and **giddiness**.
+
+Places I've found this power useful:
+
+* Copying tables from Excel, Jupyter, and websites, where the source file cannot be easily read.
+* Embedding small-ish amounts of raw data from .csv into Rmarkdown files. The file thus constains code documentation and data, attaining the holy trinity of reproducibility.
+* Quickly pasting vector output from other queries into `dplyr::filter( .. %in% ..)`.
+* Adding datasets to readily reproducible examples for posting to StackOverflow, Slack channels etc.
+
+The addins and their behaviour are now described.
+
+## Pasting a table as a formatted tibble definition with `tribble_paste()`
+You can copy this:
+
+```{r, echo=FALSE}
+library(tibble)
+knitr::kable(tribble(
+                                  ~X,          ~Location, ~Min, ~Max,
+                    "Partly cloudy.",         "Brisbane",   19,   29,
+                    "Partly cloudy.", "Brisbane Airport",   18,   27,
+                  "Possible shower.",       "Beaudesert",   15,   30,
+                    "Partly cloudy.",        "Chermside",   17,   29,
+    "Shower or two. Possible storm.",           "Gatton",   15,   32,
+                  "Possible shower.",          "Ipswich",   15,   30,
+                    "Partly cloudy.",    "Logan Central",   18,   29,
+                     "Mostly sunny.",            "Manly",   20,   26,
+                    "Partly cloudy.",    "Mount Gravatt",   17,   28,
+                  "Possible shower.",            "Oxley",   17,   30,
+                    "Partly cloudy.",        "Redcliffe",   19,   27
+    ))
+```
+
+And make this appear in your source editor, at the current cursor:
+
+```{r eval=FALSE}
+tribble(
+                                  ~X,          ~Location, ~Min, ~Max,
+                    "Partly cloudy.",         "Brisbane",   19,   29,
+                    "Partly cloudy.", "Brisbane Airport",   18,   27,
+                  "Possible shower.",       "Beaudesert",   15,   30,
+                    "Partly cloudy.",        "Chermside",   17,   29,
+    "Shower or two. Possible storm.",           "Gatton",   15,   32,
+                  "Possible shower.",          "Ipswich",   15,   30,
+                    "Partly cloudy.",    "Logan Central",   18,   29,
+                     "Mostly sunny.",            "Manly",   20,   26,
+                    "Partly cloudy.",    "Mount Gravatt",   17,   28,
+                  "Possible shower.",            "Oxley",   17,   30,
+                    "Partly cloudy.",        "Redcliffe",   19,   27
+    )
+```
+
+`tibble::tribble()` or '**transposed** tibble' is a really neat function that allows a `tibble` to be written in human readable format (Thanks be to Hadley).
+
+To paste data as a `tribble()` call, just copy the table header and data rows, then paste into the source editor using the addin `Paste as tribble`. For best results, assign the addin to a memorable keyboard shortcut, e.g. `ctrl + shift + t`. See [Customizing Keyboard Shortcuts ](https://support.rstudio.com/hc/en-us/articles/206382178-Customizing-Keyboard-Shortcuts).
+
+`tribble_paste()` is a flexible function that guesses the separator and types of the data it pulls from the clipboard. Mostly this seems to work well. Ocassionally it epic-fails. The supported separators are `\|` (pipe), `\t` (tab), `,` (comma), `;`(semicolon). Most data copied from the internet or spreadsheets will be tab delimited.   
+
+##Pasting a list as a horizontal vector with `vector_paste()`
+A list could be a row or column of a spreadsheet or intermediate output. With the `Paste as vector` addin you can go from something like:
+
+```
+Mint	Fedora	Debian	Ubuntu	OpenSUSE
+```
+or
+```
+Mint,Fedora,Debian,Ubuntu,OpenSUSE
+```
+or
+```
+Mint
+Fedora
+Debian
+Ubuntu
+OpenSUSE
+```
+to
+
+```{r, eval = FALSE}
+c("Mint", "Fedora", "Debian", "Ubuntu", "OpenSUSE")
+```
+
+This is pasted into the souce editor at the current cursor.
+
+Just like `tribble_patset()`, `vector_paste()` has a flexible parser that can guess the type and separator of the data. The supported separators are `\|` (pipe), `\t` (tab), `,` (comma), `;`(semicolon) and end of line. The recommended keyboard shortcut is `crtl + alt + shift + v`.
+
+##Pasting a list as a vertical vector with `vector_paste_vertical()`
+Given the same types of list inputs as above, the `Paste as vector (vertical)` addin pastes the output with each element on its own line, e.g.:
+
+```{r, eval = FALSE}
+c("Mint",
+  "Fedora",
+  "Debian",
+  "Ubuntu",
+  "OpenSUSE")
+```
+
+This is much nicer for long lists. I have found this is actually the version I use more often. I recommend using `ctrl + shift + v` as keyboard shortcut.
+

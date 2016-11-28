@@ -1,3 +1,9 @@
+# datapasta 1.0.0
+* Added new addin 'Paste as vector (vertical)' to provide nicer formatting for long lists.
+* All addins now guess data types and format correctly in the source editor.
+* Empty rows in tables and empty cells in lists are formatted as NA's when pasting instead of being ignored.
+* Added vignette, automated tests etc in prep for CRAN submission.
+
 # datapasta 0.2
 * Added graceful error handling on failed parse of text on clipboard to table.
 * `tribble_paste()` and `vector_paste()` now pastse NA's as unquoted, so R will parse as propper NA.

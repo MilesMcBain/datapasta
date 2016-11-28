@@ -10,6 +10,7 @@ vector_paste()
 nothing.
 }
 \description{
-Pastes data from clipboard formatted as a character vector. Considers , | tab newline as delimeters
+Pastes data from clipboard as a horizontally formatted character vector on
+a single line. Considers , | tab newline as delimeters.
 }
 

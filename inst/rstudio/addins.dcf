@@ -4,6 +4,11 @@ Binding: tribble_paste
 Interactive: false
 
 Name: Paste as vector
-Description: Pastes data from the clipboard to the editor as character vector
+Description: Pastes data from the clipboard to the editor as character vector, formatted horizontally on a single line.
 Binding: vector_paste
+Interactive: false
+
+Name: Paste as vector (vertical)
+Description: Pastes data from the clipboard to the editor as character vector, formatted vertically, one element per line.
+Binding: vector_paste_vertical
 Interactive: false
