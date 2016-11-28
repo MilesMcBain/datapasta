@@ -13,9 +13,9 @@ Microsoft Windows 7 Enterprise SP1, R-release 3.3.2
 
 ## R CMD check results
 
-0 errors | 1 warnings | 2 notes
+0 errors | 2 warnings | 2 notes
 
-Notes:
+NOTES:
 
 * Packages in Depends field not imported from:
      ‘clipr’ ‘rstudioapi’
@@ -31,11 +31,15 @@ Notes:
      
 This function is in the global environment when running RStudio. RStudio addins in this package use this function.
     
-Warnings:
+WARNINGS:
 
-* On Max OSX only: "Warning: package ‘clipr’ was built under R version 3.3.2"
+* On Mac OSX only: "Warning: package ‘clipr’ was built under R version 3.3.2"
 
 R-release 3.3.1 is the highest available for OSX El Capitan. Tests still passed without issue.
+
+* On Windows 7 only: "Warning 'qpdf is needed for checks on size reduction of pdfs'"
+
+I understand the absence of this binary means that this particular CMD check could not be performed on Windows 7. I do not believe it is hiding a package issues due to evidence from other platforms.
 
 ## Downstream dependencies
 
