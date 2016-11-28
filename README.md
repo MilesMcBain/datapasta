@@ -1,11 +1,9 @@
 # The Goods 
-## tribble_paste
+## Paste as tribble
 ![pow!](https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/tribble_paste.gif)
 
-## vector_paste 
+## Paste as vector 
 ![blam!](https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/vector_paste.gif)
-
-## vector_paste_vertical()
 
 # Introducing datapasta
 
@@ -17,7 +15,9 @@ At the moment this package contains functional versions of these R Studio addins
     - Table can be delimited with tab, comma, pipe or semicolon. 
 * `vector_paste()` which will paste delimited data as a vector definition, e.g. `c("a", "b")` etc.
     - Recommend `ctrl + alt + shift + v` as shortcut.
-* `vector_paste_vertical()` which will paste delimited data as a vertically formatted vector definition, e.g.
+* `vector_paste_vertical()` which will paste delimited data as a vertically formatted vector definition.
+    - Recommend `ctrl + shift + v` as shortcut 
+    - example output:
 ```
 c("Mint",
   "Fedora",
