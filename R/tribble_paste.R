@@ -1,3 +1,5 @@
+globalVariables(".rs.readUiPref", "datapasta") #ignore this function in R CMD checks, since it is part of RStudio runtime
+
 #' tribble_paste
 #' @description Parse the current clipboard as a table and paste in at the cursor location in tribbble format.
 #' @return nothing.
