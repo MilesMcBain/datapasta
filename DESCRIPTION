@@ -1,19 +1,19 @@
 Package: datapasta
-Title: Tools for data copy-pasta
+Title: RStudio Addins for Data Copy-Pasta
 Version: 1.0.0
 Authors@R: person("Miles", "McBain", email = "miles.mcbain@gmail.com", role = c("aut", "cre"))
-Description: Three Rstudio addins to make copy-pasting vectors and tables into rstudio painless.
+Description: Three RStudio addins to make copy-pasting vectors and tables into source painless.
 Depends:
-    R (>= 3.3.0),
-    clipr (>= 0.3.0),
-    rstudioapi (>= 0.6)
+    R (>= 3.3.0)
 Suggests:
     tibble (>= 1.2),
     testthat,
     knitr,
     rmarkdown
 Imports:
-    readr (>= 1.0.0)
+    readr (>= 1.0.0),
+    clipr (>= 0.3.0),
+    rstudioapi (>= 0.6)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
