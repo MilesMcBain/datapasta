@@ -1,4 +1,7 @@
-# The Goods 
+# datapasta 
+[![CRAN status.](http://www.r-pkg.org/badges/version/datapasta)](http://www.r-pkg.org/pkg/datapasta)
+
+#The Goods
 ## Paste as tribble
 ![pow!](https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/tribble_paste.gif)
 
@@ -39,7 +42,7 @@ c("Mint",
 
 # Installation
 
-1. Get the package: `devtools::install_github("milesmcbain/datapasta")`
+1. Get the package: `install.packages("datapasta")`
 2. Set the keyboard shortcuts using **Tools** -> **Addins** -> **Browse Addins**, then click **Keyboard Shortcuts...**
 
 # Prior art
