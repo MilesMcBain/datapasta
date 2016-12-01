@@ -58,6 +58,7 @@ test_that("A vector of numbers is parsed correctly", {
 })
 
 test_that("Vector_paste formats numeric correctly ", {
+  skip_if_not(rstudioapi::isAvailable())
   skip_if_not(is_clipr_available, skip_msg)
   skip_on_cran()
   expect_equal({
@@ -78,6 +79,7 @@ test_that("Vector_paste formats numeric correctly ", {
 
 
 test_that("Vector_paste formats combine numeric/strings correctly ", {
+    skip_if_not(rstudioapi::isAvailable())
     skip_if_not(is_clipr_available, skip_msg)
     skip_on_cran()
     expect_equal({
@@ -91,6 +93,7 @@ test_that("Vector_paste formats combine numeric/strings correctly ", {
 
 
 test_that("Vector_paste handles empty strings", {
+    skip_if_not(rstudioapi::isAvailable())
     skip_if_not(is_clipr_available, skip_msg)
     skip_on_cran()
     expect_equal({
