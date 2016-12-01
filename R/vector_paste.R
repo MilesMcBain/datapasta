@@ -60,7 +60,7 @@ vector_paste_vertical <- function(){
 #' @return A vector parsed from the clipboard as ether a character string or a
 #' character vector. The type attribute contains the type guessed by `readr`.
 #'
-#' @export
+#'
 parse_vector <- function(){
   clipboard_string <- tryCatch({clipr::read_clip()},
                                error = function(e) {
@@ -71,7 +71,7 @@ parse_vector <- function(){
       else message("Could not paste clipboard as a vector. Text could not be parsed.")
       return(NULL)
   }
-
+  
   if(length(clipboard_string) == 1){
     clipboard_vector <- unlist(
       strsplit(
@@ -99,7 +99,7 @@ parse_vector <- function(){
 #' @return A vector parsed from the clipboard as ether a character string or a
 #' character vector. The type attribute contains the type guessed by `readr`.
 #'
-#' @export
+#'
 render_type <- function(char_vec, type_str){
     output <- switch(type_str,
                      "integer" = as.integer(char_vec),
