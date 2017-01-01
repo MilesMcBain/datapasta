@@ -12,3 +12,8 @@ Name: Paste as vector (vertical)
 Description: Pastes data from the clipboard to the editor as character vector, formatted vertically, one element per line.
 Binding: vector_paste_vertical
 Interactive: false
+
+Name: Paste as data.frame
+Description: Pastes a table from the clipboard to the editor as a data.frame definition
+Binding: df_paste
+Interactive: false
