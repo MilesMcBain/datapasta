@@ -19,11 +19,15 @@ df_paste <- function() {
 
   cols <- as.list(clipboard_table)
 
-  list_of_cols <- lapply(seq_along(cols), function(x) paste(names(cols[x]), "=",  cols[x]))
+  charw <- max(nchar(names(cols))) + 3L
 
-  output <- paste0(paste0("data.frame(\n",
-                   paste0(sapply(list_of_cols[1:length(list_of_cols) - 1], function(x) x), ",\n", collapse = ""),
-                   paste0(paste0(list_of_cols[length(list_of_cols)]), "\n)", collapse = "")), collapse = "")
+  list_of_cols <- lapply(seq_along(cols), function(x) paste(pad_to(names(cols[x]), charw), "=",  cols[x]))
+
+  output <- paste0(
+    paste0("data.frame(\n",
+           paste0(sapply(list_of_cols[1:length(list_of_cols) - 1], function(x) x), ",\n", collapse = ""),
+           paste0(paste0(list_of_cols[length(list_of_cols)]), "\n)", collapse = "")
+    ), collapse = "")
 
   rstudioapi::insertText(output)
 
