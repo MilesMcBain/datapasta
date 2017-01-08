@@ -1,6 +1,6 @@
 Package: datapasta
 Title: RStudio Addins for Data Copy-Pasta
-Version: 1.0.0
+Version: 1.1.0
 Authors@R: person("Miles", "McBain", email = "miles.mcbain@gmail.com", role = c("aut", "cre"))
 Description: Three RStudio addins to make copy-pasting vectors and tables into source painless.
 Depends:

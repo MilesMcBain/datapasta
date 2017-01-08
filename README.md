@@ -9,13 +9,16 @@
 ## Paste as vector 
 ![blam!](https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/vector_paste.gif)
 
+# Paste as data.frame
+
+
 # Introducing datapasta
 
 datapasta is about reducing resistance associated with copying and pasting data into R Studio. It is a response to the realisation that I often found myself using Sublime as an intermediate text munging step when copying data. Hopefully addins in this package will remove such intermediate steps from our copy-pasta workflows.  
 
 At the moment this package contains these R Studio addins:
 * `tribble_paste()` which pastes a table on the clipboard as a nicely formatted call to `tibble::tribble()`
-    - Recomend `ctrl + shift + t` as shortcut.
+    - Recommend `ctrl + shift + t` as shortcut.
     - Table can be delimited with tab, comma, pipe or semicolon. 
 * `vector_paste()` which will paste delimited data as a vector definition, e.g. `c("a", "b")` etc.
     - Recommend `ctrl + alt + shift + v` as shortcut.
@@ -29,7 +32,9 @@ c("Mint",
   "Ubuntu",
   "OpenSUSE")
 ```
-
+* `df_paste` which pastes a table on the clipboard as a standard `data.frame` definition rather than a `tribble` call which has certain advantages  in the context of reproducible examples and educational posts. Many thanks to [Jonathan Carroll](https://github.com/jonocarroll) for getting this rolling and coding the bulk of the feature.
+    - Recommend use the `ctrl + alt + shift + d` as shortcut.
+    
 # Pitfalls
 * `tribble_paste` works well with csv's, excel files, and html tables, but is currently brittle with respect to irregular table structures like merged cells or multi-line column headings. For some reason Wikipedia seems chock full of these. :(
 * Quoted csv data, where the quotes contain commas will not be parsed correctly.

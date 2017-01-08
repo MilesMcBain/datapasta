@@ -1,3 +1,6 @@
+# datapasta 1.1.0
+* Added `df_paste()` which pastes a table from the clipboard using a nicely formatted call to `data.frame` rather than `tribble()`
+
 # datapasta 1.0.0
 * Added new addin 'Paste as vector (vertical)' to provide nicer formatting for long lists.
 * All addins now guess data types and format correctly in the source editor.
