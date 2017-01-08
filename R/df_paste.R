@@ -1,6 +1,6 @@
 #' df_paste
 #' @description Parse the current clipboard as a table and paste in at the cursor location in data.frame format.
-#' @return nothing.
+#' @return the text pasted to the console. Useful for testing purposes.
 #' @export
 #'
 df_paste <- function() {
