@@ -18,12 +18,12 @@ datapasta is about reducing resistance associated with copying and pasting data 
 
 At the moment this package contains these R Studio addins:
 * `tribble_paste()` which pastes a table on the clipboard as a nicely formatted call to `tibble::tribble()`
-    - Recommend `ctrl + shift + t` as shortcut.
+    - Recommend <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>t</kbd> as shortcut.
     - Table can be delimited with tab, comma, pipe or semicolon. 
 * `vector_paste()` which will paste delimited data as a vector definition, e.g. `c("a", "b")` etc.
-    - Recommend `ctrl + alt + shift + v` as shortcut.
+    - Recommend <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>v</kbd> as shortcut.
 * `vector_paste_vertical()` which will paste delimited data as a vertically formatted vector definition.
-    - Recommend `ctrl + shift + v` as shortcut 
+    - Recommend <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>v</kbd> as shortcut 
     - example output:
 ```
 c("Mint",
@@ -33,10 +33,10 @@ c("Mint",
   "OpenSUSE")
 ```
 * `df_paste()` which pastes a table on the clipboard as a standard `data.frame` definition rather than a `tribble` call which has certain advantages  in the context of reproducible examples and educational posts. Many thanks to [Jonathan Carroll](https://github.com/jonocarroll) for getting this rolling and coding the bulk of the feature.
-    - Recommend use the `ctrl + alt + shift + d` as shortcut.
+    - Recommend use the <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>d</kbd> as shortcut.
     
 # Pitfalls
-* `tribble_paste` works well with csv's, excel files, and html tables, but is currently brittle with respect to irregular table structures like merged cells or multi-line column headings. For some reason Wikipedia seems chock full of these. :(
+* `tribble_paste` works well with CSVs, excel files, and html tables, but is currently brittle with respect to irregular table structures like merged cells or multi-line column headings. For some reason Wikipedia seems chock full of these. :(
 * Quoted csv data, where the quotes contain commas will not be parsed correctly.
 * The addin does not currently work in RStudio server. The instance not have access to the local clipboard.
 
