@@ -1,6 +1,8 @@
 context("test vector paste")
 skip_msg <- "System clipboard is not available - skipping test."
 is_clipr_available <- clipr::clipr_available()
+is_rstudio_available <- rstudioapi::isAvailable()
+
 
 test_that("A vector of strings is parsed correctly", {
     skip_if_not(is_clipr_available, skip_msg)
@@ -58,7 +60,7 @@ test_that("A vector of numbers is parsed correctly", {
 })
 
 test_that("Vector_paste formats numeric correctly ", {
-  skip_if_not(rstudioapi::isAvailable())
+  skip_if_not(is_rstudio_available)
   skip_if_not(is_clipr_available, skip_msg)
   skip_on_cran()
   expect_equal({
@@ -79,7 +81,7 @@ test_that("Vector_paste formats numeric correctly ", {
 
 
 test_that("Vector_paste formats combine numeric/strings correctly ", {
-    skip_if_not(rstudioapi::isAvailable())
+    skip_if_not(is_rstudio_available)
     skip_if_not(is_clipr_available, skip_msg)
     skip_on_cran()
     expect_equal({
@@ -93,7 +95,7 @@ test_that("Vector_paste formats combine numeric/strings correctly ", {
 
 
 test_that("Vector_paste handles empty strings", {
-    skip_if_not(rstudioapi::isAvailable())
+    skip_if_not(is_rstudio_available)
     skip_if_not(is_clipr_available, skip_msg)
     skip_on_cran()
     expect_equal({
