@@ -19,16 +19,68 @@ df_paste <- function() {
 
   cols <- as.list(clipboard_table)
 
-  charw <- max(nchar(names(cols))) + 3L
+  ## indent by at least 12 characters
+  ## nchar('data.frame(')
+  ## #> 12
+  charw <- max(max(nchar(names(cols))) + 3L, 12L)
 
   list_of_cols <- lapply(seq_along(cols), function(x) paste(pad_to(names(cols[x]), charw), "=",  cols[x]))
 
   output <- paste0(
     paste0("data.frame(\n",
-           paste0(sapply(list_of_cols[1:length(list_of_cols) - 1], function(x) x), ",\n", collapse = ""),
-           paste0(paste0(list_of_cols[length(list_of_cols)]), "\n)", collapse = "")
+           paste0(sapply(list_of_cols[1:(length(list_of_cols) - 1)], function(x) tortellini(x, add_comma = TRUE)), collapse = ""),
+           paste0(sapply(list_of_cols[length(list_of_cols)], function(x) tortellini(x, add_comma = FALSE))),
+           ")"
     ), collapse = "")
 
+
   rstudioapi::insertText(output)
+
+}
+
+#' wrap the datpasta around itself
+#' @param s input string
+#' @value w wrapped string
+tortellini <- function(s, n = 80, add_comma = TRUE) {
+
+  ## if the string is less than n chars then
+  ## don't worry about splitting
+  if (nchar(s) > n) {
+
+  ## determine the initial offset
+  offset <- attr(regexpr("^.*?c\\(", s), "match.length") - 1L
+
+  ## split the string at commas
+  split_s <- strsplit(s, ",")[[1]]
+
+  ## determine the groups of strings by splitting at n chars
+  ## additional 1 is for the comma to be added back
+  groups <- cumsum(nchar(split_s) + 1L) %/% n
+
+  ## paste the first group of strings back together
+  wrapped_s <- paste0(split_s[groups == groups[1]], collapse = ",")
+
+  ## for the remaining groups, subtract the offset
+  ## from the width limit then re-calculate groupings
+  split_s_rem <- split_s[groups != groups[1]]
+  groups <- cumsum(nchar(split_s_rem) + 1L) %/% (n - offset)
+  ngroups <- length(unique(groups))
+
+  ## paste the remaining groups together
+  wrapped_s[2:(ngroups+1)] <- sapply(unique(groups),
+                                     function(x) paste0(
+                                       paste0(rep(" ", offset), collapse = ""),
+                                       paste0(split_s_rem[groups == x], collapse = ",")))
+
+  } else { ## if no splitting is required
+
+    wrapped_s <- s
+
+  }
+
+  ## append a new comma and newline to the end of each
+  w <- if(add_comma) paste0(wrapped_s, ",\n") else paste0(wrapped_s, "\n")
+
+  return(paste0(w, collapse = ""))
 
 }
