@@ -32,7 +32,7 @@ c("Mint",
   "Ubuntu",
   "OpenSUSE")
 ```
-* `df_paste` which pastes a table on the clipboard as a standard `data.frame` definition rather than a `tribble` call which has certain advantages  in the context of reproducible examples and educational posts. Many thanks to [Jonathan Carroll](https://github.com/jonocarroll) for getting this rolling and coding the bulk of the feature.
+* `df_paste()` which pastes a table on the clipboard as a standard `data.frame` definition rather than a `tribble` call which has certain advantages  in the context of reproducible examples and educational posts. Many thanks to [Jonathan Carroll](https://github.com/jonocarroll) for getting this rolling and coding the bulk of the feature.
     - Recommend use the `ctrl + alt + shift + d` as shortcut.
     
 # Pitfalls
