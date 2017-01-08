@@ -1,4 +1,6 @@
 context("test tribble paste")
+skip_msg <- "System clipboard is not available - skipping test."
+is_clipr_available <- clipr::clipr_available()
 
 test_that("Brisbane Weather is parsed", {
 
@@ -21,7 +23,7 @@ test_that("Brisbane Weather is parsed", {
     ))
 })
 
-test_that("Odd strings are parsed as strings", {    
+test_that("Odd strings are parsed as strings", {
     expect_equal(
         read_clip_tbl_guess(readr::read_lines(file = "./dates_currency.txt")),
         as.data.frame(tibble::tribble(
@@ -33,31 +35,31 @@ test_that("Odd strings are parsed as strings", {
     )
 })
 
-test_that("All delimeters work for parsing as table", {    
+test_that("All delimeters work for parsing as table", {
     expect_equal(read_clip_tbl_guess(readr::read_lines(file = "./pipe_delim.txt")),
                  as.data.frame(tibble::tribble(
-                                             ~event,       ~id,  
+                                             ~event,       ~id,
                                              "TYPE1", "01",
                                              "type2,", "02"
                                               )
                  )
     )
-    
+
     expect_equal(read_clip_tbl_guess(readr::read_lines(file = "./semi_colon_delim.txt")),
                  as.data.frame(tibble::tribble(
-                     ~event,       ~id,  
+                     ~event,       ~id,
                      "TYPE1", "01",
                      "type2,", "02"
                  )
                  )
     )
-    
-                  
-    
+
+
+
 })
 
 test_that("Table rows with all missing are not ignored", {
-    
+
     expect_equal(
         read_clip_tbl_guess(readr::read_lines(file = "./tab_with_blank.txt")),
         as.data.frame(tibble::tribble(
@@ -72,5 +74,35 @@ test_that("Table rows with all missing are not ignored", {
         )
 })
 
+test_that("Brisbane Weather with empty lines has separator guessed as tab.", {
 
+  expect_equal(
+    guess_sep(readr::read_lines(file = "./brisbane_weather_empty_lines.txt")),
+    "\t"
+    )
+})
+
+test_that("Brisbane Weather with empty lines is parsed, types are guessed, rendered and then can be parsed by R correctly as a tibble", {
+  skip_if_not(is_clipr_available, skip_msg)
+  skip_on_cran()
+  skip_if_not(rstudioapi::isAvailable())
+  expect_equal(
+    {clipr::write_clip(readr::read_lines(file = "./brisbane_weather_empty_lines.txt"))
+    eval(parse(text = paste0("tibble::",tribble_paste())))},
+    {tibble::tribble(
+      ~X,          ~Location, ~Min, ~Max,
+      "Partly cloudy.",         "Brisbane",   19,   29,
+      "Partly cloudy.", "Brisbane Airport",   18,   27,
+      "Possible shower.",       "Beaudesert",   15,   30,
+      "Partly cloudy.",        "Chermside",   17,   29,
+      "Shower or two. Possible storm.",           "Gatton",   15,   32,
+      "Possible shower.",          "Ipswich",   15,   30,
+      "Partly cloudy.",    "Logan Central",   18,   29,
+      "Mostly sunny.",            "Manly",   20,   26,
+      "Partly cloudy.",    "Mount Gravatt",   17,   28,
+      "Possible shower.",            "Oxley",   17,   30,
+      "Partly cloudy.",        "Redcliffe",   19,   27
+    )}
+  )
+})
 

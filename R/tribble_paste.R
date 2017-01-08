@@ -2,7 +2,7 @@ globalVariables(".rs.readUiPref", "datapasta") #ignore this function in R CMD ch
 
 #' tribble_paste
 #' @description Parse the current clipboard as a table and paste in at the cursor location in tribbble format.
-#' @return nothing.
+#' @return The parsed table text. Useful for testing.
 #' @export
 #'
 tribble_paste <- function(){
@@ -10,7 +10,7 @@ tribble_paste <- function(){
                                error = function(e) {
                                  return(NULL)
                                })
-  
+
   if(is.null(clipboard_table)){
     if(!clipr::clipr_available()) message("Clipboard is not available. Is R running in RStudio Server or a C.I. machine?")
     else message("Could not paste clipboard as tibble. Text could not be parsed as table.")
@@ -25,7 +25,7 @@ tribble_paste <- function(){
   } else{
     indent_context <- attr(regexpr("^\\s+", context$contents[context_row]),"match.length")+1 #first pos = 1 not 0
   }
-  
+
   #Find the max length of data as string in each column
   col_widths <- vapply(X = clipboard_table,
                        FUN.VALUE = numeric(1),
@@ -64,12 +64,12 @@ tribble_paste <- function(){
                       )
                     ), "\n"
                 )
- 
-  #Parse data types from string using readr::parse_guess    
+
+  #Parse data types from string using readr::parse_guess
   clipboard_table_types <- lapply(clipboard_table, readr::guess_parser)
- 
-    
-  #Write correct data types    
+
+
+  #Write correct data types
   body_rows <- lapply(X = as.data.frame(t(clipboard_table), stringsAsFactors = FALSE),
                       FUN =
                         function(col){
@@ -92,10 +92,10 @@ tribble_paste <- function(){
 
                         }
   )
-  
 
-  
-  
+
+
+
   #Need to remove the final comma that will break everything.
   body_rows <- paste0(as.vector(body_rows),collapse = "")
   body_rows <- gsub(pattern = ",\n$", replacement = "\n", x = body_rows)
@@ -104,6 +104,7 @@ tribble_paste <- function(){
   footer <- paste0(strrep(" ",indent_context+nspc),")")
   output <- paste0(header, names_row, body_rows, footer)
   rstudioapi::insertText(output)
+  output
 }
 
 
@@ -121,7 +122,7 @@ pad_to <-function(char_vec, char_length){
 #' render_type_pad_to
 #' @description Based on a type and length, render a character string as the type in text.
 #' Pad to the desired length.
-#' 
+#'
 #' @param char_vec a character vector
 #' @param char_type a string type from readr::guess_parser
 #' @param char_length a string length to pad to.
@@ -145,8 +146,8 @@ render_type_pad_to <- function(char_vec, char_type, char_length){
                          "logical" = as.logical(char_vec),
                          "character" = ifelse(nchar(char_vec)!=0, paste0('"',char_vec,'"'), "NA"),
                          paste0('"',char_vec,'"')
-                  )    
-        
+                  )
+
     }
     pad_to(output, char_length)
 }
@@ -170,7 +171,7 @@ guess_sep <- function(char_vec){
       lapply(
         lapply(candidate_seps,
            function(sep, table_sample){
-            blank_lines <- grepl(paste0("^",sep,"+$"), table_sample)
+            blank_lines <- grepl(paste0("^",sep,"*$"), table_sample)
             filtered_sample <- table_sample[!blank_lines]
             line_splits <- strsplit(filtered_sample, split = sep)
             split_lengths <- lapply(X = line_splits, FUN = length)
