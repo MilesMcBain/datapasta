@@ -9,7 +9,7 @@
 ## Paste as vector 
 ![blam!](https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/vector_paste.gif)
 
-# Paste as data.frame
+## Paste as data.frame
 ![sock!](https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/df_paste.gif)
 
 # Introducing datapasta
