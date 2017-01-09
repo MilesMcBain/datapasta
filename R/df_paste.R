@@ -88,7 +88,7 @@ tortellini <- function(s, n = 80, indent_context = 0, add_comma = TRUE) {
   ## paste the remaining groups together
   wrapped_s[2:(ngroups+1)] <- sapply(unique(groups_rem),
                                      function(x) paste0(
-                                       paste0(rep(" ", offset), collapse = ""),
+                                       strrep(" ", offset),
                                        paste0(split_s_rem[groups_rem == x], collapse = ",")))
 
   } else { ## if no splitting is required
