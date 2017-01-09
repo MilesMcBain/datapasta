@@ -6,7 +6,7 @@
 df_paste <- function() {
 
   clipboard_table <- tryCatch({
-    datapasta:::read_clip_tbl_guess()
+    read_clip_tbl_guess()
   }, error = function(e) {
     return(NULL)
   })
@@ -57,7 +57,11 @@ df_paste <- function() {
 
 #' wrap the datpasta around itself
 #' @param s input string
-#' @value w wrapped string
+#' @param n number of characters for text (includes column name on line 1)
+#' @param indent_context the level of indend in spaces in the current editor pane
+#' @param add_comma add one final comma to the end of the wrapped column def? Useful when pasting together columns.
+#' @return w wrapped string
+
 tortellini <- function(s, n = 80, indent_context = 0, add_comma = TRUE) {
 
   ## if the string is less than n chars then

@@ -7,7 +7,7 @@
 tribble_paste()
 }
 \value{
-nothing.
+The parsed table text. Useful for testing.
 }
 \description{
 Parse the current clipboard as a table and paste in at the cursor location in tribbble format.

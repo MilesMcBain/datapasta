@@ -1,4 +1,4 @@
-# datapasta 
+# datapasta 1.1.0 'CopyPesto'
 [![CRAN status.](http://www.r-pkg.org/badges/version/datapasta)](http://www.r-pkg.org/pkg/datapasta)
 [![Downloads](http://cranlogs.r-pkg.org/badges/datapasta)](https://CRAN.R-project.org/package=datapasta)
 
@@ -10,7 +10,7 @@
 ![blam!](https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/vector_paste.gif)
 
 # Paste as data.frame
-
+![sock!](https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/df_paste.gif)
 
 # Introducing datapasta
 
@@ -32,8 +32,8 @@ c("Mint",
   "Ubuntu",
   "OpenSUSE")
 ```
-* `df_paste()` which pastes a table on the clipboard as a standard `data.frame` definition rather than a `tribble` call which has certain advantages  in the context of reproducible examples and educational posts. Many thanks to [Jonathan Carroll](https://github.com/jonocarroll) for getting this rolling and coding the bulk of the feature.
-    - Recommend use the <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>d</kbd> as shortcut.
+* `df_paste()` which pastes a table on the clipboard as a standard `data.frame` definition rather than a `tribble` call. This has certain advantages in the context of reproducible examples and educational posts. Many thanks to [Jonathan Carroll](https://github.com/jonocarroll) for getting this rolling and coding the bulk of the feature.
+    - Recommend <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>d</kbd> as shortcut.
     
 # Pitfalls
 * `tribble_paste` works well with CSVs, excel files, and html tables, but is currently brittle with respect to irregular table structures like merged cells or multi-line column headings. For some reason Wikipedia seems chock full of these. :(
