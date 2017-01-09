@@ -1,4 +1,4 @@
-# datapasta 1.1.0
+# datapasta 1.1.0 'CopyPesto'
 * Added `df_paste()` which pastes a table from the clipboard using a nicely formatted call to `data.frame()` rather than `tribble()`
 * Better handling for empty lines that get accidently copied onto clipboard with table. Gracefully ignored.
 
