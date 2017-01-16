@@ -46,7 +46,7 @@ tribble_paste <- function(){
                        nchar(names(clipboard_table))+1) #+1 for "~"
 
   #Header
-  header <- "tribble(\n"
+  header <- "tibble::tribble(\n"
 
   #Column names
   names_row <- paste0(
