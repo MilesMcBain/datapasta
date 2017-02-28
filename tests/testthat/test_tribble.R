@@ -88,7 +88,7 @@ test_that("Brisbane Weather with empty lines is parsed, types are guessed, rende
   skip_if_not(rstudioapi::isAvailable())
   expect_equal(
     {clipr::write_clip(readr::read_lines(file = "./brisbane_weather_empty_lines.txt"))
-    eval(parse(text = paste0("tibble::",tribble_paste())))},
+    eval(parse(text = tribble_paste()))},
     {tibble::tribble(
       ~X,          ~Location, ~Min, ~Max,
       "Partly cloudy.",         "Brisbane",   19,   29,
@@ -106,3 +106,19 @@ test_that("Brisbane Weather with empty lines is parsed, types are guessed, rende
   )
 })
 
+test_that("Data with all rows ending in commas (empty final column) has separator guessed correctly", {
+  skip_if_not(is_clipr_available, skip_msg)
+  skip_on_cran()
+  skip_if_not(rstudioapi::isAvailable())
+  expect_equal(
+    {clipr::write_clip(readr::read_lines(file = "./empty_final_col_comma.txt"))
+      eval(parse(text = tribble_paste()))},
+    {tibble::tribble(
+        ~a, ~b, ~c,
+         1,  2, NA,
+         3,  4, NA,
+         5,  6, NA
+
+    )}
+  )
+})
