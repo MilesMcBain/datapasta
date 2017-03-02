@@ -5,7 +5,13 @@ globalVariables(".rs.readUiPref", "datapasta") #ignore this function in R CMD ch
 #' @return The parsed table text. Useful for testing.
 #' @export
 #'
-tribble_paste <- function(){
+tribble_paste <- function(x) {
+
+  # if data is provided, try to use that to generate the tribble_paste()
+  if(!missing(x)) {
+    clipr::write_clip(x)
+  }
+
   clipboard_table <- tryCatch({read_clip_tbl_guess()},
                                error = function(e) {
                                  return(NULL)
@@ -104,6 +110,8 @@ tribble_paste <- function(){
   footer <- paste0(strrep(" ",indent_context+nspc),")")
   output <- paste0(header, names_row, body_rows, footer)
   rstudioapi::insertText(output)
+
+  if(!missing(x)) return(invisible(NULL))
   output
 }
 
