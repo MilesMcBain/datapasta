@@ -88,7 +88,7 @@ test_that("Brisbane Weather with empty lines is parsed, types are guessed, rende
   skip_if_not(rstudioapi::isAvailable())
   expect_equal(
     {clipr::write_clip(readr::read_lines(file = "./brisbane_weather_empty_lines.txt"))
-    eval(parse(text = paste0("tibble::",tribble_paste())))},
+    eval(parse(text = tribble_paste()))},
     {tibble::tribble(
       ~X,          ~Location, ~Min, ~Max,
       "Partly cloudy.",         "Brisbane",   19,   29,
