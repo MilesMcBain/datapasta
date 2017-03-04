@@ -91,17 +91,17 @@ test_that("Brisbane Weather with empty lines is parsed, types are guessed, rende
     eval(parse(text = tribble_paste()))},
     {tibble::tribble(
       ~X,          ~Location, ~Min, ~Max,
-      "Partly cloudy.",         "Brisbane",   19,   29,
-      "Partly cloudy.", "Brisbane Airport",   18,   27,
-      "Possible shower.",       "Beaudesert",   15,   30,
-      "Partly cloudy.",        "Chermside",   17,   29,
-      "Shower or two. Possible storm.",           "Gatton",   15,   32,
-      "Possible shower.",          "Ipswich",   15,   30,
-      "Partly cloudy.",    "Logan Central",   18,   29,
-      "Mostly sunny.",            "Manly",   20,   26,
-      "Partly cloudy.",    "Mount Gravatt",   17,   28,
-      "Possible shower.",            "Oxley",   17,   30,
-      "Partly cloudy.",        "Redcliffe",   19,   27
+      "Partly cloudy.",         "Brisbane",   19L,   29L,
+      "Partly cloudy.", "Brisbane Airport",   18L,   27L,
+      "Possible shower.",       "Beaudesert",   15L,   30L,
+      "Partly cloudy.",        "Chermside",   17L,   29L,
+      "Shower or two. Possible storm.",           "Gatton",   15L,   32L,
+      "Possible shower.",          "Ipswich",   15L,   30L,
+      "Partly cloudy.",    "Logan Central",   18L,   29L,
+      "Mostly sunny.",            "Manly",   20L,   26L,
+      "Partly cloudy.",    "Mount Gravatt",   17L,   28L,
+      "Possible shower.",            "Oxley",   17L,   30L,
+      "Partly cloudy.",        "Redcliffe",   19L,   27L
     )}
   )
 })
@@ -112,16 +112,16 @@ test_that("tribble_paste() table arguments can render nested lists and tibbles",
     {eval(parse(text =
                   tribble_paste( tribble(
                     ~a,  ~b, ~c,
-                    1,   2, tibble(a= list(1,2,3)),
-                    3,   4, tibble(a = list("a","b","c"))
+                    1L,   2L, tibble(a= list(1,2,3)),
+                    3L,   4L, tibble(a = list("a","b","c"))
                    ) )
      ) )
     },
     {tibble::tribble(
       ~a,  ~b,                              ~c,
-      1,   2,         list(a = list(1, 2, 3)),
-      3,   4,   list(a = list("a", "b", "c"))
-     )
+      1L,  2L,         list(a = list(1, 2, 3)),
+      3L,  4L,   list(a = list("a", "b", "c"))
+    )
     }
   )
 })

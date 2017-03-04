@@ -164,7 +164,7 @@ render_type_pad_to <- function(char_vec, char_type, char_length){
                   )
     }else{
         output <- switch(char_type,
-                         "integer" = as.integer(char_vec),
+                         "integer" = paste0(as.integer(char_vec),"L"),
                          "double" = as.double(char_vec),
                          "logical" = as.logical(char_vec),
                          "character" = ifelse(nchar(char_vec)!=0, paste0('"',char_vec,'"'), "NA"),
