@@ -20,6 +20,8 @@ if(missing(input_table)){
     else message("Could not paste clipboard as tibble. Text could not be parsed as table.")
     return(NULL)
   }
+  #No list columns types expected in clipboard tables. This is a Tibble thing.
+  list_types <- NULL
 }else{
   if(!is.data.frame(input_table) && !tibble::is_tibble(input_table)){
     message("Could not format input_table as table. Unexpected class.")
@@ -29,11 +31,17 @@ if(missing(input_table)){
     message("Supplied large input_table (>= 200 rows). Was this a mistake? Large tribble() output is not supported.")
     return(NULL)
   }
+  #remember the list column types so we can accommodate them later.
+  list_types <- lapply(input_table, typeof) == "list"
   #Store types as characters so the char lengths can be computed
   input_table <- as.data.frame(lapply(input_table, as.character), stringsAsFactors = FALSE)
 }
 
-
+  #Parse data types from string using readr::parse_guess
+  input_table_types <- lapply(input_table, readr::guess_parser)
+  if(!is.null(list_types)){
+    input_table_types[list_types] = "list"
+  }
 
   nspc <- .rs.readUiPref('num_spaces_for_tab')
   context <- rstudioapi::getActiveDocumentContext()
@@ -43,8 +51,7 @@ if(missing(input_table)){
   } else{
     indent_context <- attr(regexpr("^\\s+", context$contents[context_row]),"match.length")+1 #first pos = 1 not 0
   }
-  #Parse data types from string using readr::parse_guess
-  input_table_types <- lapply(input_table, readr::guess_parser)
+
 
   #Find the max length of data as string in each column
   col_widths <- vapply(X = input_table,
@@ -161,6 +168,7 @@ render_type_pad_to <- function(char_vec, char_type, char_length){
                          "double" = as.double(char_vec),
                          "logical" = as.logical(char_vec),
                          "character" = ifelse(nchar(char_vec)!=0, paste0('"',char_vec,'"'), "NA"),
+                         "list" = char_vec,
                          paste0('"',char_vec,'"')
                   )
 

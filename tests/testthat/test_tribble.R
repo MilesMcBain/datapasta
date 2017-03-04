@@ -106,3 +106,35 @@ test_that("Brisbane Weather with empty lines is parsed, types are guessed, rende
   )
 })
 
+test_that("tribble_paste() table arguments can render nested lists and tibbles",
+{
+  expect_equal(
+    {eval(parse(text =
+                  tribble_paste( tribble(
+                    ~a,  ~b, ~c,
+                    1,   2, tibble(a= list(1,2,3)),
+                    3,   4, tibble(a = list("a","b","c"))
+                   ) )
+     ) )
+    },
+    {tibble::tribble(
+      ~a,  ~b,                              ~c,
+      1,   2,         list(a = list(1, 2, 3)),
+      3,   4,   list(a = list("a", "b", "c"))
+     )
+    }
+  )
+})
+
+test_that("tribble_paste() table arguments can render nested lists and tibbles",
+          {
+            expect_equal(
+              {
+                eval( parse(text = tribble_paste(datasets::airquality[1:6,])) )
+              },
+              {
+                tibble::as_tibble(datasets::airquality[1:6,])
+              }
+            )
+          })
+
