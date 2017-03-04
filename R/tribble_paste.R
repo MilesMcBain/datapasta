@@ -3,6 +3,7 @@ globalVariables(".rs.readUiPref", "datapasta") #ignore this function in R CMD ch
 #' tribble_paste
 #' @description Parse the current clipboard as a table, or use the table argument supplied, and paste in at the cursor location in tribbble format.
 #' @param input_table an optional input `data.frame`. If `input_table` is supplied, then nothing is read from the clipboard.
+#' Table is output as `tribble()` call. Useful for creating reproducible examples.
 #' @return The parsed table text. Useful for testing.
 #' @export
 #'
@@ -13,15 +14,26 @@ if(missing(input_table)){
                                error = function(e) {
                                  return(NULL)
                                })
+
   if(is.null(input_table)){
     if(!clipr::clipr_available()) message("Clipboard is not available. Is R running in RStudio Server or a C.I. machine?")
     else message("Could not paste clipboard as tibble. Text could not be parsed as table.")
     return(NULL)
   }
-}else if(!is.data.frame(input_table) && !tibble::is_tibble(input_table)){
-  message("Could not format input_table as table. Unexpected class.")
-  return(NULL)
+}else{
+  if(!is.data.frame(input_table) && !tibble::is_tibble(input_table)){
+    message("Could not format input_table as table. Unexpected class.")
+    return(NULL)
+  }
+  if(nrow(input_table) >= 200){
+    message("Supplied large input_table (>= 200 rows). Was this a mistake? Large tribble() output is not supported.")
+    return(NULL)
+  }
+  #Store types as characters so the char lengths can be computed
+  input_table <- as.data.frame(lapply(input_table, as.character), stringsAsFactors = FALSE)
 }
+
+
 
   nspc <- .rs.readUiPref('num_spaces_for_tab')
   context <- rstudioapi::getActiveDocumentContext()
@@ -31,6 +43,8 @@ if(missing(input_table)){
   } else{
     indent_context <- attr(regexpr("^\\s+", context$contents[context_row]),"match.length")+1 #first pos = 1 not 0
   }
+  #Parse data types from string using readr::parse_guess
+  input_table_types <- lapply(input_table, readr::guess_parser)
 
   #Find the max length of data as string in each column
   col_widths <- vapply(X = input_table,
@@ -70,10 +84,6 @@ if(missing(input_table)){
                       )
                     ), "\n"
                 )
-
-  #Parse data types from string using readr::parse_guess
-  input_table_types <- lapply(input_table, readr::guess_parser)
-
 
   #Write correct data types
   body_rows <- lapply(X = as.data.frame(t(input_table), stringsAsFactors = FALSE),
@@ -139,8 +149,8 @@ pad_to <-function(char_vec, char_length){
 render_type_pad_to <- function(char_vec, char_type, char_length){
     if(is.na(char_vec)){
         output <- switch(char_type,
-                         "integer" = "NaN",
-                         "double" = "NaN",
+                         "integer" = "NA",
+                         "double" = "NA",
                          "logical" = "NA",
                          "character" = "NA",
                          "NA"
