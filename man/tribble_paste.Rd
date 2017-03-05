@@ -4,12 +4,20 @@
 \alias{tribble_paste}
 \title{tribble_paste}
 \usage{
-tribble_paste()
+tribble_paste(input_table, write_to_clipboard = FALSE)
+}
+\arguments{
+\item{input_table}{an optional input \code{data.frame}. If \code{input_table} is supplied, then nothing is read from the clipboard.
+Table is output as \code{tribble()} call. Useful for creating reproducible examples.}
+
+\item{write_to_clipboard}{Should the \code{tribble} code be written back to the clipboard?}
 }
 \value{
 The parsed table text. Useful for testing.
 }
 \description{
-Parse the current clipboard as a table and paste in at the cursor location in tribbble format.
+Parse the current clipboard as a table, or use the table argument supplied, and paste in at the cursor location in tribbble format.
 }
-
+\details{
+NOTE that on systems lacking X11 support (headless terminals) a clipboard may not be available.
+}

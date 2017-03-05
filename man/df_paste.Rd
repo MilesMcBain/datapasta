@@ -12,4 +12,3 @@ the text pasted to the console. Useful for testing purposes.
 \description{
 Parse the current clipboard as a table and paste in at the cursor location in data.frame format.
 }
-
