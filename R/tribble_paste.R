@@ -69,7 +69,7 @@ if(missing(input_table)){
   )
   #Set the column width depending on the max length of data as string or the header, whichever is longer.
   col_widths <- mapply(max,
-                       col_widths+2, #+2 for quotes ""
+                       col_widths+2, #+2 for quotes "" or integer L etc.
                        nchar(names(input_table))+1) #+1 for "~"
 
   #Header
