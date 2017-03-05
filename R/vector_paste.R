@@ -2,18 +2,22 @@
 #'
 #' @description Pastes data from clipboard as a horizontally formatted character vector on
 #' a single line. Considers , | tab newline as delimeters.
-#'
+#' @param input_vector An input vector to be formatted for output. If supplied, no data is read from the clipboard.
 #' @return nothing.
 #' @export
 #'
-vector_paste <- function(){
+vector_paste <- function(input_vector){
 
-  clipboard_vector <- parse_vector()
-  vector_type <- attr(clipboard_vector, "type")
+  if( missing(input_vector) ){
+    input_vector <- parse_vector()
+  }else{
+    input_vector = as.character(input_vector)
+  }
+  vector_type <- readr::guess_parser(input_vector)
 
   vector_form <- paste0("c(",
     paste0(
-      lapply(clipboard_vector, render_type, vector_type),
+      lapply(input_vector, render_type, vector_type),
       collapse = ", "),
     ")"
   )
@@ -25,13 +29,17 @@ vector_paste <- function(){
 #'
 #' @description Pastes data from clipboard as a vertically formatted character vector on
 #' a multiple lines. One line is used per element. Considers , | tab newline as delimeters.
-#'
+#' @param input_vector An input vector to be formatted for output. If supplied, no data is read from the clipboard.
 #' @return nothing.
 #' @export
 #'
-vector_paste_vertical <- function(){
-  clipboard_vector <- parse_vector()
-  vector_type <- attr(clipboard_vector, "type")
+vector_paste_vertical <- function(input_vector){
+  if( missing(input_vector) ){
+    input_vector <- parse_vector()
+  }else{
+    input_vector = as.character(input_vector)
+  }
+  vector_type <- readr::guess_parser(input_vector)
 
   nspc <- .rs.readUiPref('num_spaces_for_tab')
   context <- rstudioapi::getActiveDocumentContext()
@@ -44,12 +52,13 @@ vector_paste_vertical <- function(){
 
   vector_form <- paste0("c(",
                     paste0(
-                      lapply(clipboard_vector, render_type, vector_type),
+                      lapply(input_vector, render_type, vector_type),
                       collapse = paste0(",\n",strrep(" ", indent_context + 2)) #2 to align for 'c('
                     ),
                     ")"
                   )
   rstudioapi::insertText(vector_form)
+  vector_form
 }
 
 #' parse_vector
@@ -71,42 +80,17 @@ parse_vector <- function(){
       else message("Could not paste clipboard as a vector. Text could not be parsed.")
       return(NULL)
   }
-  
+
   if(length(clipboard_string) == 1){
-    clipboard_vector <- unlist(
+    input_vector <- unlist(
       strsplit(
         x = clipboard_string,
         split = "\t|,|\\|",
         perl= TRUE)
     )
   }else{
-    clipboard_vector <- clipboard_string
+    input_vector <- clipboard_string
   }
-  vector_type <- readr::guess_parser(clipboard_vector)
-
-  attr(clipboard_vector, "type") <- vector_type
-  clipboard_vector
+  input_vector
 }
 
-#' render_type
-#'
-#' @description Renders a character vector as R types for pasting into Rstudio.
-#' Strings are quoted. Numbers, NaN, NA, logicals etc are not.
-#'
-#' @param char_vec a chracter vector containing text to be rendered as the type indicated by type_str
-#' @param type_str a string describing the type of char_vec
-#'
-#' @return A vector parsed from the clipboard as ether a character string or a
-#' character vector. The type attribute contains the type guessed by `readr`.
-#'
-#'
-render_type <- function(char_vec, type_str){
-    output <- switch(type_str,
-                     "integer" = as.integer(char_vec),
-                     "double" = as.double(char_vec),
-                     "logical" = as.logical(char_vec),
-                     "character" = ifelse(is.na(char_vec)|nchar(char_vec)==0, yes = "NA", no = paste0('"',char_vec,'"')),
-                     paste0('"',char_vec,'"')
-    )
-    output
-}
