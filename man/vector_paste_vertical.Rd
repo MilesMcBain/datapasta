@@ -13,4 +13,3 @@ nothing.
 Pastes data from clipboard as a vertically formatted character vector on
 a multiple lines. One line is used per element. Considers , | tab newline as delimeters.
 }
-

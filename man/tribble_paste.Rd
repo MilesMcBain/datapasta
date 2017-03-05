@@ -4,12 +4,15 @@
 \alias{tribble_paste}
 \title{tribble_paste}
 \usage{
-tribble_paste()
+tribble_paste(input_table, write_to_clipboard = FALSE)
+}
+\arguments{
+\item{input_table}{an optional input `data.frame`. If `input_table` is supplied, then nothing is read from the clipboard.
+Table is output as `tribble()` call. Useful for creating reproducible examples.}
 }
 \value{
 The parsed table text. Useful for testing.
 }
 \description{
-Parse the current clipboard as a table and paste in at the cursor location in tribbble format.
+Parse the current clipboard as a table, or use the table argument supplied, and paste in at the cursor location in tribbble format.
 }
-

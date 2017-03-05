@@ -7,7 +7,7 @@ globalVariables(".rs.readUiPref", "datapasta") #ignore this function in R CMD ch
 #' @return The parsed table text. Useful for testing.
 #' @export
 #'
-tribble_paste <- function(input_table){
+tribble_paste <- function(input_table, write_to_clipboard = FALSE) {
 
 if(missing(input_table)){
   input_table <- tryCatch({read_clip_tbl_guess()},
@@ -43,15 +43,19 @@ if(missing(input_table)){
     input_table_types[list_types] = "list"
   }
 
-  nspc <- .rs.readUiPref('num_spaces_for_tab')
-  context <- rstudioapi::getActiveDocumentContext()
-  context_row <- context$selection[[1]]$range$start["row"]
-  if(all(context$selection[[1]]$range$start == context$selection[[1]]$range$end)){
-    indent_context <- nchar(context$contents[context_row])
-  } else{
-    indent_context <- attr(regexpr("^\\s+", context$contents[context_row]),"match.length")+1 #first pos = 1 not 0
+  if (rstudioapi::isAvailable()) {
+    nspc <- .rs.readUiPref('num_spaces_for_tab')
+    context <- rstudioapi::getActiveDocumentContext()
+    context_row <- context$selection[[1]]$range$start["row"]
+    if(all(context$selection[[1]]$range$start == context$selection[[1]]$range$end)){
+      indent_context <- nchar(context$contents[context_row])
+    } else{
+      indent_context <- attr(regexpr("^\\s+", context$contents[context_row]),"match.length")+1 #first pos = 1 not 0
+    }
+  } else { # RStudio not available
+    nspc <- 2
+    indent_context <- 0
   }
-
 
   #Find the max length of data as string in each column
   col_widths <- vapply(X = input_table,
@@ -123,11 +127,22 @@ if(missing(input_table)){
   body_rows <- paste0(as.vector(body_rows),collapse = "")
   body_rows <- gsub(pattern = ",\n$", replacement = "\n", x = body_rows)
 
-  #Footer
-  footer <- paste0(strrep(" ",indent_context+nspc),")")
+  #Footer with newline
+  footer <- paste0(strrep(" ",indent_context+nspc),")", "\n")
   output <- paste0(header, names_row, body_rows, footer)
-  rstudioapi::insertText(output)
-  output
+
+  # Write the output to clipboard
+  # Terminals may lack a display to use a clipboard
+  if (write_to_clipboard) clipr::write_clip(output)
+
+  # If RStudio is running, paste into the session at the prompt
+  # otherwise just cat() the output
+  if (rstudioapi::isAvailable()) {
+    rstudioapi::insertText(output)
+  } else {
+    cat(output)
+  }
+  return(invisible(output))
 }
 
 
