@@ -10,10 +10,12 @@ vector_paste <- function(input_vector){
 
   if( missing(input_vector) ){
     input_vector <- parse_vector()
+    vector_type <- readr::guess_parser(input_vector)
   }else{
+    vector_type <- class(input_vector)
     input_vector = as.character(input_vector)
   }
-  vector_type <- readr::guess_parser(input_vector)
+
 
   vector_form <- paste0("c(",
     paste0(
@@ -36,10 +38,11 @@ vector_paste <- function(input_vector){
 vector_paste_vertical <- function(input_vector){
   if( missing(input_vector) ){
     input_vector <- parse_vector()
+    vector_type <- readr::guess_parser(input_vector)
   }else{
+    vector_type <- class(input_vector)
     input_vector = as.character(input_vector)
   }
-  vector_type <- readr::guess_parser(input_vector)
 
   nspc <- .rs.readUiPref('num_spaces_for_tab')
   context <- rstudioapi::getActiveDocumentContext()

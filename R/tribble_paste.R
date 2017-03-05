@@ -152,6 +152,7 @@ render_type <- function(char_vec, char_type){
     output <- switch(char_type,
                      "integer" = "NA",
                      "double" = "NA",
+                     "numeric" = "NA",
                      "logical" = "NA",
                      "character" = "NA",
                      "NA"
@@ -160,6 +161,7 @@ render_type <- function(char_vec, char_type){
     output <- switch(char_type,
                      "integer" = paste0(as.integer(char_vec),"L"),
                      "double" = as.double(char_vec),
+                     "numeric" = as.double(char_vec),
                      "logical" = as.logical(char_vec),
                      "factor" = ifelse(nchar(char_vec)!=0, paste0('"',char_vec,'"'), "NA"),
                      "character" = ifelse(nchar(char_vec)!=0, paste0('"',char_vec,'"'), "NA"),
