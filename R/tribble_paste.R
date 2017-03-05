@@ -1,41 +1,46 @@
 globalVariables(".rs.readUiPref", "datapasta") #ignore this function in R CMD checks, since it is part of RStudio runtime
 
 #' tribble_paste
+#' @md
 #' @description Parse the current clipboard as a table, or use the table argument supplied, and paste in at the cursor location in tribbble format.
 #' @param input_table an optional input `data.frame`. If `input_table` is supplied, then nothing is read from the clipboard.
 #' Table is output as `tribble()` call. Useful for creating reproducible examples.
+#' @param write_to_clipboard Should the `tribble` code be written back to the clipboard?
+#'
+#' @details NOTE that on systems lacking X11 support (headless terminals) a clipboard may not be available.
+#'
 #' @return The parsed table text. Useful for testing.
 #' @export
 #'
 tribble_paste <- function(input_table, write_to_clipboard = FALSE) {
 
-if(missing(input_table)){
-  input_table <- tryCatch({read_clip_tbl_guess()},
-                               error = function(e) {
-                                 return(NULL)
-                               })
+  if(missing(input_table)){
+    input_table <- tryCatch({read_clip_tbl_guess()},
+                            error = function(e) {
+                              return(NULL)
+                            })
 
-  if(is.null(input_table)){
-    if(!clipr::clipr_available()) message("Clipboard is not available. Is R running in RStudio Server or a C.I. machine?")
-    else message("Could not paste clipboard as tibble. Text could not be parsed as table.")
-    return(NULL)
+    if(is.null(input_table)){
+      if(!clipr::clipr_available()) message("Clipboard is not available. Is R running in RStudio Server or a C.I. machine?")
+      else message("Could not paste clipboard as tibble. Text could not be parsed as table.")
+      return(NULL)
+    }
+    #No list columns types expected in clipboard tables. This is a Tibble thing.
+    list_types <- NULL
+  }else{
+    if(!is.data.frame(input_table) && !tibble::is_tibble(input_table)){
+      message("Could not format input_table as table. Unexpected class.")
+      return(NULL)
+    }
+    if(nrow(input_table) >= 200){
+      message("Supplied large input_table (>= 200 rows). Was this a mistake? Large tribble() output is not supported.")
+      return(NULL)
+    }
+    #remember the list column types so we can accommodate them later.
+    list_types <- lapply(input_table, typeof) == "list"
+    #Store types as characters so the char lengths can be computed
+    input_table <- as.data.frame(lapply(input_table, as.character), stringsAsFactors = FALSE)
   }
-  #No list columns types expected in clipboard tables. This is a Tibble thing.
-  list_types <- NULL
-}else{
-  if(!is.data.frame(input_table) && !tibble::is_tibble(input_table)){
-    message("Could not format input_table as table. Unexpected class.")
-    return(NULL)
-  }
-  if(nrow(input_table) >= 200){
-    message("Supplied large input_table (>= 200 rows). Was this a mistake? Large tribble() output is not supported.")
-    return(NULL)
-  }
-  #remember the list column types so we can accommodate them later.
-  list_types <- lapply(input_table, typeof) == "list"
-  #Store types as characters so the char lengths can be computed
-  input_table <- as.data.frame(lapply(input_table, as.character), stringsAsFactors = FALSE)
-}
 
   #Parse data types from string using readr::parse_guess
   input_table_types <- lapply(input_table, readr::guess_parser)
@@ -65,7 +70,7 @@ if(missing(input_table)){
                            max( vapply(X = col,
                                        FUN = nchar,
                                        FUN.VALUE = numeric(1)
-                                ),
+                           ),
                            na.rm = TRUE
                            )
                          }
@@ -81,27 +86,27 @@ if(missing(input_table)){
 
   #Column names
   names_row <- paste0(
-                  paste0(strrep(" ",indent_context+nspc),
-                      paste0(
-                        paste0(
-                          mapply(
-                            pad_to,
-                            paste0("~",names(input_table)),
-                            col_widths
-                          ),
-                          ","
-                        ),
-                        collapse = " "
-                      )
-                    ), "\n"
-                )
+    paste0(strrep(" ",indent_context+nspc),
+           paste0(
+             paste0(
+               mapply(
+                 pad_to,
+                 paste0("~",names(input_table)),
+                 col_widths
+               ),
+               ","
+             ),
+             collapse = " "
+           )
+    ), "\n"
+  )
 
   #Write correct data types
   body_rows <- lapply(X = as.data.frame(t(input_table), stringsAsFactors = FALSE),
                       FUN =
                         function(col){
                           paste0(strrep(" ",indent_context+nspc),
-                            paste0(
+                                 paste0(
                                    paste0(
                                      mapply(
                                        render_type_pad_to,
@@ -112,23 +117,20 @@ if(missing(input_table)){
                                      ","
                                    ),
                                    collapse = " "
-                            ),
-                            "\n",
-                            collapse = ""
+                                 ),
+                                 "\n",
+                                 collapse = ""
                           )
 
                         }
   )
-
-
-
 
   #Need to remove the final comma that will break everything.
   body_rows <- paste0(as.vector(body_rows),collapse = "")
   body_rows <- gsub(pattern = ",\n$", replacement = "\n", x = body_rows)
 
   #Footer with newline
-  footer <- paste0(strrep(" ",indent_context+nspc),")", "\n")
+  footer <- paste0(strrep(" ",indent_context + nspc),")", "\n")
   output <- paste0(header, names_row, body_rows, footer)
 
   # Write the output to clipboard
@@ -169,26 +171,26 @@ pad_to <-function(char_vec, char_length){
 #' left-padded with spaces to char_length.
 #'
 render_type_pad_to <- function(char_vec, char_type, char_length){
-    if(is.na(char_vec)){
-        output <- switch(char_type,
-                         "integer" = "NA",
-                         "double" = "NA",
-                         "logical" = "NA",
-                         "character" = "NA",
-                         "NA"
-                  )
-    }else{
-        output <- switch(char_type,
-                         "integer" = paste0(as.integer(char_vec),"L"),
-                         "double" = as.double(char_vec),
-                         "logical" = as.logical(char_vec),
-                         "character" = ifelse(nchar(char_vec)!=0, paste0('"',char_vec,'"'), "NA"),
-                         "list" = char_vec,
-                         paste0('"',char_vec,'"')
-                  )
+  if(is.na(char_vec)){
+    output <- switch(char_type,
+                     "integer" = "NA",
+                     "double" = "NA",
+                     "logical" = "NA",
+                     "character" = "NA",
+                     "NA"
+    )
+  }else{
+    output <- switch(char_type,
+                     "integer" = paste0(as.integer(char_vec),"L"),
+                     "double" = as.double(char_vec),
+                     "logical" = as.logical(char_vec),
+                     "character" = ifelse(nchar(char_vec)!=0, paste0('"',char_vec,'"'), "NA"),
+                     "list" = char_vec,
+                     paste0('"',char_vec,'"')
+    )
 
-    }
-    pad_to(output, char_length)
+  }
+  pad_to(output, char_length)
 }
 
 #' guess_sep
@@ -206,23 +208,23 @@ render_type_pad_to <- function(char_vec, char_type, char_length){
 guess_sep <- function(char_vec){
   candidate_seps <- c(",","\t","\\|",";")
   table_sample <- char_vec[1:min(length(char_vec),10)]
- splits <-
-      lapply(
-        lapply(candidate_seps,
-           function(sep, table_sample){
-            blank_lines <- grepl(paste0("^",sep,"*$"), table_sample)
-            filtered_sample <- table_sample[!blank_lines]
-            line_splits <- strsplit(filtered_sample, split = sep)
-            split_lengths <- lapply(X = line_splits, FUN = length)
-           },
-           table_sample
-        ),
+  splits <-
+    lapply(
+      lapply(candidate_seps,
+             function(sep, table_sample){
+               blank_lines <- grepl(paste0("^",sep,"*$"), table_sample)
+               filtered_sample <- table_sample[!blank_lines]
+               line_splits <- strsplit(filtered_sample, split = sep)
+               split_lengths <- lapply(X = line_splits, FUN = length)
+             },
+             table_sample
+      ),
       unlist)
- sep_scores <- ( !as.logical( unlist( lapply(splits, stats::var) ) ) ) * unlist( lapply(splits, max) )
- #Seps that have cols with any variance get score 0.
- sep <- candidate_seps[which.max(sep_scores)]
- if(sep == "\\|") sep <- "|"
- sep
+  sep_scores <- ( !as.logical( unlist( lapply(splits, stats::var) ) ) ) * unlist( lapply(splits, max) )
+  #Seps that have cols with any variance get score 0.
+  sep <- candidate_seps[which.max(sep_scores)]
+  if(sep == "\\|") sep <- "|"
+  sep
 }
 
 #' read_clip_table_guess
@@ -234,7 +236,7 @@ guess_sep <- function(char_vec){
 #' and it tries to guess the separator.
 #'
 #' @return a parsed table from the clipboard. Separator is guessed.
-read_clip_tbl_guess <- function (x = clipr::read_clip(), ...)
+read_clip_tbl_guess <- function(x = clipr::read_clip(), ...)
 {
   if (is.null(x))
     return(NULL)
