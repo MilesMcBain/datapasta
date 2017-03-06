@@ -3,18 +3,36 @@
 #' @return the text pasted to the console. Useful for testing purposes.
 #' @export
 #'
-df_paste <- function() {
+df_paste <- function(input_table) {
 
-  clipboard_table <- tryCatch({
-    read_clip_tbl_guess()
-  }, error = function(e) {
-    return(NULL)
-  })
-  if (is.null(clipboard_table)) {
-    if (!clipr::clipr_available())
-      message("Clipboard is not available. Is R running in RStudio Server or a C.I. machine?")
-    else message("Could not paste clipboard as data.frame. Text could not be parsed as table.")
-    return(NULL)
+  if(missing(input_table)){
+    input_table <- tryCatch({read_clip_tbl_guess()},
+                            error = function(e) {
+                              return(NULL)
+                            })
+
+    if(is.null(input_table)){
+      if(!clipr::clipr_available()) message("Clipboard is not available. Is R running in RStudio Server or a C.I. machine?")
+      else message("Could not paste clipboard as data.frame. Text could not be parsed as table.")
+      return(NULL)
+    }
+    #Parse data types from string using readr::parse_guess
+    col_types <- lapply(input_table, readr::guess_parser)
+    cols <- as.list(input_table)
+  }else{
+    if(!is.data.frame(input_table) && !tibble::is_tibble(input_table)){
+      message("Could not format input_table as table. Unexpected class.")
+      return(NULL)
+    }
+    if(nrow(input_table) >= 200){
+      message("Supplied large input_table (>= 200 rows). Was this a mistake? Large tribble() output is not supported.")
+      return(NULL)
+    }
+    col_types <- lapply(input_table, class)
+    #Store types as characters so the char lengths can be computed
+    input_table <- as.data.frame(lapply(input_table, as.character), stringsAsFactors = FALSE)
+    #Store types as characters so the char lengths can be computed
+    cols <- as.list(input_table)
   }
 
   nspc <- .rs.readUiPref('num_spaces_for_tab')
@@ -26,20 +44,34 @@ df_paste <- function() {
     indent_context <- attr(regexpr("^\\s+", context$contents[context_row]),"match.length")+1 #first pos = 1 not 0
   }
 
-  cols <- as.list(clipboard_table)
-  col_types <- lapply(cols, readr::guess_parser)
-  #convert the column lists to guessed types.
-  cols <- mapply(function(cols, col_type){eval(parse(text = paste0("as.", col_type,"(cols)")))} , cols, col_types, SIMPLIFY = FALSE)
-
-  ## indent by at least 12 characters
-  ## nchar('data.frame(')
-  ## #> 12
-
+  #Set the column name width
   charw <- max(max(nchar(names(cols))) + 3L, 12L)
 
-  list_of_cols <- lapply(seq_along(cols), function(x) paste(pad_to(names(cols[x]), charw), "=",  cols[x]))
+  list_of_cols <- lapply(which(col_types != "factor"), function(x) paste(pad_to(names(cols[x]), charw), "=",
+                                                            paste0("c(",
+                                                              paste0( unlist(lapply(cols[[x]], render_type, col_types[[x]])), collapse=", "),
+                                                                ")"
+                                                            )
+                                                       )
+                         )
 
-  #paste0 inserts its own "\n" for lists which will mess witch what we're trying to do with tortellini.
+  #Handle the factor columns specially.
+  if(any(col_types == "factor")){
+  list_of_factor_cols <-
+    lapply(which(col_types == "factor"), function(x) paste(pad_to(names(cols[x]), charw), "=",
+                                                       paste0("as.factor(c(",
+                                                          paste0( unlist(lapply(cols[[x]], render_type, col_types[[x]])), collapse=", "),
+                                                            "))"
+                                                          )
+                                                      )
+    )
+    list_of_cols <- c(list_of_cols, list_of_factor_cols)
+    names(list_of_cols) <- names(cols)
+  }
+
+
+
+  #paste0 inserts its own "\n" for lists which will mess with what we're trying to do with tortellini.
   #For now, just stripping "\n" from the output.
   list_of_cols <- lapply(list_of_cols, function(X) gsub("\n", "", X))
 
