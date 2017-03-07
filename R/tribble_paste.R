@@ -119,6 +119,41 @@ pad_to <-function(char_vec, char_length){
   paste0(strrep(" ",char_length - nchar(char_vec)),char_vec)
 }
 
+#' render_type
+#'
+#' @description Renders a character vector as R types for pasting into Rstudio.
+#' Strings are quoted. Numbers, NA, logicals etc are not.
+#'
+#' @param char_vec a chracter vector containing text to be rendered as the type indicated by type_str
+#' @param char_type a string describing the type of char_vec
+#'
+#' @return A vector parsed from the clipboard as ether a character string or a
+#' character vector. The type attribute contains the type guessed by `readr`.
+#'
+#'
+render_type <- function(char_vec, char_type){
+  if(is.na(char_vec)){
+    output <- switch(char_type,
+                     "integer" = "NA",
+                     "double" = "NA",
+                     "logical" = "NA",
+                     "character" = "NA",
+                     "NA"
+    )
+  }else{
+    output <- switch(char_type,
+                     "integer" = paste0(as.integer(char_vec),"L"),
+                     "double" = as.double(char_vec),
+                     "logical" = as.logical(char_vec),
+                     "character" = ifelse(nchar(char_vec)!=0, paste0('"',char_vec,'"'), "NA"),
+                     "list" = char_vec,
+                     paste0('"',char_vec,'"')
+    )
+  }
+  output
+}
+
+
 #' render_type_pad_to
 #' @description Based on a type and length, render a character string as the type in text.
 #' Pad to the desired length.
@@ -131,25 +166,7 @@ pad_to <-function(char_vec, char_length){
 #' left-padded with spaces to char_length.
 #'
 render_type_pad_to <- function(char_vec, char_type, char_length){
-    if(is.na(char_vec)){
-        output <- switch(char_type,
-                         "integer" = "NaN",
-                         "double" = "NaN",
-                         "logical" = "NA",
-                         "character" = "NA",
-                         "NA"
-                  )
-    }else{
-        output <- switch(char_type,
-                         "integer" = as.integer(char_vec),
-                         "double" = as.double(char_vec),
-                         "logical" = as.logical(char_vec),
-                         "character" = ifelse(nchar(char_vec)!=0, paste0('"',char_vec,'"'), "NA"),
-                         paste0('"',char_vec,'"')
-                  )
-
-    }
-    pad_to(output, char_length)
+    pad_to(render_type(char_vec, char_type), char_length)
 }
 
 #' guess_sep
