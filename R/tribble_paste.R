@@ -9,6 +9,7 @@ globalVariables(".rs.readUiPref", "datapasta") #ignore this function in R CMD ch
 #'
 tribble_paste <- function(input_table){
 
+#Determine input. Either clipboard or supplied table.
 if(missing(input_table)){
   input_table <- tryCatch({read_clip_tbl_guess()},
                                error = function(e) {
@@ -36,6 +37,11 @@ if(missing(input_table)){
   input_table <- as.data.frame(lapply(input_table, as.character), stringsAsFactors = FALSE)
 }
 
+
+#Determine output. Either rstudioapi or console
+if("rstudioapi" %in%  as.data.frame(installed.packages(), stringsAsFactors = FALSE)$Package && rstudioapi::isAvailable()){
+  # rstudioapi available, determine the output context.
+  output_mode <- "rstudioapi"
   nspc <- .rs.readUiPref('num_spaces_for_tab')
   context <- rstudioapi::getActiveDocumentContext()
   context_row <- context$selection[[1]]$range$start["row"]
@@ -44,7 +50,12 @@ if(missing(input_table)){
   } else{
     indent_context <- attr(regexpr("^\\s+", context$contents[context_row]),"match.length")+1 #first pos = 1 not 0
   }
-
+}else{
+  # rstudioapi unavailable
+  output_mode <- "console"
+  nspc <- 2
+  indent_context <- 0
+}
 
   #Find the max length of data as string in each column
   col_widths <- vapply(X = input_table,
@@ -119,8 +130,13 @@ if(missing(input_table)){
   #Footer
   footer <- paste0(strrep(" ",indent_context+nspc),")")
   output <- paste0(header, names_row, body_rows, footer)
-  rstudioapi::insertText(output)
-  output
+
+  #output depending on mode
+  switch(output_mode,
+         rstudioapi = rstudioapi::insertText(output),
+         console = cat(output))
+
+  return(invisible(output))
 }
 
 
