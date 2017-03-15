@@ -151,6 +151,8 @@ pad_to <-function(char_vec, char_length){
   paste0(strrep(" ",char_length - nchar(char_vec)),char_vec)
 }
 
+trim <- function (x) gsub("^\\s+|\\s+$", "", x)
+
 #' render_type
 #'
 #' @description Renders a character vector as R types for pasting into Rstudio.
@@ -179,8 +181,8 @@ render_type <- function(char_vec, char_type){
                      "double" = as.double(char_vec),
                      "numeric" = as.double(char_vec),
                      "logical" = as.logical(char_vec),
-                     "factor" = ifelse(nchar(char_vec)!=0, paste0('"',char_vec,'"'), "NA"),
-                     "character" = ifelse(nchar(char_vec)!=0, paste0('"',char_vec,'"'), "NA"),
+                     "factor" = ifelse(nchar(char_vec)!=0, paste0('"',trim(char_vec),'"'), "NA"),
+                     "character" = ifelse(nchar(char_vec)!=0, paste0('"',trim(char_vec),'"'), "NA"),
                      "list" = char_vec,
                      paste0('"',char_vec,'"')
     )
