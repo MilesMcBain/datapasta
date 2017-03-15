@@ -9,55 +9,39 @@ globalVariables(".rs.readUiPref", "datapasta") #ignore this function in R CMD ch
 #'
 tribble_paste <- function(input_table){
 
-#Determine input. Either clipboard or supplied table.
-if(missing(input_table)){
-  input_table <- tryCatch({read_clip_tbl_guess()},
-                               error = function(e) {
-                                 return(NULL)
-                               })
+  # Determine input. Either clipboard or supplied table.
+  if(missing(input_table)){
+    input_table <- tryCatch({read_clip_tbl_guess()},
+                                 error = function(e) {
+                                   return(NULL)
+                                 })
 
-  if(is.null(input_table)){
-    if(!clipr::clipr_available()) message("Clipboard is not available. Is R running in RStudio Server or a C.I. machine?")
-    else message("Could not paste clipboard as tibble. Text could not be parsed as table.")
-    return(NULL)
+    if(is.null(input_table)){
+      if(!clipr::clipr_available()) message("Clipboard is not available. Is R running in RStudio Server or a C.I. machine?")
+      else message("Could not paste clipboard as tibble. Text could not be parsed as table.")
+      return(NULL)
+    }
+    #Parse data types from string using readr::parse_guess
+    input_table_types <- lapply(input_table, readr::guess_parser)
+  }else{
+    if(!is.data.frame(input_table) && !tibble::is_tibble(input_table)){
+      message("Could not format input_table as table. Unexpected class.")
+      return(NULL)
+    }
+    if(nrow(input_table) >= 200){
+      message("Supplied large input_table (>= 200 rows). Was this a mistake? Large tribble() output is not supported.")
+      return(NULL)
+    }
+    input_table_types <- lapply(input_table, class)
+    #Store types as characters so the char lengths can be computed
+    input_table <- as.data.frame(lapply(input_table, as.character), stringsAsFactors = FALSE)
   }
-  #Parse data types from string using readr::parse_guess
-  input_table_types <- lapply(input_table, readr::guess_parser)
-}else{
-  if(!is.data.frame(input_table) && !tibble::is_tibble(input_table)){
-    message("Could not format input_table as table. Unexpected class.")
-    return(NULL)
-  }
-  if(nrow(input_table) >= 200){
-    message("Supplied large input_table (>= 200 rows). Was this a mistake? Large tribble() output is not supported.")
-    return(NULL)
-  }
-  input_table_types <- lapply(input_table, class)
-  #Store types as characters so the char lengths can be computed
-  input_table <- as.data.frame(lapply(input_table, as.character), stringsAsFactors = FALSE)
-}
 
 
-#Determine output. Either rstudioapi or console
-if("rstudioapi" %in%  as.data.frame(installed.packages(), stringsAsFactors = FALSE)$Package && rstudioapi::isAvailable()){
-  # rstudioapi available, determine the output context.
-  output_mode <- "rstudioapi"
-  nspc <- .rs.readUiPref('num_spaces_for_tab')
-  context <- rstudioapi::getActiveDocumentContext()
-  context_row <- context$selection[[1]]$range$start["row"]
-  if(all(context$selection[[1]]$range$start == context$selection[[1]]$range$end)){
-    indent_context <- nchar(context$contents[context_row])
-  } else{
-    indent_context <- attr(regexpr("^\\s+", context$contents[context_row]),"match.length")+1 #first pos = 1 not 0
-  }
-}else{
-  # rstudioapi unavailable
-  output_mode <- "console"
-  nspc <- 2
-  indent_context <- 0
-}
+  # Determine output. Either rstudioapi or console
+  oc <- get_output_context()
 
-  #Find the max length of data as string in each column
+  # Find the max length of data as string in each column
   col_widths <- vapply(X = input_table,
                        FUN.VALUE = numeric(1),
                        FUN =
@@ -81,7 +65,7 @@ if("rstudioapi" %in%  as.data.frame(installed.packages(), stringsAsFactors = FAL
 
   #Column names
   names_row <- paste0(
-                  paste0(strrep(" ",indent_context+nspc),
+                  paste0(strrep(" ",oc$indent_context+oc$nspc),
                       paste0(
                         paste0(
                           mapply(
@@ -100,7 +84,7 @@ if("rstudioapi" %in%  as.data.frame(installed.packages(), stringsAsFactors = FAL
   body_rows <- lapply(X = as.data.frame(t(input_table), stringsAsFactors = FALSE),
                       FUN =
                         function(col){
-                          paste0(strrep(" ",indent_context+nspc),
+                          paste0(strrep(" ",oc$indent_context+oc$nspc),
                             paste0(
                                    paste0(
                                      mapply(
@@ -128,11 +112,11 @@ if("rstudioapi" %in%  as.data.frame(installed.packages(), stringsAsFactors = FAL
   body_rows <- gsub(pattern = ",\n$", replacement = "\n", x = body_rows)
 
   #Footer
-  footer <- paste0(strrep(" ",indent_context+nspc),")")
+  footer <- paste0(strrep(" ",oc$indent_context+oc$nspc),")")
   output <- paste0(header, names_row, body_rows, footer)
 
   #output depending on mode
-  switch(output_mode,
+  switch(oc$output_mode,
          rstudioapi = rstudioapi::insertText(output),
          console = cat(output))
 
@@ -271,4 +255,29 @@ read_clip_tbl_guess <- function (x = clipr::read_clip(), ...)
   do.call(utils::read.table, args = .dots)
 }
 
-
+#' get_output_context
+#'
+#' @description Return the a list containing the output target context, either rstudio or the console.
+#'
+#' @return a list containint the output target, space size of indent, and number of indents at context.
+get_output_context <- function(){
+  output_context <- list()
+  if(require("rstudioapi", quietly = TRUE) && rstudioapi::isAvailable()){
+    # rstudioapi available, determine the output context.
+    output_context$output_mode <- "rstudioapi"
+    output_context$nspc <- .rs.readUiPref('num_spaces_for_tab')
+    context <- rstudioapi::getActiveDocumentContext()
+    context_row <- context$selection[[1]]$range$start["row"]
+    if(all(context$selection[[1]]$range$start == context$selection[[1]]$range$end)){
+      output_context$indent_context <- nchar(context$contents[context_row])
+    } else{
+      output_context$indent_context <- attr(regexpr("^\\s+", context$contents[context_row]),"match.length")+1 #first pos = 1 not 0
+    }
+  }else{
+    # rstudioapi unavailable.
+    output_context$output_mode <- "console"
+    output_context$nspc <- 2
+    output_context$indent_context <- 0
+  }
+  output_context
+}

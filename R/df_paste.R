@@ -35,14 +35,7 @@ df_paste <- function(input_table) {
     cols <- as.list(input_table)
   }
 
-  nspc <- .rs.readUiPref('num_spaces_for_tab')
-  context <- rstudioapi::getActiveDocumentContext()
-  context_row <- context$selection[[1]]$range$start["row"]
-  if(all(context$selection[[1]]$range$start == context$selection[[1]]$range$end)){
-    indent_context <- nchar(context$contents[context_row])
-  } else{
-    indent_context <- attr(regexpr("^\\s+", context$contents[context_row]),"match.length")+1 #first pos = 1 not 0
-  }
+  oc <- get_output_context()
 
   #Set the column name width
   charw <- max(max(nchar(names(cols))) + 3L, 12L)
@@ -77,14 +70,17 @@ df_paste <- function(input_table) {
 
   output <- paste0(
     paste0("data.frame(\n",
-           paste0(sapply(list_of_cols[1:(length(list_of_cols) - 1)], function(x) tortellini(x, indent_context = indent_context, add_comma = TRUE)), collapse = ""),
-           paste0(sapply(list_of_cols[length(list_of_cols)], function(x) tortellini(x, indent_context = indent_context, add_comma = FALSE))),
-           strrep(" ", indent_context), ")"
+           paste0(sapply(list_of_cols[1:(length(list_of_cols) - 1)], function(x) tortellini(x, indent_context = oc$indent_context, add_comma = TRUE)), collapse = ""),
+           paste0(sapply(list_of_cols[length(list_of_cols)], function(x) tortellini(x, indent_context = oc$indent_context, add_comma = FALSE))),
+           strrep(" ", oc$indent_context), ")"
     ), collapse = "")
 
+  #output depending on mode
+  switch(oc$output_mode,
+         rstudioapi = rstudioapi::insertText(output),
+         console = cat(output))
 
-  rstudioapi::insertText(output)
-  output
+  return(invisible(output))
 }
 
 #' wrap the datpasta around itself
@@ -129,7 +125,7 @@ tortellini <- function(s, n = 80, indent_context = 0, add_comma = TRUE) {
 
   } else { ## if no splitting is required
 
-    wrapped_s <- s
+    wrapped_s <- paste0(strrep(" ", indent_context), s)
 
   }
 
