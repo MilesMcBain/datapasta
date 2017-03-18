@@ -142,6 +142,18 @@ test_that("Data with a comma decimal mark can be parsed correctly", {
   )
 })
 
+test_that("tribble_paste() input table arguments can render correctly as tribbles",
+          {
+            expect_equal(
+              {
+                eval( parse(text = tribble_paste(datasets::airquality[1:6,])) )
+              },
+              {
+                tibble::as_tibble(datasets::airquality[1:6,])
+              }
+            )
+          })
+
 test_that("The decimal mark is returned to .", {
   expect_equal(
     {.global_datapasta_env$decimal_mark},

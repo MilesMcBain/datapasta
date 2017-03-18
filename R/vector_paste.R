@@ -1,55 +1,69 @@
+
 #' vector_paste
 #'
 #' @description Pastes data from clipboard as a horizontally formatted character vector on
 #' a single line. Considers , | tab newline as delimeters.
-#'
+#' @param input_vector An input vector to be formatted for output. If supplied, no data is read from the clipboard.
 #' @return nothing.
 #' @export
 #'
-vector_paste <- function(){
+vector_paste <- function(input_vector){
 
-  input_vector <- parse_vector()
-  vector_type <- attr(input_vector, "type")
+  if( missing(input_vector) ){
+    input_vector <- parse_vector()
+    vector_type <- readr::guess_parser(input_vector)
+  }else{
+    vector_type <- class(input_vector)
+    input_vector = as.character(input_vector)
+  }
+  oc <- get_output_context()
 
   vector_form <- paste0("c(",
-    paste0(
-      lapply(input_vector, render_type, vector_type),
-      collapse = ", "),
-    ")"
+                        paste0(
+                          lapply(input_vector, render_type, vector_type),
+                          collapse = ", "),
+                        ")"
   )
-  rstudioapi::insertText(vector_form)
-  vector_form
+
+  #output depending on mode
+  switch(oc$output_mode,
+         rstudioapi = rstudioapi::insertText(vector_form),
+         console = cat(vector_form))
+  return(invisible(vector_form))
 }
 
 #' vector_paste_vertical
 #'
 #' @description Pastes data from clipboard as a vertically formatted character vector on
 #' a multiple lines. One line is used per element. Considers , | tab newline as delimeters.
-#'
+#' @param input_vector An input vector to be formatted for output. If supplied, no data is read from the clipboard.
 #' @return nothing.
 #' @export
 #'
-vector_paste_vertical <- function(){
-  input_vector <- parse_vector()
-  vector_type <- attr(input_vector, "type")
-
-  nspc <- .rs.readUiPref('num_spaces_for_tab')
-  context <- rstudioapi::getActiveDocumentContext()
-  context_row <- context$selection[[1]]$range$start["row"]
-  if(all(context$selection[[1]]$range$start == context$selection[[1]]$range$end)){
-      indent_context <- nchar(context$contents[context_row])
-  } else{
-      indent_context <- attr(regexpr("^\\s+", context$contents[context_row]),"match.length")+1 #first pos = 1 not 0
+vector_paste_vertical <- function(input_vector){
+  if( missing(input_vector) ){
+    input_vector <- parse_vector()
+    vector_type <- readr::guess_parser(input_vector)
+  }else{
+    vector_type <- class(input_vector)
+    input_vector = as.character(input_vector)
   }
 
+  # Determine output. Either rstudioapi or console
+  oc <- get_output_context()
+
   vector_form <- paste0("c(",
-                    paste0(
-                      lapply(input_vector, render_type, vector_type),
-                      collapse = paste0(",\n",strrep(" ", indent_context + 2)) #2 to align for 'c('
-                    ),
-                    ")"
-                  )
-  rstudioapi::insertText(vector_form)
+                        paste0(
+                          lapply(input_vector, render_type, vector_type),
+                          collapse = paste0(",\n",strrep(" ", oc$indent_context + 2)) #2 to align for 'c('
+                        ),
+                        ")"
+  )
+  #output depending on mode
+  switch(oc$output_mode,
+         rstudioapi = rstudioapi::insertText(vector_form),
+         console = cat(vector_form))
+  return(invisible(vector_form))
 }
 
 #' parse_vector
@@ -73,17 +87,22 @@ parse_vector <- function(){
   }
 
   if(length(clipboard_string) == 1){
-    input_vector <- unlist(
+    input_vector <- trimws(unlist(
       strsplit(
         x = clipboard_string,
-        split = "\t|,|\\|",
-        perl= TRUE)
+        split = "\t|,",
+        perl= TRUE))
     )
   }else{
-    input_vector <- clipboard_string
+    input_vector <- trimws(clipboard_string)
   }
-  vector_type <- readr::guess_parser(input_vector)
-
-  attr(input_vector, "type") <- vector_type
+  #strip ending comma delim
+  input_vector <- ifelse(grepl(pattern = ",$", input_vector),
+                         yes = substr(input_vector, 1, nchar(input_vector)-1),
+                         no = input_vector)
+  #strip outer quotes
+  input_vector <- ifelse(grepl(pattern = "(^\".*\"$)|(^\'.*\'$)", input_vector),
+                         yes = substr(input_vector, 2, nchar(input_vector)-1),
+                         no = input_vector)
   input_vector
 }
