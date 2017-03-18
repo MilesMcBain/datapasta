@@ -112,12 +112,12 @@ test_that("Data with all rows ending in commas (empty final column) has separato
   skip_if_not(rstudioapi::isAvailable())
   expect_equal(
     {clipr::write_clip(readr::read_lines(file = "./empty_final_col_comma.txt"))
-      eval(parse(text = tribble_paste()))},
+      suppressWarnings(eval(parse(text = tribble_paste())))}, #Will generate a warning about all NA to max
     {tibble::tribble(
         ~a, ~b, ~c,
-         1,  2, NA,
-         3,  4, NA,
-         5,  6, NA
+         1L,  2L, NA,
+         3L,  4L, NA,
+         5L,  6L, NA
 
     )}
   )
