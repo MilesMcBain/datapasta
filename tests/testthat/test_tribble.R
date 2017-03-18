@@ -122,3 +122,29 @@ test_that("Data with all rows ending in commas (empty final column) has separato
     )}
   )
 })
+
+test_that("Data with a comma decimal mark can be parsed correctly", {
+  set_decimal_mark(",")
+  on.exit(set_decimal_mark("."))
+  expect_equal(
+    {clipr::write_clip(readr::read_lines(file = "./comma_delim.txt"))
+      eval(parse(text = tribble_paste()))},
+    {tibble::tribble(
+      ~A,    ~B,  ~C,   ~D,
+      3L,   7.4,  5L,   5L,
+      5L,     9,  8L,   5L,
+      10L,     9,  3L,  10L,
+      2L,     7,  9L,   5L,
+      10L,     7,  2L,   7L,
+      10L,    10,  2L,  10L,
+      1L,     7,  4L,   9L
+    )}
+  )
+})
+
+test_that("The decimal mark is returned to .", {
+  expect_equal(
+    {.global_datapasta_env$decimal_mark},
+    {"."}
+  )
+})

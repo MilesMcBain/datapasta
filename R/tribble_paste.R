@@ -1,4 +1,6 @@
-globalVariables(".rs.readUiPref", "datapasta") #ignore this function in R CMD checks, since it is part of RStudio runtime
+globalVariables(c(".rs.readUiPref",".global_datapasta_env"), "datapasta") #ignore this function in R CMD checks, since it is part of RStudio runtime
+.global_datapasta_env <- new.env(parent=emptyenv())
+.global_datapasta_env$decimal_mark <- "."
 
 #' tribble_paste
 #' @description Parse the current clipboard as a table and paste in at the cursor location in tribbble format.
@@ -144,7 +146,7 @@ render_type <- function(char_vec, char_type){
     output <- switch(char_type,
                      "integer" = paste0(as.integer(char_vec),"L"),
                      "double" = as.double(char_vec),
-                     "number" = readr::parse_number(char_vec, locale = locale()),
+                     "number" = readr::parse_number(char_vec, locale = readr::locale(decimal_mark = .global_datapasta_env$decimal_mark)),
                      "logical" = as.logical(char_vec),
                      "character" = ifelse(nchar(char_vec)!=0, paste0('"',char_vec,'"'), "NA"),
                      "list" = char_vec,
@@ -237,4 +239,16 @@ read_clip_tbl_guess <- function (x = clipr::read_clip(), ...)
   do.call(utils::read.table, args = .dots)
 }
 
+#' set_decimal_mark
+#'
+#' @param mark
+#' @description A function to optionally set the decimal mark if in a locale where it is not `.`. Will allow "3,14" to be parsed as 3.14.
+#' Will also handle spaces in numbers.
+#'
+#' @return NULL.
+#' @export
+set_decimal_mark <- function(mark){
+  .global_datapasta_env$decimal_mark <- mark
+  invisible(NULL)
+}
 
