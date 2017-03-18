@@ -142,6 +142,13 @@ test_that("Data with a comma decimal mark can be parsed correctly", {
   )
 })
 
+test_that("The decimal mark is returned to .", {
+  expect_equal(
+    {.global_datapasta_env$decimal_mark},
+    {"."}
+  )
+})
+
 test_that("tribble_paste() input table arguments can render correctly as tribbles",
           {
             expect_equal(
@@ -154,9 +161,4 @@ test_that("tribble_paste() input table arguments can render correctly as tribble
             )
           })
 
-test_that("The decimal mark is returned to .", {
-  expect_equal(
-    {.global_datapasta_env$decimal_mark},
-    {"."}
-  )
-})
+
