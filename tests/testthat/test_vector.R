@@ -16,7 +16,7 @@ test_that("A vector of strings is formatted correctly", {
                                   "Normal",
                                   "Water",
                                   "Flying"))
-    vector_format()
+    vector_construct()
   },
   {
     "c(\"Normal\", \"Steel\", \"Psychic\", \"Dark\", \"Dragon\", \"Normal\", \"Water\", \"Flying\")"
@@ -26,7 +26,7 @@ test_that("A vector of strings is formatted correctly", {
   )
 })
 
-test_that("Vector_format handles numeric correctly ", {
+test_that("vector_construct handles numeric correctly ", {
   skip_if_not(is_clipr_available, skip_msg)
   skip_on_cran()
   expect_equal({
@@ -39,7 +39,7 @@ test_that("Vector_format handles numeric correctly ", {
                                                    6,
                                                    9))
     )
-    vector_format()
+    vector_construct()
   },
   "c(7L, 8L, 7L, 6L, 6L, NA, 6L, 9L)"
   )
@@ -47,72 +47,72 @@ test_that("Vector_format handles numeric correctly ", {
 
 
 
-test_that("vector_format combines numeric/strings correctly ", {
+test_that("vector_construct combines numeric/strings correctly ", {
     skip_if_not(is_clipr_available, skip_msg)
     skip_on_cran()
     expect_equal({
         suppressWarnings(clipr::write_clip(content = c("a","6", "b", "4"))
         )
-        vector_format()
+        vector_construct()
     },
     "c(\"a\", \"6\", \"b\", \"4\")"
     )
 })
 
 
-test_that("Vector_format handles empty strings", {
+test_that("vector_construct handles empty strings", {
     skip_if_not(is_clipr_available, skip_msg)
     skip_on_cran()
     expect_equal({
     suppressWarnings(clipr::write_clip(content = c("a","6", "", "4"))
     )
-    vector_format()
+    vector_construct()
   },
   "c(\"a\", \"6\", NA, \"4\")"
   )
 })
 
-test_that("vector_format strips whitespace from natural integer lists on a single line",{
+test_that("vector_construct strips whitespace from natural integer lists on a single line",{
   skip_if_not(is_clipr_available, skip_msg)
   skip_on_cran()
   expect_equal({
     suppressWarnings(clipr::write_clip(content = "1, 2, 3, 4"))
-    eval(parse(text = vector_format()))
+    eval(parse(text = vector_construct()))
   },{
     c(1L, 2L, 3L, 4L)
   })
 })
 
-test_that("vector_format strips whitespace and quotes from natural string lists on a single line",{
+test_that("vector_construct strips whitespace and quotes from natural string lists on a single line",{
   skip_if_not(is_clipr_available, skip_msg)
   skip_on_cran()
   expect_equal({
     suppressWarnings(clipr::write_clip(content = "\"a\", \"b\", \"c\""))
-    eval(parse(text = vector_format()))
+    eval(parse(text = vector_construct()))
   },{
     c("a", "b", "c")
   })
 })
 
-test_that("vector_format strips whitespace and quotes from natural string lists over multiple lines",{
+test_that("vector_construct strips whitespace and quotes from natural string lists over multiple lines",{
   skip_if_not(is_clipr_available, skip_msg)
   skip_on_cran()
   expect_equal({
     suppressWarnings(clipr::write_clip(content = c("      \"hms\",", "      \"jsonlite\",", "      \"lubridate\",",
                                                    "      \"magrittr\",", "      \"modelr\",")))
-    eval(parse(text = vector_format()))
+    eval(parse(text = vector_construct()))
   },{
     c("hms", "jsonlite", "lubridate", "magrittr", "modelr")
   })
 })
 
-test_that("Vector_format handles leading and lagging whitespace on unquoted char lists", {
+test_that("vector_construct handles leading and lagging whitespace on unquoted char lists", {
   skip_if_not(is_clipr_available, skip_msg)
   skip_on_cran()
   expect_equal({
     suppressWarnings(clipr::write_clip(content = "Mint, Fedora, Debian, Ubuntu, OpenSUSE")
     )
-    vector_format()
+    vector_construct()
   },
   "c(\"Mint\", \"Fedora\", \"Debian\", \"Ubuntu\", \"OpenSUSE\")"
   )

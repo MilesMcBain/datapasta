@@ -2,6 +2,27 @@ globalVariables(c(".rs.readUiPref",".global_datapasta_env"), "datapasta") #ignor
 .global_datapasta_env <- new.env(parent=emptyenv())
 .global_datapasta_env$decimal_mark <- "."
 
+#' tribble_paste
+#' @description Parse the current clipboard as a table, or use the table argument supplied, and paste in at the cursor location in tribbble format.
+#' @param input_table an optional input `data.frame`. If `input_table` is supplied, then nothing is read from the clipboard.
+#' Table is output as `tribble()` call. Useful for creating reproducible examples.
+#' @return The parsed table text. Useful for testing.
+#' @export
+#'
+tribble_paste <- function(input_table){
+  output_context <- guess_output_context() #rstudioapi if available or console
+  output <- tribble_construct(input_table, oc = output_context)
+
+  switch(output_context$output_mode,
+         rstudioapi = rstudioapi::insertText(output),
+         console = cat(output))
+}
+
+tribble_format <- function(input_table){
+  output <- tribble_construct(input_table, oc = clipboard_context())
+  clipr::write_clip(output)
+}
+
 tribble_construct <- function(input_table, oc = console_context()){
   # Determine input. Either clipboard or supplied table.
   if(missing(input_table)){
@@ -107,27 +128,6 @@ tribble_construct <- function(input_table, oc = console_context()){
   output <- paste0(header, names_row, body_rows, footer)
 
   return(invisible(output))
-}
-
-#' tribble_paste
-#' @description Parse the current clipboard as a table, or use the table argument supplied, and paste in at the cursor location in tribbble format.
-#' @param input_table an optional input `data.frame`. If `input_table` is supplied, then nothing is read from the clipboard.
-#' Table is output as `tribble()` call. Useful for creating reproducible examples.
-#' @return The parsed table text. Useful for testing.
-#' @export
-#'
-tribble_paste <- function(input_table){
-  output_context <- guess_output_context() #rstudioapi if available or console
-  output <- tribble_construct(input_table, oc = output_context)
-
-  switch(output_context$output_mode,
-       rstudioapi = rstudioapi::insertText(output),
-       console = cat(output))
-}
-
-tribble_format <- function(input_table){
-  output <- tribble_construct(input_table, oc = clipboard_context())
-  clipr::write_clip(output)
 }
 
 #' pad_to

@@ -3,7 +3,22 @@
 #' @return the text pasted to the console. Useful for testing purposes.
 #' @export
 #'
-df_paste <- function(input_table) {
+df_paste <- function(input_table){
+  output_context <- guess_output_context()
+  output <- df_construct(input_table, oc = output_context)
+
+  #output depending on mode
+  switch(output_context$output_mode,
+         rstudioapi = rstudioapi::insertText(output),
+         console = cat(output))
+}
+
+df_format <- function(input_table){
+  output <- df_construct(input_table, oc = clipboard_context())
+  clipr::write_clip()
+}
+
+df_construct <- function(input_table, oc = console_context()) {
 
   if(missing(input_table)){
     input_table <- tryCatch({read_clip_tbl_guess()},
@@ -34,8 +49,6 @@ df_paste <- function(input_table) {
     #Store types as characters so the char lengths can be computed
     cols <- as.list(input_table)
   }
-
-  oc <- get_output_context()
 
   contains_chars <- any(col_types == "character") #we'll need to add stringsAsFactors=FALSE if so.
 
@@ -75,11 +88,6 @@ df_paste <- function(input_table) {
            strrep(" ", oc$indent_context),")"
     ), collapse = "")
 
-
-  #output depending on mode
-  switch(oc$output_mode,
-         rstudioapi = rstudioapi::insertText(output),
-         console = cat(output))
 
   return(invisible(output))
 }

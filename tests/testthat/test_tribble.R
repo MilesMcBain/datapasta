@@ -88,7 +88,7 @@ test_that("Brisbane Weather with empty lines is parsed, types are guessed, rende
   skip_if_not(rstudioapi::isAvailable())
   expect_equal(
     {clipr::write_clip(readr::read_lines(file = "./brisbane_weather_empty_lines.txt"))
-    eval(parse(text = tribble_paste()))},
+    eval(parse(text = tribble_construct()))},
     {tibble::tribble(
       ~X,          ~Location, ~Min, ~Max,
       "Partly cloudy.",         "Brisbane",   19L,   29L,
@@ -112,7 +112,7 @@ test_that("Data with all rows ending in commas (empty final column) has separato
   skip_if_not(rstudioapi::isAvailable())
   expect_equal(
     {clipr::write_clip(readr::read_lines(file = "./empty_final_col_comma.txt"))
-      suppressWarnings(eval(parse(text = tribble_paste())))}, #Will generate a warning about all NA to max
+      suppressWarnings(eval(parse(text = tribble_construct())))}, #Will generate a warning about all NA to max
     {tibble::tribble(
         ~a, ~b, ~c,
          1L,  2L, NA,
@@ -128,7 +128,7 @@ test_that("Data with a comma decimal mark can be parsed correctly", {
   on.exit(set_decimal_mark("."))
   expect_equal(
     {clipr::write_clip(readr::read_lines(file = "./comma_delim.txt"))
-      eval(parse(text = tribble_paste()))},
+      eval(parse(text = tribble_construct()))},
     {tibble::tribble(
       ~A,    ~B,  ~C,   ~D,
       3L,   7.4,  5L,   5L,
@@ -153,7 +153,7 @@ test_that("tribble_paste() input table arguments can render correctly as tribble
           {
             expect_equal(
               {
-                eval( parse(text = tribble_paste(datasets::airquality[1:6,])) )
+                eval( parse(text = tribble_construct(datasets::airquality[1:6,])) )
               },
               {
                 tibble::as_tibble(datasets::airquality[1:6,])
