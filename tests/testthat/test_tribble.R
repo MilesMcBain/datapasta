@@ -91,18 +91,60 @@ test_that("Brisbane Weather with empty lines is parsed, types are guessed, rende
     eval(parse(text = tribble_paste()))},
     {tibble::tribble(
       ~X,          ~Location, ~Min, ~Max,
-      "Partly cloudy.",         "Brisbane",   19,   29,
-      "Partly cloudy.", "Brisbane Airport",   18,   27,
-      "Possible shower.",       "Beaudesert",   15,   30,
-      "Partly cloudy.",        "Chermside",   17,   29,
-      "Shower or two. Possible storm.",           "Gatton",   15,   32,
-      "Possible shower.",          "Ipswich",   15,   30,
-      "Partly cloudy.",    "Logan Central",   18,   29,
-      "Mostly sunny.",            "Manly",   20,   26,
-      "Partly cloudy.",    "Mount Gravatt",   17,   28,
-      "Possible shower.",            "Oxley",   17,   30,
-      "Partly cloudy.",        "Redcliffe",   19,   27
+      "Partly cloudy.",         "Brisbane",   19L,   29L,
+      "Partly cloudy.", "Brisbane Airport",   18L,   27L,
+      "Possible shower.",       "Beaudesert",   15L,   30L,
+      "Partly cloudy.",        "Chermside",   17L,   29L,
+      "Shower or two. Possible storm.",           "Gatton",   15L,   32L,
+      "Possible shower.",          "Ipswich",   15L,   30L,
+      "Partly cloudy.",    "Logan Central",   18L,   29L,
+      "Mostly sunny.",            "Manly",   20L,   26L,
+      "Partly cloudy.",    "Mount Gravatt",   17L,   28L,
+      "Possible shower.",            "Oxley",   17L,   30L,
+      "Partly cloudy.",        "Redcliffe",   19L,   27L
     )}
   )
 })
 
+test_that("Data with all rows ending in commas (empty final column) has separator guessed correctly", {
+  skip_if_not(is_clipr_available, skip_msg)
+  skip_on_cran()
+  skip_if_not(rstudioapi::isAvailable())
+  expect_equal(
+    {clipr::write_clip(readr::read_lines(file = "./empty_final_col_comma.txt"))
+      suppressWarnings(eval(parse(text = tribble_paste())))}, #Will generate a warning about all NA to max
+    {tibble::tribble(
+        ~a, ~b, ~c,
+         1L,  2L, NA,
+         3L,  4L, NA,
+         5L,  6L, NA
+
+    )}
+  )
+})
+
+test_that("Data with a comma decimal mark can be parsed correctly", {
+  set_decimal_mark(",")
+  on.exit(set_decimal_mark("."))
+  expect_equal(
+    {clipr::write_clip(readr::read_lines(file = "./comma_delim.txt"))
+      eval(parse(text = tribble_paste()))},
+    {tibble::tribble(
+      ~A,    ~B,  ~C,   ~D,
+      3L,   7.4,  5L,   5L,
+      5L,     9,  8L,   5L,
+      10L,     9,  3L,  10L,
+      2L,     7,  9L,   5L,
+      10L,     7,  2L,   7L,
+      10L,    10,  2L,  10L,
+      1L,     7,  4L,   9L
+    )}
+  )
+})
+
+test_that("The decimal mark is returned to .", {
+  expect_equal(
+    {.global_datapasta_env$decimal_mark},
+    {"."}
+  )
+})

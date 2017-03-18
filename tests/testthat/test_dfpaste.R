@@ -54,7 +54,7 @@ test_that("A pasted multi-type data.frame is rendered and parsed correctly", {
     eval(parse(text = df_paste()))
   },
   {
-    data.frame(
+    data.frame(stringsAsFactors=FALSE,
       Precis.Icon = c("Possible shower.", "Mostly sunny.",
                       "Shower or two. Possible storm.", "Possible shower.",
                       "Shower or two. Possible storm.", "Possible shower or storm.",
@@ -68,6 +68,23 @@ test_that("A pasted multi-type data.frame is rendered and parsed correctly", {
     )
   })
 })
+
+test_that("stringsAsFactors=FALSE is added correctly", {
+  skip_if_not(is_clipr_available, skip_msg)
+  skip_on_cran()
+  skip_if_not(is_rstudio_available)
+  expect_equal({
+    clipr::write_clip(content = c("char,int", "a,1", "b,3"))
+    eval(parse(text = df_paste()))
+  },
+  {
+    data.frame(stringsAsFactors=FALSE,
+               char = c("a", "b"),
+               int = c(1, 3)
+    )
+  })
+})
+
 
 
 

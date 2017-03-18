@@ -71,7 +71,7 @@ parse_vector <- function(){
       else message("Could not paste clipboard as a vector. Text could not be parsed.")
       return(NULL)
   }
-  
+
   if(length(clipboard_string) == 1){
     clipboard_vector <- unlist(
       strsplit(
@@ -86,27 +86,4 @@ parse_vector <- function(){
 
   attr(clipboard_vector, "type") <- vector_type
   clipboard_vector
-}
-
-#' render_type
-#'
-#' @description Renders a character vector as R types for pasting into Rstudio.
-#' Strings are quoted. Numbers, NaN, NA, logicals etc are not.
-#'
-#' @param char_vec a chracter vector containing text to be rendered as the type indicated by type_str
-#' @param type_str a string describing the type of char_vec
-#'
-#' @return A vector parsed from the clipboard as ether a character string or a
-#' character vector. The type attribute contains the type guessed by `readr`.
-#'
-#'
-render_type <- function(char_vec, type_str){
-    output <- switch(type_str,
-                     "integer" = as.integer(char_vec),
-                     "double" = as.double(char_vec),
-                     "logical" = as.logical(char_vec),
-                     "character" = ifelse(is.na(char_vec)|nchar(char_vec)==0, yes = "NA", no = paste0('"',char_vec,'"')),
-                     paste0('"',char_vec,'"')
-    )
-    output
 }

@@ -1,4 +1,6 @@
-globalVariables(".rs.readUiPref", "datapasta") #ignore this function in R CMD checks, since it is part of RStudio runtime
+globalVariables(c(".rs.readUiPref",".global_datapasta_env"), "datapasta") #ignore this function in R CMD checks, since it is part of RStudio runtime
+.global_datapasta_env <- new.env(parent=emptyenv())
+.global_datapasta_env$decimal_mark <- "."
 
 #' tribble_paste
 #' @description Parse the current clipboard as a table and paste in at the cursor location in tribbble format.
@@ -119,6 +121,42 @@ pad_to <-function(char_vec, char_length){
   paste0(strrep(" ",char_length - nchar(char_vec)),char_vec)
 }
 
+#' render_type
+#'
+#' @description Renders a character vector as R types for pasting into Rstudio.
+#' Strings are quoted. Numbers, NA, logicals etc are not.
+#'
+#' @param char_vec a chracter vector containing text to be rendered as the type indicated by type_str
+#' @param char_type a string describing the type of char_vec
+#'
+#' @return A vector parsed from the clipboard as ether a character string or a
+#' character vector. The type attribute contains the type guessed by `readr`.
+#'
+#'
+render_type <- function(char_vec, char_type){
+  if(is.na(char_vec)){
+    output <- switch(char_type,
+                     "integer" = "NA",
+                     "double" = "NA",
+                     "logical" = "NA",
+                     "character" = "NA",
+                     "NA"
+    )
+  }else{
+    output <- switch(char_type,
+                     "integer" = paste0(as.integer(char_vec),"L"),
+                     "double" = as.double(char_vec),
+                     "number" = readr::parse_number(char_vec, locale = readr::locale(decimal_mark = .global_datapasta_env$decimal_mark)),
+                     "logical" = as.logical(char_vec),
+                     "character" = ifelse(nchar(char_vec)!=0, paste0('"',char_vec,'"'), "NA"),
+                     "list" = char_vec,
+                     paste0('"',char_vec,'"')
+    )
+  }
+  output
+}
+
+
 #' render_type_pad_to
 #' @description Based on a type and length, render a character string as the type in text.
 #' Pad to the desired length.
@@ -131,25 +169,7 @@ pad_to <-function(char_vec, char_length){
 #' left-padded with spaces to char_length.
 #'
 render_type_pad_to <- function(char_vec, char_type, char_length){
-    if(is.na(char_vec)){
-        output <- switch(char_type,
-                         "integer" = "NaN",
-                         "double" = "NaN",
-                         "logical" = "NA",
-                         "character" = "NA",
-                         "NA"
-                  )
-    }else{
-        output <- switch(char_type,
-                         "integer" = as.integer(char_vec),
-                         "double" = as.double(char_vec),
-                         "logical" = as.logical(char_vec),
-                         "character" = ifelse(nchar(char_vec)!=0, paste0('"',char_vec,'"'), "NA"),
-                         paste0('"',char_vec,'"')
-                  )
-
-    }
-    pad_to(output, char_length)
+    pad_to(render_type(char_vec, char_type), char_length)
 }
 
 #' guess_sep
@@ -167,6 +187,10 @@ render_type_pad_to <- function(char_vec, char_type, char_length){
 guess_sep <- function(char_vec){
   candidate_seps <- c(",","\t","\\|",";")
   table_sample <- char_vec[1:min(length(char_vec),10)]
+
+  #handle seps at end of line. A sep at the end of line is effectively an NA in the last column.
+  table_sample <- gsub(",$", ", ", table_sample)
+
  splits <-
       lapply(
         lapply(candidate_seps,
@@ -219,4 +243,16 @@ read_clip_tbl_guess <- function (x = clipr::read_clip(), ...)
   do.call(utils::read.table, args = .dots)
 }
 
+#' set_decimal_mark
+#'
+#' @param mark
+#' @description A function to optionally set the decimal mark if in a locale where it is not `.`. Will allow "3,14" to be parsed as 3.14.
+#' Will also handle spaces in numbers.
+#'
+#' @return NULL.
+#' @export
+set_decimal_mark <- function(mark){
+  .global_datapasta_env$decimal_mark <- mark
+  invisible(NULL)
+}
 
