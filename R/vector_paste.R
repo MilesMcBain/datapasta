@@ -1,4 +1,24 @@
 
+
+vector_construct <- function(input_vector){
+
+  if( missing(input_vector) ){
+    input_vector <- parse_vector()
+    vector_type <- readr::guess_parser(input_vector)
+  }else{
+    vector_type <- class(input_vector)
+    input_vector = as.character(input_vector)
+  }
+
+  vector_form <- paste0("c(",
+                        paste0(
+                          lapply(input_vector, render_type, vector_type),
+                          collapse = ", "),
+                        ")"
+  )
+  return(invisible(vector_form))
+}
+
 #' vector_paste
 #'
 #' @description Pastes data from clipboard as a horizontally formatted character vector on
@@ -8,7 +28,23 @@
 #' @export
 #'
 vector_paste <- function(input_vector){
+  output_context <- guess_output_context()
+  vector_form <- vector_construct(input_vector)
 
+  #output depending on mode
+  switch(output_context$output_mode,
+         rstudioapi = rstudioapi::insertText(vector_form),
+         console = cat(vector_form))
+}
+
+
+vector_format <- function(input_vector){
+  vector_form <- vector_construct(input_vector)
+  clipr::write_clip(vector_form)
+}
+
+
+vector_construct_vertical <- function(input_vector, oc = console_context()){
   if( missing(input_vector) ){
     input_vector <- parse_vector()
     vector_type <- readr::guess_parser(input_vector)
@@ -16,19 +52,14 @@ vector_paste <- function(input_vector){
     vector_type <- class(input_vector)
     input_vector = as.character(input_vector)
   }
-  oc <- get_output_context()
 
   vector_form <- paste0("c(",
                         paste0(
                           lapply(input_vector, render_type, vector_type),
-                          collapse = ", "),
+                          collapse = paste0(",\n",strrep(" ", oc$indent_context + 2)) #2 to align for 'c('
+                        ),
                         ")"
   )
-
-  #output depending on mode
-  switch(oc$output_mode,
-         rstudioapi = rstudioapi::insertText(vector_form),
-         console = cat(vector_form))
   return(invisible(vector_form))
 }
 
@@ -41,29 +72,19 @@ vector_paste <- function(input_vector){
 #' @export
 #'
 vector_paste_vertical <- function(input_vector){
-  if( missing(input_vector) ){
-    input_vector <- parse_vector()
-    vector_type <- readr::guess_parser(input_vector)
-  }else{
-    vector_type <- class(input_vector)
-    input_vector = as.character(input_vector)
-  }
+  output_context <- guess_output_context()
+  vector_form <- vector_construct_vertical(input_vector, output_context)
 
-  # Determine output. Either rstudioapi or console
-  oc <- get_output_context()
-
-  vector_form <- paste0("c(",
-                        paste0(
-                          lapply(input_vector, render_type, vector_type),
-                          collapse = paste0(",\n",strrep(" ", oc$indent_context + 2)) #2 to align for 'c('
-                        ),
-                        ")"
-  )
   #output depending on mode
-  switch(oc$output_mode,
+  switch(output_context$output_mode,
          rstudioapi = rstudioapi::insertText(vector_form),
          console = cat(vector_form))
-  return(invisible(vector_form))
+}
+
+vector_format_vertical <- function(input_vector){
+  output_context <- clipboard_context()
+  vector_form <- vector_construct_vertical(input_vector, output_context)
+  clipr::write_clip(vector_form)
 }
 
 #' parse_vector
