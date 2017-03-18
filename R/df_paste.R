@@ -28,6 +28,7 @@ df_paste <- function() {
 
   cols <- as.list(clipboard_table)
   col_types <- lapply(cols, readr::guess_parser)
+  contains_chars <- any(col_types == "character") #we'll need to add stringsAsFactors=FALSE if so.
   #convert the column lists to guessed types.
   cols <- mapply(function(cols, col_type){eval(parse(text = paste0("as.", col_type,"(cols)")))} , cols, col_types, SIMPLIFY = FALSE)
 
@@ -44,10 +45,10 @@ df_paste <- function() {
   list_of_cols <- lapply(list_of_cols, function(X) gsub("\n", "", X))
 
   output <- paste0(
-    paste0("data.frame(\n",
+    paste0(paste0("data.frame(",ifelse(contains_chars, yes = "stringsAsFactors=FALSE,", no=""),"\n"),
            paste0(sapply(list_of_cols[1:(length(list_of_cols) - 1)], function(x) tortellini(x, indent_context = indent_context, add_comma = TRUE)), collapse = ""),
            paste0(sapply(list_of_cols[length(list_of_cols)], function(x) tortellini(x, indent_context = indent_context, add_comma = FALSE))),
-           strrep(" ", indent_context), ")"
+           strrep(" ", indent_context),")"
     ), collapse = "")
 
 
