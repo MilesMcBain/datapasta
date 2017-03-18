@@ -15,7 +15,7 @@ vector_paste <- function(input_vector){
     vector_type <- class(input_vector)
     input_vector = as.character(input_vector)
   }
-
+  oc <- get_output_context()
 
   vector_form <- paste0("c(",
     paste0(
@@ -23,8 +23,12 @@ vector_paste <- function(input_vector){
       collapse = ", "),
     ")"
   )
-  rstudioapi::insertText(vector_form)
-  vector_form
+
+  #output depending on mode
+  switch(oc$output_mode,
+         rstudioapi = rstudioapi::insertText(vector_form),
+         console = cat(vector_form))
+  return(invisible(vector_form))
 }
 
 #' vector_paste_vertical
@@ -44,24 +48,21 @@ vector_paste_vertical <- function(input_vector){
     input_vector = as.character(input_vector)
   }
 
-  nspc <- .rs.readUiPref('num_spaces_for_tab')
-  context <- rstudioapi::getActiveDocumentContext()
-  context_row <- context$selection[[1]]$range$start["row"]
-  if(all(context$selection[[1]]$range$start == context$selection[[1]]$range$end)){
-      indent_context <- nchar(context$contents[context_row])
-  } else{
-      indent_context <- attr(regexpr("^\\s+", context$contents[context_row]),"match.length")+1 #first pos = 1 not 0
-  }
+  # Determine output. Either rstudioapi or console
+  oc <- get_output_context()
 
   vector_form <- paste0("c(",
                     paste0(
                       lapply(input_vector, render_type, vector_type),
-                      collapse = paste0(",\n",strrep(" ", indent_context + 2)) #2 to align for 'c('
+                      collapse = paste0(",\n",strrep(" ", oc$indent_context + 2)) #2 to align for 'c('
                     ),
                     ")"
                   )
-  rstudioapi::insertText(vector_form)
-  vector_form
+  #output depending on mode
+  switch(oc$output_mode,
+         rstudioapi = rstudioapi::insertText(vector_form),
+         console = cat(vector_form))
+  return(invisible(vector_form))
 }
 
 #' parse_vector
