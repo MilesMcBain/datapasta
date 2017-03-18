@@ -86,15 +86,37 @@ parse_vector <- function(){
   }
 
   if(length(clipboard_string) == 1){
-    input_vector <- unlist(
+    input_vector <- trimws(unlist(
       strsplit(
         x = clipboard_string,
-        split = "\t|,|\\|",
-        perl= TRUE)
+        split = "\t|,",
+        perl= TRUE))
     )
   }else{
-    input_vector <- clipboard_string
+    input_vector <- trimws(clipboard_string)
   }
+  #strip ending comma delim
+  input_vector <- ifelse(grepl(pattern = ",$", input_vector),
+                         yes = substr(input_vector, 1, nchar(input_vector)-1),
+                         no = input_vector)
+  #strip outer quotes
+  input_vector <- ifelse(grepl(pattern = "(^\".*\"$)|(^\'.*\'$)", input_vector),
+                         yes = substr(input_vector, 2, nchar(input_vector)-1),
+                         no = input_vector)
   input_vector
 }
 
+#' trim and strip quote
+#'
+#' @description removes white space from start and end of each string. If the string begins and ends in `'` or `"`, then removes quotes.
+#' @param input_vector a vector of strings.
+#' @return A trimed and unquoted(if applicable) version of input_vector.
+#'
+#'
+trim_and_strip_quote <- function(input_vector){
+  input_vector <- lapply(input_vector, trimws)
+  input_vector <- ifelse(grepl(pattern = "(^\".*\"$)|(^\'.*\'$)", input_vector),
+                         yes = substr(input_vector, 2, length(input_vector)-1),
+                         no = input_vector)
+  input_vector
+}

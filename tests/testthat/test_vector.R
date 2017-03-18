@@ -74,3 +74,52 @@ test_that("Vector_paste handles empty strings", {
   )
 })
 
+test_that("vector_paste strips whitespace from natural integer lists on a single line",{
+  skip_if_not(is_clipr_available, skip_msg)
+  skip_on_cran()
+  expect_equal({
+    suppressWarnings(clipr::write_clip(content = "1, 2, 3, 4"))
+    eval(parse(text = vector_paste()))
+  },{
+    c(1L, 2L, 3L, 4L)
+  })
+})
+
+test_that("vector_paste strips whitespace and quotes from natural string lists on a single line",{
+  skip_if_not(is_clipr_available, skip_msg)
+  skip_on_cran()
+  expect_equal({
+    suppressWarnings(clipr::write_clip(content = "\"a\", \"b\", \"c\""))
+    eval(parse(text = vector_paste()))
+  },{
+    c("a", "b", "c")
+  })
+})
+
+test_that("vector_paste strips whitespace and quotes from natural string lists over multiple lines",{
+  skip_if_not(is_clipr_available, skip_msg)
+  skip_on_cran()
+  expect_equal({
+    suppressWarnings(clipr::write_clip(content = c("      \"hms\",", "      \"jsonlite\",", "      \"lubridate\",",
+                                                   "      \"magrittr\",", "      \"modelr\",")))
+    eval(parse(text = vector_paste()))
+  },{
+    c("hms", "jsonlite", "lubridate", "magrittr", "modelr")
+  })
+})
+
+test_that("Vector_paste handles leading and lagging whitespace on unquoted char lists", {
+  skip_if_not(is_rstudio_available)
+  skip_if_not(is_clipr_available, skip_msg)
+  skip_on_cran()
+  expect_equal({
+    suppressWarnings(clipr::write_clip(content = "Mint, Fedora, Debian, Ubuntu, OpenSUSE")
+    )
+    vector_paste()
+  },
+  "c(\"Mint\", \"Fedora\", \"Debian\", \"Ubuntu\", \"OpenSUSE\")"
+  )
+})
+
+
+
