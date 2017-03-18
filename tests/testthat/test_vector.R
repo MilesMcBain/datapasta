@@ -74,3 +74,16 @@ test_that("Vector_paste handles empty strings", {
   )
 })
 
+test_that("Vector_paste handles leading and lagging whitespace", {
+  skip_if_not(is_rstudio_available)
+  skip_if_not(is_clipr_available, skip_msg)
+  skip_on_cran()
+  expect_equal({
+    suppressWarnings(clipr::write_clip(content = "Mint, Fedora, Debian, Ubuntu, OpenSUSE")
+    )
+    vector_paste()
+  },
+  "c(\"Mint\", \"Fedora\", \"Debian\", \"Ubuntu\", \"OpenSUSE\")"
+  )
+})
+
