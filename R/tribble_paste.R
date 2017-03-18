@@ -8,12 +8,12 @@ globalVariables(c(".rs.readUiPref",".global_datapasta_env"), "datapasta") #ignor
 #' @export
 #'
 tribble_paste <- function(){
-  clipboard_table <- tryCatch({read_clip_tbl_guess()},
+  input_table <- tryCatch({read_clip_tbl_guess()},
                                error = function(e) {
                                  return(NULL)
                                })
 
-  if(is.null(clipboard_table)){
+  if(is.null(input_table)){
     if(!clipr::clipr_available()) message("Clipboard is not available. Is R running in RStudio Server or a C.I. machine?")
     else message("Could not paste clipboard as tibble. Text could not be parsed as table.")
     return(NULL)
@@ -29,7 +29,7 @@ tribble_paste <- function(){
   }
 
   #Find the max length of data as string in each column
-  col_widths <- vapply(X = clipboard_table,
+  col_widths <- vapply(X = input_table,
                        FUN.VALUE = numeric(1),
                        FUN =
                          function(col){nchar
@@ -45,7 +45,7 @@ tribble_paste <- function(){
   #Set the column width depending on the max length of data as string or the header, whichever is longer.
   col_widths <- mapply(max,
                        col_widths+2, #+2 for quotes ""
-                       nchar(names(clipboard_table))+1) #+1 for "~"
+                       nchar(names(input_table))+1) #+1 for "~"
 
   #Header
   header <- "tibble::tribble(\n"
@@ -57,7 +57,7 @@ tribble_paste <- function(){
                         paste0(
                           mapply(
                             pad_to,
-                            paste0("~",names(clipboard_table)),
+                            paste0("~",names(input_table)),
                             col_widths
                           ),
                           ","
@@ -68,11 +68,11 @@ tribble_paste <- function(){
                 )
 
   #Parse data types from string using readr::parse_guess
-  clipboard_table_types <- lapply(clipboard_table, readr::guess_parser)
+  input_table_types <- lapply(input_table, readr::guess_parser)
 
 
   #Write correct data types
-  body_rows <- lapply(X = as.data.frame(t(clipboard_table), stringsAsFactors = FALSE),
+  body_rows <- lapply(X = as.data.frame(t(input_table), stringsAsFactors = FALSE),
                       FUN =
                         function(col){
                           paste0(strrep(" ",indent_context+nspc),
@@ -81,7 +81,7 @@ tribble_paste <- function(){
                                      mapply(
                                        render_type_pad_to,
                                        col,
-                                       clipboard_table_types,
+                                       input_table_types,
                                        col_widths
                                      ),
                                      ","

@@ -5,12 +5,12 @@
 #'
 df_paste <- function() {
 
-  clipboard_table <- tryCatch({
+  input_table <- tryCatch({
     read_clip_tbl_guess()
   }, error = function(e) {
     return(NULL)
   })
-  if (is.null(clipboard_table)) {
+  if (is.null(input_table)) {
     if (!clipr::clipr_available())
       message("Clipboard is not available. Is R running in RStudio Server or a C.I. machine?")
     else message("Could not paste clipboard as data.frame. Text could not be parsed as table.")
@@ -26,7 +26,7 @@ df_paste <- function() {
     indent_context <- attr(regexpr("^\\s+", context$contents[context_row]),"match.length")+1 #first pos = 1 not 0
   }
 
-  cols <- as.list(clipboard_table)
+  cols <- as.list(input_table)
   col_types <- lapply(cols, readr::guess_parser)
   contains_chars <- any(col_types == "character") #we'll need to add stringsAsFactors=FALSE if so.
   #convert the column lists to guessed types.

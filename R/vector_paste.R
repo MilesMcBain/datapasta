@@ -8,12 +8,12 @@
 #'
 vector_paste <- function(){
 
-  clipboard_vector <- parse_vector()
-  vector_type <- attr(clipboard_vector, "type")
+  input_vector <- parse_vector()
+  vector_type <- attr(input_vector, "type")
 
   vector_form <- paste0("c(",
     paste0(
-      lapply(clipboard_vector, render_type, vector_type),
+      lapply(input_vector, render_type, vector_type),
       collapse = ", "),
     ")"
   )
@@ -30,8 +30,8 @@ vector_paste <- function(){
 #' @export
 #'
 vector_paste_vertical <- function(){
-  clipboard_vector <- parse_vector()
-  vector_type <- attr(clipboard_vector, "type")
+  input_vector <- parse_vector()
+  vector_type <- attr(input_vector, "type")
 
   nspc <- .rs.readUiPref('num_spaces_for_tab')
   context <- rstudioapi::getActiveDocumentContext()
@@ -44,7 +44,7 @@ vector_paste_vertical <- function(){
 
   vector_form <- paste0("c(",
                     paste0(
-                      lapply(clipboard_vector, render_type, vector_type),
+                      lapply(input_vector, render_type, vector_type),
                       collapse = paste0(",\n",strrep(" ", indent_context + 2)) #2 to align for 'c('
                     ),
                     ")"
@@ -73,17 +73,17 @@ parse_vector <- function(){
   }
 
   if(length(clipboard_string) == 1){
-    clipboard_vector <- unlist(
+    input_vector <- unlist(
       strsplit(
         x = clipboard_string,
         split = "\t|,|\\|",
         perl= TRUE)
     )
   }else{
-    clipboard_vector <- clipboard_string
+    input_vector <- clipboard_string
   }
-  vector_type <- readr::guess_parser(clipboard_vector)
+  vector_type <- readr::guess_parser(input_vector)
 
-  attr(clipboard_vector, "type") <- vector_type
-  clipboard_vector
+  attr(input_vector, "type") <- vector_type
+  input_vector
 }
