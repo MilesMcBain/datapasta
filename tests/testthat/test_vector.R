@@ -118,3 +118,7 @@ test_that("vector_construct handles leading and lagging whitespace on unquoted c
   )
 })
 
+test_that("vector_construct splits appart and parses input character arguments of length 1",{
+  expect_equal({eval(parse(text = vector_construct("1,2,3,4")))},
+               {c(1L, 2L, 3L, 4L)})
+})
