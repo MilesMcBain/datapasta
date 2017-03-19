@@ -9,8 +9,7 @@ globalVariables(c(".rs.readUiPref",".global_datapasta_env"), "datapasta") #ignor
 #' @return The parsed table text. Useful for testing.
 #' @export
 #'
-tribble_paste <- function(input_table){
-  output_context <- guess_output_context() #rstudioapi if available or console
+tribble_paste <- function(input_table, output_context = guess_output_context()){
   output <- tribble_construct(input_table, oc = output_context)
 
   switch(output_context$output_mode,
@@ -18,8 +17,8 @@ tribble_paste <- function(input_table){
          console = cat(output))
 }
 
-tribble_format <- function(input_table){
-  output <- tribble_construct(input_table, oc = clipboard_context())
+tribble_format <- function(input_table, output_context = clipboard_context()){
+  output <- tribble_construct(input_table, oc = output_context)
   clipr::write_clip(output)
 }
 
@@ -315,6 +314,11 @@ rstudio_context <- function(){
 
 console_context <- function(){
   output_context <- list(output_mode = "console", nspc = 2, indent_context = 0)
+  output_context
+}
+
+stackoverflow_context <- function(){
+  output_context <- list(output_mode = "console", nspc = 2, indent_context = 4)
   output_context
 }
 

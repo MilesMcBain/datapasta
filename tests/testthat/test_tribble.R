@@ -149,7 +149,7 @@ test_that("The decimal mark is returned to .", {
   )
 })
 
-test_that("tribble_paste() input table arguments can render correctly as tribbles",
+test_that("tribble_paste() input data.framess can render correctly as tribbles",
           {
             expect_equal(
               {
@@ -161,4 +161,36 @@ test_that("tribble_paste() input table arguments can render correctly as tribble
             )
           })
 
+test_that("Input tibbles with basic char, int, double render as tibbles transparently",
+          {
+            expect_equal(
+              {
+                eval( parse(text = tribble_construct(tibble::tribble(
+                  ~char, ~int,  ~dbl,
+                  "a",   1L,   1.1,
+                  "b",   3L,   3.3
+                ))) )
+              },
+              {
+                tibble::tribble(
+                  ~char, ~int,  ~dbl,
+                  "a",   1L,   1.1,
+                  "b",   3L,   3.3
+                )
+              }
+            )
+          })
 
+test_that("Attempting to input non-table generates a message",
+{
+  suppressWarnings(
+    expect_message(tribble_construct(as.list(datasets::mtcars)),"Could not format input_table as table")
+  )
+})
+
+test_that("Attempting to input a large table generates a message",
+{
+  suppressWarnings(
+    expect_message(tribble_construct(tibble(col1 = seq_len(400))),"Supplied large input_table")
+  )
+})
