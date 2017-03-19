@@ -9,7 +9,20 @@ globalVariables(c(".rs.readUiPref",".global_datapasta_env"), "datapasta") #ignor
 #' @return The parsed table text. Useful for testing.
 #' @export
 #'
-tribble_paste <- function(input_table){
+tribble_paste <- function(input_table, output_context = guess_output_context()){
+  output <- tribble_construct(input_table, oc = output_context)
+
+  switch(output_context$output_mode,
+         rstudioapi = rstudioapi::insertText(output),
+         console = cat(output))
+}
+
+tribble_format <- function(input_table, output_context = console_context()){
+  output <- tribble_construct(input_table, oc = output_context)
+  clipr::write_clip(output)
+}
+
+tribble_construct <- function(input_table, oc = console_context()){
   # Determine input. Either clipboard or supplied table.
   if(missing(input_table)){
     input_table <- tryCatch({read_clip_tbl_guess()},
@@ -38,9 +51,6 @@ tribble_paste <- function(input_table){
     input_table <- as.data.frame(lapply(input_table, as.character), stringsAsFactors = FALSE)
   }
 
-  # Determine output. Either rstudioapi or console
-  oc <- get_output_context()
-
   #Find the max length of data as string in each column
   col_widths <- vapply(X = input_table,
                        FUN.VALUE = numeric(1),
@@ -61,7 +71,7 @@ tribble_paste <- function(input_table){
                        nchar(names(input_table))+1) #+1 for "~"
 
   #Header
-  header <- "tibble::tribble(\n"
+  header <- paste0(ifelse(oc$indent_head, yes = strrep(" ", oc$indent_context), no = ""), "tibble::tribble(\n")
 
   #Column names
   names_row <- paste0(
@@ -116,14 +126,8 @@ tribble_paste <- function(input_table){
   footer <- paste0(strrep(" ",oc$indent_context+oc$nspc),")")
   output <- paste0(header, names_row, body_rows, footer)
 
-  #output depending on mode
-  switch(oc$output_mode,
-         rstudioapi = rstudioapi::insertText(output),
-         console = cat(output))
-
   return(invisible(output))
 }
-
 
 #' pad_to
 #' @description Left pad string to a certain size. A helper function for getting spacing in table correct.
@@ -274,29 +278,52 @@ set_decimal_mark <- function(mark){
   invisible(NULL)
 }
 
-#' get_output_context
+#' guess_output_context
 #'
-#' @description Return the a list containing the output target context, either rstudio or the console.
+#' @description Return the a list containing the guessed output target context, either rstudio or the console.
 #'
 #' @return a list containint the output target, space size of indent, and number of indents at context.
-get_output_context <- function(){
-  output_context <- list()
+guess_output_context <- function(){
   if(require("rstudioapi", quietly = TRUE) && rstudioapi::isAvailable()){
-    # rstudioapi available, determine the output context.
-    output_context$output_mode <- "rstudioapi"
-    output_context$nspc <- .rs.readUiPref('num_spaces_for_tab')
-    context <- rstudioapi::getActiveDocumentContext()
-    context_row <- context$selection[[1]]$range$start["row"]
-    if(all(context$selection[[1]]$range$start == context$selection[[1]]$range$end)){
-      output_context$indent_context <- nchar(context$contents[context_row])
-    } else{
-      output_context$indent_context <- attr(regexpr("^\\s+", context$contents[context_row]),"match.length")+1 #first pos = 1 not 0
-    }
+    output_context <- rstudio_context()
   }else{
-    # rstudioapi unavailable.
-    output_context$output_mode <- "console"
-    output_context$nspc <- 2
-    output_context$indent_context <- 0
+    # rstudioapi unavailable. fallback to console
+    output_context <- console_context()
   }
+  output_context
+}
+
+clipboard_context <- function(){
+  output_context <- list(output_mode = "clipboard", nspc = 2, indent_context = 0, indent_head = FALSE)
+  output_context
+}
+
+rstudio_context <- function(){
+  output_context <- list()
+  output_context$indent_head <- FALSE #head already at cursor
+  output_context$output_mode <- "rstudioapi"
+  output_context$nspc <- .rs.readUiPref('num_spaces_for_tab')
+  context <- rstudioapi::getActiveDocumentContext()
+  context_row <- context$selection[[1]]$range$start["row"]
+  if(all(context$selection[[1]]$range$start == context$selection[[1]]$range$end)){
+    output_context$indent_context <- nchar(context$contents[context_row])
+  } else{
+    output_context$indent_context <- attr(regexpr("^\\s+", context$contents[context_row]),"match.length")+1 #first pos = 1 not 0
+  }
+  output_context
+}
+
+console_context <- function(){
+  output_context <- list(output_mode = "console", nspc = 2, indent_context = 0, indent_head = FALSE)
+  output_context
+}
+
+stackoverflow_context <- function(){
+  output_context <- list(output_mode = "console", nspc = 2, indent_context = 4, indent_head = TRUE)
+  output_context
+}
+
+custom_context <- function(output_mode = "console", nspc = 2, indent_context = 0, indent_head = TRUE){
+  output_context <- list(output_mode = output_mode, nspc = nspc, indent_context = indent_context, indent_head = indent_head)
   output_context
 }
