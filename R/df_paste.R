@@ -1,5 +1,8 @@
 #' df_paste
-#' @description Parse the current clipboard as a table and paste in at the cursor location in data.frame format.
+#' @description Parse either: the current clipboard, or a supplied argument, as a table and paste in at the cursor location in data.frame format.
+#' @param input_table an optional input tibble or data.frame to format.
+#' @param output_context an optional output context that defines the target and indentation.
+#' The default behaviour is target the rstudioapi and fall back to console if it is not available.
 #' @return the text pasted to the console. Useful for testing purposes.
 #' @export
 #'
@@ -12,11 +15,24 @@ df_paste <- function(input_table, output_context = guess_output_context()){
          console = cat(output))
 }
 
+#' df_format
+#' @description Parse the current clipboard as a table and paste to the clipboard in data.frame format.
+#' @param input_table an optional input tibble or data.frame to format.
+#' @param output_context an optional output context that defines the target and indentation.
+#' @return the text pasted to the console. Useful for testing purposes.
+#' @export
+#'
 df_format <- function(input_table, output_context = clipboard_context()){
   output <- df_construct(input_table, oc = output_context)
   clipr::write_clip(output)
 }
 
+#' df_construct
+#' @description Parse the current clipboard as a table and return in data.frame format.
+#' @param output_context an optional output context that defines the target and indentation.
+#' @return the text pasted to the console. Useful for testing purposes.
+#' @export
+#'
 df_construct <- function(input_table, oc = console_context()) {
 
   if(missing(input_table)){
