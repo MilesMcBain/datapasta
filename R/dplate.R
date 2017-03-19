@@ -2,7 +2,7 @@
 #'
 #' @param input a vector, data.frame, or tibble
 #'
-#' @description Formats input for presetation in mardkown as a preformatted chunk and inserts it onto the clipboard. Ready for pasting to Stack Overflow or Github.
+#' @description Plates up input for presentation in mardkown as a preformatted chunk and inserts it onto the clipboard. Ready for pasting to Stack Overflow or Github.
 #' @return nothing
 #'
 #' @examples
