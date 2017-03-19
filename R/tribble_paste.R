@@ -318,7 +318,7 @@ console_context <- function(){
   output_context
 }
 
-stackoverflow_context <- function(){
+markdown_context <- function(){
   output_context <- list(output_mode = "console", nspc = 2, indent_context = 4, indent_head = TRUE)
   output_context
 }

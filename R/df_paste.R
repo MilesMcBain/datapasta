@@ -14,7 +14,7 @@ df_paste <- function(input_table, output_context = guess_output_context()){
 
 df_format <- function(input_table, output_context = clipboard_context()){
   output <- df_construct(input_table, oc = output_context)
-  clipr::write_clip()
+  clipr::write_clip(output)
 }
 
 df_construct <- function(input_table, oc = console_context()) {
