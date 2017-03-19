@@ -3,8 +3,7 @@
 #' @return the text pasted to the console. Useful for testing purposes.
 #' @export
 #'
-df_paste <- function(input_table){
-  output_context <- guess_output_context()
+df_paste <- function(input_table, output_context = guess_output_context()){
   output <- df_construct(input_table, oc = output_context)
 
   #output depending on mode
@@ -13,8 +12,8 @@ df_paste <- function(input_table){
          console = cat(output))
 }
 
-df_format <- function(input_table){
-  output <- df_construct(input_table, oc = clipboard_context())
+df_format <- function(input_table, output_context = clipboard_context()){
+  output <- df_construct(input_table, oc = output_context)
   clipr::write_clip()
 }
 
@@ -82,7 +81,8 @@ df_construct <- function(input_table, oc = console_context()) {
   list_of_cols <- lapply(list_of_cols, function(X) gsub("\n", "", X))
 
   output <- paste0(
-    paste0(paste0("data.frame(",ifelse(contains_chars, yes = "stringsAsFactors=FALSE,", no=""),"\n"),
+    paste0(paste0(ifelse(oc$indent_head, yes = strrep(" ", oc$indent_context), no = ""),
+                  "data.frame(",ifelse(contains_chars, yes = "stringsAsFactors=FALSE,", no=""),"\n"),
            paste0(sapply(list_of_cols[1:(length(list_of_cols) - 1)], function(x) tortellini(x, indent_context = oc$indent_context, add_comma = TRUE)), collapse = ""),
            paste0(sapply(list_of_cols[length(list_of_cols)], function(x) tortellini(x, indent_context = oc$indent_context, add_comma = FALSE))),
            strrep(" ", oc$indent_context),")"

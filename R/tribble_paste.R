@@ -17,7 +17,7 @@ tribble_paste <- function(input_table, output_context = guess_output_context()){
          console = cat(output))
 }
 
-tribble_format <- function(input_table, output_context = clipboard_context()){
+tribble_format <- function(input_table, output_context = console_context()){
   output <- tribble_construct(input_table, oc = output_context)
   clipr::write_clip(output)
 }
@@ -71,7 +71,7 @@ tribble_construct <- function(input_table, oc = console_context()){
                        nchar(names(input_table))+1) #+1 for "~"
 
   #Header
-  header <- "tibble::tribble(\n"
+  header <- paste0(ifelse(oc$indent_head, yes = strrep(" ", oc$indent_context), no = ""), "tibble::tribble(\n")
 
   #Column names
   names_row <- paste0(
@@ -294,12 +294,13 @@ guess_output_context <- function(){
 }
 
 clipboard_context <- function(){
-  output_context <- list(output_mode = "clipboard", nspc = 2, indent_context = 0)
+  output_context <- list(output_mode = "clipboard", nspc = 2, indent_context = 0, indent_head = FALSE)
   output_context
 }
 
 rstudio_context <- function(){
   output_context <- list()
+  output_context$indent_head <- FALSE #head already at cursor
   output_context$output_mode <- "rstudioapi"
   output_context$nspc <- .rs.readUiPref('num_spaces_for_tab')
   context <- rstudioapi::getActiveDocumentContext()
@@ -313,16 +314,16 @@ rstudio_context <- function(){
 }
 
 console_context <- function(){
-  output_context <- list(output_mode = "console", nspc = 2, indent_context = 0)
+  output_context <- list(output_mode = "console", nspc = 2, indent_context = 0, indent_head = FALSE)
   output_context
 }
 
 stackoverflow_context <- function(){
-  output_context <- list(output_mode = "console", nspc = 2, indent_context = 4)
+  output_context <- list(output_mode = "console", nspc = 2, indent_context = 4, indent_head = TRUE)
   output_context
 }
 
-custom_context <- function(output_mode = "console", nspc = 2, indent_context = 0){
-  output_context <- list(output_mode = output_mode, nspc = nspc, indent_context = indent_context)
+custom_context <- function(output_mode = "console", nspc = 2, indent_context = 0, indent_head = TRUE){
+  output_context <- list(output_mode = output_mode, nspc = nspc, indent_context = indent_context, indent_head = indent_head)
   output_context
 }

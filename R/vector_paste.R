@@ -6,9 +6,8 @@
 #' @return nothing.
 #' @export
 #'
-vector_paste <- function(input_vector){
-  output_context <- guess_output_context()
-  vector_form <- vector_construct(input_vector)
+vector_paste <- function(input_vector, output_context = guess_output_context()){
+  vector_form <- vector_construct(input_vector, oc = output_context)
 
   #output depending on mode
   switch(output_context$output_mode,
@@ -16,22 +15,27 @@ vector_paste <- function(input_vector){
          console = cat(vector_form))
 }
 
-vector_format <- function(input_vector){
-  vector_form <- vector_construct(input_vector)
+vector_format <- function(input_vector, output_context = console_context()){
+  vector_form <- vector_construct(input_vector, output_context)
   clipr::write_clip(vector_form)
 }
 
-vector_construct <- function(input_vector){
+vector_construct <- function(input_vector, oc = console_context()){
 
   if( missing(input_vector) ){
     input_vector <- parse_vector()
     vector_type <- readr::guess_parser(input_vector)
   }else{
-    vector_type <- class(input_vector)
-    input_vector = as.character(input_vector)
+    if(class(input_vector) == "character" && length(input_vector == 1)){ #Passed in a single string, going to try to break it up.
+      input_vector <- parse_vector(input_vector)
+      vector_type <- readr::guess_parser(input_vector)
+    }else{ #You passed in a vector assume you have it delimited and set to a type you want.
+      vector_type <- class(input_vector)
+      input_vector <- as.character(input_vector)
+      }
   }
 
-  vector_form <- paste0("c(",
+  vector_form <- paste0(ifelse(oc$indent_head, yes = strrep(" ", oc$indent_context), no = ""), "c(",
                         paste0(
                           lapply(input_vector, render_type, vector_type),
                           collapse = ", "),
@@ -48,8 +52,7 @@ vector_construct <- function(input_vector){
 #' @return nothing.
 #' @export
 #'
-vector_paste_vertical <- function(input_vector){
-  output_context <- guess_output_context()
+vector_paste_vertical <- function(input_vector, output_context = guess_output_context()){
   vector_form <- vector_construct_vertical(input_vector, output_context)
 
   #output depending on mode
@@ -58,8 +61,7 @@ vector_paste_vertical <- function(input_vector){
          console = cat(vector_form))
 }
 
-vector_format_vertical <- function(input_vector){
-  output_context <- clipboard_context()
+vector_format_vertical <- function(input_vector, output_context = clipboard_context()){
   vector_form <- vector_construct_vertical(input_vector, output_context)
   clipr::write_clip(vector_form)
 }
@@ -73,7 +75,7 @@ vector_construct_vertical <- function(input_vector, oc = console_context()){
     input_vector = as.character(input_vector)
   }
 
-  vector_form <- paste0("c(",
+  vector_form <- paste0(ifelse(oc$indent_head, yes = strrep(" ", oc$indent_context), no = ""), "c(",
                         paste0(
                           lapply(input_vector, render_type, vector_type),
                           collapse = paste0(",\n",strrep(" ", oc$indent_context + 2)) #2 to align for 'c('
@@ -92,26 +94,28 @@ vector_construct_vertical <- function(input_vector, oc = console_context()){
 #' character vector. The type attribute contains the type guessed by `readr`.
 #'
 #'
-parse_vector <- function(){
-  clipboard_string <- tryCatch({clipr::read_clip()},
-                               error = function(e) {
-                                   return(NULL)
-                               })
-  if(is.null(clipboard_string)){
-      if(!clipr::clipr_available()) message("Clipboard is not available. Is R running in RStudio Server or a C.I. machine?")
-      else message("Could not paste clipboard as a vector. Text could not be parsed.")
-      return(NULL)
+parse_vector <- function(input_vector){
+  if(missing(input_vector)){
+    input_vector <- tryCatch({clipr::read_clip()},
+                                 error = function(e) {
+                                     return(NULL)
+                                 })
+    if(is.null(input_vector)){
+        if(!clipr::clipr_available()) message("Clipboard is not available. Is R running in RStudio Server or a C.I. machine?")
+        else message("Could not paste clipboard as a vector. Text could not be parsed.")
+        return(NULL)
+    }
   }
 
-  if(length(clipboard_string) == 1){
+  if(length(input_vector) == 1){
     input_vector <- trimws(unlist(
       strsplit(
-        x = clipboard_string,
+        x = input_vector,
         split = "\t|,",
         perl= TRUE))
     )
   }else{
-    input_vector <- trimws(clipboard_string)
+    input_vector <- trimws(input_vector)
   }
   #strip ending comma delim
   input_vector <- ifelse(grepl(pattern = ",$", input_vector),
