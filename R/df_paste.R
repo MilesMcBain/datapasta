@@ -3,7 +3,7 @@
 #' @param input_table an optional input tibble or data.frame to format.
 #' @param output_context an optional output context that defines the target and indentation.
 #' The default behaviour is target the rstudioapi and fall back to console if it is not available.
-#' @return the text pasted to the console. Useful for testing purposes.
+#' @return nothing.
 #' @export
 #'
 df_paste <- function(input_table, output_context = guess_output_context()){
@@ -19,7 +19,7 @@ df_paste <- function(input_table, output_context = guess_output_context()){
 #' @description Parse the current clipboard as a table and paste to the clipboard in data.frame format.
 #' @param input_table an optional input tibble or data.frame to format.
 #' @param output_context an optional output context that defines the target and indentation.
-#' @return the text pasted to the console. Useful for testing purposes.
+#' @return nothing.
 #' @export
 #'
 df_format <- function(input_table, output_context = clipboard_context()){
@@ -30,7 +30,7 @@ df_format <- function(input_table, output_context = clipboard_context()){
 #' df_construct
 #' @description Parse the current clipboard as a table and return in data.frame format.
 #' @param output_context an optional output context that defines the target and indentation.
-#' @return the text pasted to the console. Useful for testing purposes.
+#' @return a character string containing the input formatted as a data.frame definition.
 #' @export
 #'
 df_construct <- function(input_table, oc = console_context()) {
