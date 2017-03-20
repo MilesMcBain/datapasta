@@ -5,7 +5,7 @@
 #' @description Plates up input for presentation in mardkown as a preformatted chunk and inserts it onto the clipboard. Ready for pasting to Stack Overflow or Github.
 #' @return nothing
 #'
-#' @examples
+#' @export
 dplate <- function(input){
   if(tibble::is_tibble(input)){
     tribble_format(input, output_context = markdown_context())
