@@ -54,8 +54,8 @@ df_construct <- function(input_table, oc = console_context()) {
       message("Could not format input_table as table. Unexpected class.")
       return(NULL)
     }
-    if(nrow(input_table) >= 200){
-      message("Supplied large input_table (>= 200 rows). Was this a mistake? Large tribble() output is not supported.")
+    if(nrow(input_table) >= .global_datapasta_env$max_rows){
+      message(paste0("Supplied large input_table (>=", .global_datapasta_env$max_rows ," rows). Was this a mistake? Large data.frame() output is not supported."))
       return(NULL)
     }
     col_types <- lapply(input_table, class)

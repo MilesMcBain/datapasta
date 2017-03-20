@@ -1,6 +1,7 @@
 globalVariables(c(".rs.readUiPref",".global_datapasta_env"), "datapasta") #ignore this function in R CMD checks, since it is part of RStudio runtime
 .global_datapasta_env <- new.env(parent=emptyenv())
 .global_datapasta_env$decimal_mark <- "."
+.global_datapasta_env$max_rows <- 200
 
 #' tribble_paste
 #' @description Parse the current clipboard as a table, or use the table argument supplied, and paste in at the cursor location in tribbble format.
@@ -42,8 +43,8 @@ tribble_construct <- function(input_table, oc = console_context()){
       message("Could not format input_table as table. Unexpected class.")
       return(NULL)
     }
-    if(nrow(input_table) >= 200){
-      message("Supplied large input_table (>= 200 rows). Was this a mistake? Large tribble() output is not supported.")
+    if(nrow(input_table) >= .global_datapasta_env$max_rows){
+      message(paste0("Supplied large input_table (>= ",.global_datapasta_env$max_rows," rows). Was this a mistake? Large tribble() output is not supported."))
       return(NULL)
     }
     input_table_types <- lapply(input_table, class)
@@ -267,14 +268,25 @@ read_clip_tbl_guess <- function (x = clipr::read_clip(), ...)
 
 #' set_decimal_mark
 #'
-#' @param mark
-#' @description A function to optionally set the decimal mark if in a locale where it is not `.`. Will allow "3,14" to be parsed as 3.14.
+#' @param mark The decimal mark to use when parsing "number" type data, as guessed by readr::guess_parser.
+#' @description A function to optionally set the decimal mark if in a locale where it is not `.`. Will allow "3,14" to be parsed as 3.14, normally would be parsed as 314.
 #' Will also handle spaces in numbers.
 #'
 #' @return NULL.
 #' @export
 set_decimal_mark <- function(mark){
   .global_datapasta_env$decimal_mark <- mark
+  invisible(NULL)
+}
+
+#' set_max_rows
+#'
+#' @param num_rows The number of rows of an input at which any of tribble_construct() or df_contruct() will abort parsing. Use at own risk.
+#'
+#' @return NULL
+#' @export
+set_max_rows <- function(num_rows){
+  .global_datapasta_env$max_rows <- num_rows
   invisible(NULL)
 }
 
