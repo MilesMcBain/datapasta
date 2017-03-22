@@ -28,7 +28,7 @@ vector_paste <- function(input_vector, output_context = guess_output_context()){
 #' @param input_vector An input vector to be formatted for output. If supplied, no data is read from the clipboard.
 #' @param output_context an optional output context that defines the output indentation.
 #' @return nothing.
-#' @export
+#'
 #'
 vector_format <- function(input_vector, output_context = console_context()){
   vector_form <- vector_construct(input_vector, output_context)
@@ -100,7 +100,7 @@ vector_paste_vertical <- function(input_vector, output_context = guess_output_co
 #' @param output_context an optional output context that defines the output target and indentation.
 #' The default behaviour is target the rstudioapi and fall back to console if it is not available.
 #' @return nothing.
-#' @export
+#'
 #'
 vector_format_vertical <- function(input_vector, output_context = clipboard_context()){
   vector_form <- vector_construct_vertical(input_vector, output_context)

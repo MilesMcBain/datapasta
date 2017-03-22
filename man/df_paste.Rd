@@ -4,12 +4,18 @@
 \alias{df_paste}
 \title{df_paste}
 \usage{
-df_paste()
+df_paste(input_table, output_context = guess_output_context())
+}
+\arguments{
+\item{input_table}{an optional input tibble or data.frame to format.}
+
+\item{output_context}{an optional output context that defines the target and indentation.
+The default behaviour is target the rstudioapi and fall back to console if it is not available.}
 }
 \value{
-the text pasted to the console. Useful for testing purposes.
+nothing.
 }
 \description{
-Parse the current clipboard as a table and paste in at the cursor location in data.frame format.
+Parse either: the current clipboard, or a supplied argument, as a table and paste in at the cursor location in data.frame format.
 }
 

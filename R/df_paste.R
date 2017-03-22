@@ -20,7 +20,6 @@ df_paste <- function(input_table, output_context = guess_output_context()){
 #' @param input_table an optional input tibble or data.frame to format.
 #' @param output_context an optional output context that defines the target and indentation.
 #' @return nothing.
-#' @export
 #'
 df_format <- function(input_table, output_context = clipboard_context()){
   output <- df_construct(input_table, oc = output_context)

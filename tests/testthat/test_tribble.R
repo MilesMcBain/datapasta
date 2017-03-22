@@ -124,8 +124,8 @@ test_that("Data with all rows ending in commas (empty final column) has separato
 })
 
 test_that("Data with a comma decimal mark can be parsed correctly", {
-  set_decimal_mark(",")
-  on.exit(set_decimal_mark("."))
+  dp_set_decimal_mark(",")
+  on.exit(dp_set_decimal_mark("."))
   expect_equal(
     {clipr::write_clip(readr::read_lines(file = "./comma_delim.txt"))
       eval(parse(text = tribble_construct()))},

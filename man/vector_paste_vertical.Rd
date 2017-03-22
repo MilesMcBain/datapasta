@@ -4,13 +4,25 @@
 \alias{vector_paste_vertical}
 \title{vector_paste_vertical}
 \usage{
-vector_paste_vertical()
+vector_paste_vertical(input_vector, output_context = guess_output_context())
+}
+\arguments{
+\item{input_vector}{An input vector to be formatted for output. If supplied, no data is read from the clipboard.}
+
+\item{output_context}{an optional output context that defines the output target and indentation.
+The default behaviour is target the rstudioapi and fall back to console if it is not available.}
 }
 \value{
 nothing.
 }
 \description{
-Pastes data from clipboard as a vertically formatted character vector on
-a multiple lines. One line is used per element. Considers , | tab newline as delimeters.
+Pastes data, either from clipboard or supplied argument, as a vertically formatted character vector over many lines. Considers `,`, `tab`, `newline` as delimeters. If a single character string is passed as an argument, it will be split to form a vector.
+}
+\examples{
+vector_paste_vertical("1, 2, 3, 4")
+c(1L,
+  2L,
+  3L,
+  4L)
 }
 

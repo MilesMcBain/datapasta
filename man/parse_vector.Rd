@@ -4,7 +4,7 @@
 \alias{parse_vector}
 \title{parse_vector}
 \usage{
-parse_vector()
+parse_vector(input_vector)
 }
 \value{
 A vector parsed from the clipboard as ether a character string or a

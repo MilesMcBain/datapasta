@@ -7,7 +7,7 @@ globalVariables(c(".rs.readUiPref",".global_datapasta_env"), "datapasta") #ignor
 #' @description Parse the current clipboard as a table, or use the table argument supplied, and paste in at the cursor location in tribbble format.
 #' @param input_table an optional input `data.frame`. If `input_table` is supplied, then nothing is read from the clipboard.
 #' Table is output as `tribble()` call. Useful for creating reproducible examples.
-#' @return The parsed table text. Useful for testing.
+#' @return Nothing.
 #' @export
 #'
 tribble_paste <- function(input_table, output_context = guess_output_context()){
@@ -18,11 +18,23 @@ tribble_paste <- function(input_table, output_context = guess_output_context()){
          console = cat(output))
 }
 
+#' tribble_format
+#' @description Parse the current clipboard as a table, or use the table argument supplied, and paste to the clipboard in tribbble format.
+#' @param input_table an optional input `data.frame`. If `input_table` is supplied, then nothing is read from the clipboard.
+#' Table is output as `tribble()` call. Useful for creating reproducible examples.
+#' @return Nothing.
 tribble_format <- function(input_table, output_context = console_context()){
   output <- tribble_construct(input_table, oc = output_context)
   clipr::write_clip(output)
 }
 
+#' tribble_construct
+#' @description Parse the current clipboard as a table, or use the table argument supplied, and return as a character string.
+#' @param input_table an optional input `data.frame`. If `input_table` is supplied, then nothing is read from the clipboard.
+#' Table is output as `tribble()` call. Useful for creating reproducible examples.
+#' @return The parsed table text.
+#' @export
+#'
 tribble_construct <- function(input_table, oc = console_context()){
   # Determine input. Either clipboard or supplied table.
   if(missing(input_table)){
@@ -266,7 +278,7 @@ read_clip_tbl_guess <- function (x = clipr::read_clip(), ...)
   do.call(utils::read.table, args = .dots)
 }
 
-#' set_decimal_mark
+#' dp_set_decimal_mark
 #'
 #' @param mark The decimal mark to use when parsing "number" type data, as guessed by readr::guess_parser.
 #' @description A function to optionally set the decimal mark if in a locale where it is not `.`. Will allow "3,14" to be parsed as 3.14, normally would be parsed as 314.
@@ -274,18 +286,18 @@ read_clip_tbl_guess <- function (x = clipr::read_clip(), ...)
 #'
 #' @return NULL.
 #' @export
-set_decimal_mark <- function(mark){
+dp_set_decimal_mark <- function(mark){
   .global_datapasta_env$decimal_mark <- mark
   invisible(NULL)
 }
 
-#' set_max_rows
+#' dp_set_max_rows
 #'
-#' @param num_rows The number of rows of an input at which any of tribble_construct() or df_contruct() will abort parsing. Use at own risk.
+#' @param num_rows The number of rows of an input at which any of tribble_construct() or df_contruct() will abort parsing. Datapasta is untested on large tables. Use at own risk.
 #'
 #' @return NULL
 #' @export
-set_max_rows <- function(num_rows){
+dp_set_max_rows <- function(num_rows){
   .global_datapasta_env$max_rows <- num_rows
   invisible(NULL)
 }
