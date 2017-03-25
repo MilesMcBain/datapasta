@@ -149,7 +149,7 @@ tortellini <- function(s, n = 80, indent_context = 0, add_comma = TRUE) {
 
   } else { ## if no splitting is required
 
-    wrapped_s <- s
+    wrapped_s <- paste0(strrep(" ", indent_context), s)
 
   }
 
