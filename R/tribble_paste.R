@@ -336,11 +336,19 @@ guess_output_context <- function(){
   output_context
 }
 
+#' clipboard_context
+#' @rdname custom_context
+#' @export
+#'
 clipboard_context <- function(){
   output_context <- list(output_mode = "clipboard", nspc = 2, indent_context = 0, indent_head = FALSE)
   output_context
 }
 
+#' rstudio_context
+#' @rdname custom_context
+#' @export
+#'
 rstudio_context <- function(){
   output_context <- list()
   output_context$indent_head <- FALSE #head already at cursor
@@ -356,21 +364,42 @@ rstudio_context <- function(){
   output_context
 }
 
+#' console_context
+#' @rdname custom_context
+#' @export
+#'
 console_context <- function(){
   output_context <- list(output_mode = "console", nspc = 2, indent_context = 0, indent_head = FALSE)
   output_context
 }
 
+#' markdown_context
+#' @rdname custom_context
+#' @export
+#'
 markdown_context <- function(){
   output_context <- list(output_mode = "console", nspc = 2, indent_context = 4, indent_head = TRUE)
   output_context
 }
 
+#' custom_context
+#' #' @param output_mode A named output mode, controls the target of the _paste functions options are "rstudioapi" or "console"
+#' @param nspc The number of spaces for each indent level in the output context
+#' @param indent_context The number of spaces applied initially to all lines in the output context
+#' @param indent_head Logical. Apply the indent_context to the to the header row? Use FALSE if targetting cursor location.
+#' @return an output context. An input to _paste, _format, _contruct functions used to formatt whitespace.
+#' @export
+#'
 custom_context <- function(output_mode = "console", nspc = 2, indent_context = 0, indent_head = TRUE){
   output_context <- list(output_mode = output_mode, nspc = nspc, indent_context = indent_context, indent_head = indent_head)
   output_context
 }
 
+#' Title
+#'
+#' @param char_vec a character string with characters that may need escaping (eg. `"`)
+#'
+#' @return the original char_vec with an extra "\" inserted before each character that needs escaping.
 escape_chars <- function(char_vec){
   gsub(pattern = "(\"|\')", replacement = "\\\\\\1", x = char_vec, fixed = FALSE)
 }
