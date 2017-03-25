@@ -188,6 +188,36 @@ test_that("Attempting to input non-table generates a message",
   )
 })
 
+test_that("Quotes \' in input are escaped",
+          {
+            expect_equal({
+              clipr::write_clip("a,b,c\nthis,is,testing\nnow,you\'re,testing")
+              eval(parse(text = tribble_construct()))
+            },
+            {
+              tibble::tribble(
+                ~a,        ~b,         ~c,
+                "this",      "is",  "testing",
+                "now", "you\'re",  "testing"
+              )
+            })}
+)
+
+test_that("Quotes \" in input are escaped",
+          {
+            expect_equal({
+              clipr::write_clip("a,b,c\nthis,is,testing\nnow,you\"re,testing")
+              eval(parse(text = tribble_construct()))
+              },
+              {
+              tibble::tribble(
+                ~a,        ~b,         ~c,
+                "this",      "is",  "testing",
+                "now",  "you\"re",  "testing"
+              )}
+             )
+          }
+)
 test_that("Attempting to input a large table generates a message",
 {
   suppressWarnings(

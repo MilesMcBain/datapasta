@@ -65,22 +65,23 @@ tribble_construct <- function(input_table, oc = console_context()){
   }
 
   #Find the max length of data as string in each column
-  col_widths <- vapply(X = input_table,
-                       FUN.VALUE = numeric(1),
+  col_widths <- mapply(input_table,
                        FUN =
-                         function(col){nchar
-                           max( vapply(X = col,
-                                       FUN = nchar,
-                                       FUN.VALUE = numeric(1)
+                         function(df_col, df_col_type){
+                           max( vapply(X = df_col,
+                                       FUN = nchar_type,
+                                       FUN.VALUE = numeric(1),
+                                       df_col_type = df_col_type
                                 ),
                            na.rm = TRUE
                            )
-                         }
+                         },
+                       df_col_type = input_table_types
 
   )
   #Set the column width depending on the max length of data as string or the header, whichever is longer.
   col_widths <- mapply(max,
-                       col_widths+2, #+2 for quotes ""
+                       col_widths,
                        nchar(names(input_table))+1) #+1 for "~"
 
   #Header
@@ -142,6 +143,23 @@ tribble_construct <- function(input_table, oc = console_context()){
   return(invisible(output))
 }
 
+
+#' nchar_type
+#'
+#' @param df_col_row a character string
+#' @param df_col_type the type the string will be converted to.
+#'
+#' @return The number of characters wide this data would be in when rendered in text
+nchar_type <- function(df_col_row, df_col_type){
+  n_chars <- nchar(df_col_row)
+  add_chars <- switch(df_col_type,
+                      "integer" = 1, #for the "L",
+                      "character" = 2 + length(gregexpr(pattern = "(\"|\')", text = df_col_row)[[1]]), #2 for outer quotes +1 "\" for each quote in string
+                      0) #0 for other types
+  return(n_chars + add_chars)
+
+}
+
 #' pad_to
 #' @description Left pad string to a certain size. A helper function for getting spacing in table correct.
 #' @param char_vec character vector.
@@ -183,7 +201,7 @@ render_type <- function(char_vec, char_type){
                      "numeric" = as.double(char_vec),
                      "logical" = as.logical(char_vec),
                      "factor" = ifelse(nchar(char_vec)!=0, paste0('"',char_vec,'"'), "NA"),
-                     "character" = ifelse(nchar(char_vec)!=0, paste0('"',char_vec,'"'), "NA"),
+                     "character" = ifelse(nchar(char_vec)!=0, paste0('"',escape_chars(char_vec),'"'), "NA"),
                      "list" = char_vec,
                      paste0('"',char_vec,'"')
     )
@@ -275,6 +293,7 @@ read_clip_tbl_guess <- function (x = clipr::read_clip(), ...)
     .dots$na.strings <- c("NA", "")
   if (is.null(.dots$strip.white))
     .dots$strip.white <- TRUE
+    .dots$quote <-  ""
   do.call(utils::read.table, args = .dots)
 }
 
@@ -351,3 +370,8 @@ custom_context <- function(output_mode = "console", nspc = 2, indent_context = 0
   output_context <- list(output_mode = output_mode, nspc = nspc, indent_context = indent_context, indent_head = indent_head)
   output_context
 }
+
+escape_chars <- function(char_vec){
+  gsub(pattern = "(\"|\')", replacement = "\\\\\\1", x = char_vec, fixed = FALSE)
+}
+
