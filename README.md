@@ -3,9 +3,9 @@
 [![Downloads](http://cranlogs.r-pkg.org/badges/datapasta)](https://CRAN.R-project.org/package=datapasta)
 
 # The Goods
-0 to `datapasta` in 65 seconds:
+0 to `datapasta` in 64 seconds via a video vignette:
 
-[![Datapasta in 65 seconds](http://img.youtube.com/vi/Sz-tEVqZh5s/0.jpg)](https://youtu.be/Sz-tEVqZh5s)
+[![Datapasta in 64 seconds](http://img.youtube.com/vi/Sz-tEVqZh5s/0.jpg)](https://youtu.be/Sz-tEVqZh5s)
 
 # Introducing datapasta
 
@@ -36,7 +36,7 @@ c("Mint",
     - Recommend <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>d</kbd> as shortcut.
     
 ### Getting Data out of an R session
-There are two R functions availabe that accept R objects and output formatted text for pasting to other applications:
+There are two R functions available that accept R objects and output formatted text for pasting to other applications:
 
 * `dpaste` accepts tibbles, data.frames, and vectors. Data is output in a format that matches in input class. Formatted text is pasted at the cursor.
 
@@ -77,6 +77,6 @@ On system without access to the clipboard (or without `clipr` installed) `datapa
 This package is made possible by [mdlincon's clipr](https://github.com/mdlincoln/clipr), and Hadley's packages [tibble](https://github.com/hadley/tibble) and [readr](https://github.com/hadley/tibble) (for data-type guessing). I especially appreciate `clipr's` thoughtful approach to the clipboard on Linux, which pretty much every other R clipboard package just nope'd out on.
 
 # Future developments
-I am interested in expanding the types of objects suported by the output functions `dpaste` and `dmdclip`. Feel free to contribute your ideas to the open issues.
+I am interested in expanding the types of objects supported by the output functions `dpaste` and `dmdclip`. Feel free to contribute your ideas to the open issues.
 
 

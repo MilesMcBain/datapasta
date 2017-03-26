@@ -1,5 +1,5 @@
 Package: datapasta
-Title: RStudio Addins for Data Copy-Pasta
+Title: R functions for Data Copy-Pasta
 Version: 2.0.0
 Authors@R: c(
     person("Miles", "McBain", email = "miles.mcbain@gmail.com", role = c("aut", "cre")),
