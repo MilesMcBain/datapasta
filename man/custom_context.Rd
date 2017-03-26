@@ -6,7 +6,7 @@
 \alias{custom_context}
 \alias{markdown_context}
 \alias{rstudio_context}
-\title{clipboard_context}
+\title{custom_context}
 \usage{
 clipboard_context()
 
@@ -20,6 +20,8 @@ custom_context(output_mode = "console", nspc = 2, indent_context = 0,
   indent_head = TRUE)
 }
 \arguments{
+\item{output_mode}{A named output mode, controls the target of the _paste functions options are "rstudioapi" or "console"}
+
 \item{nspc}{The number of spaces for each indent level in the output context}
 
 \item{indent_context}{The number of spaces applied initially to all lines in the output context}
@@ -30,15 +32,7 @@ custom_context(output_mode = "console", nspc = 2, indent_context = 0,
 an output context. An input to _paste, _format, _contruct functions used to formatt whitespace.
 }
 \description{
-clipboard_context
-
-rstudio_context
-
-console_context
-
-markdown_context
-
-custom_context
-#' @param output_mode A named output mode, controls the target of the _paste functions options are "rstudioapi" or "console"
+the _context fuctions define lists of parameters for text formatting.
+The specific contexts return hard-coded values appropriate to the context they describe, while custom_context allows definition of new contexts for custom formatting.
 }
 

@@ -336,7 +336,6 @@ guess_output_context <- function(){
   output_context
 }
 
-#' clipboard_context
 #' @rdname custom_context
 #' @export
 #'
@@ -345,7 +344,6 @@ clipboard_context <- function(){
   output_context
 }
 
-#' rstudio_context
 #' @rdname custom_context
 #' @export
 #'
@@ -364,7 +362,6 @@ rstudio_context <- function(){
   output_context
 }
 
-#' console_context
 #' @rdname custom_context
 #' @export
 #'
@@ -373,7 +370,6 @@ console_context <- function(){
   output_context
 }
 
-#' markdown_context
 #' @rdname custom_context
 #' @export
 #'
@@ -383,7 +379,10 @@ markdown_context <- function(){
 }
 
 #' custom_context
-#' #' @param output_mode A named output mode, controls the target of the _paste functions options are "rstudioapi" or "console"
+#'
+#' @description the _context fuctions define lists of parameters for text formatting.
+#' The specific contexts return hard-coded values appropriate to the context they describe, while custom_context allows definition of new contexts for custom formatting.
+#' @param output_mode A named output mode, controls the target of the _paste functions options are "rstudioapi" or "console"
 #' @param nspc The number of spaces for each indent level in the output context
 #' @param indent_context The number of spaces applied initially to all lines in the output context
 #' @param indent_head Logical. Apply the indent_context to the to the header row? Use FALSE if targetting cursor location.
