@@ -9,16 +9,18 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-Datapasta provides three Rstudio addins that give you complete freedom copy and paste data into your RStudio scource editor, formatted for immeddiate use. Note: repeated use has been known to cause **titilation** and **giddiness**.
+Datapasta provides RStudio addins and functions that give you complete freedom copy-paste data to and from your source editor, formatted for immediate use. Note: repeated use has been known to cause **titilation** and **giddiness**.
 
 Places I've found this power useful:
 
 * Copying tables from Excel, Jupyter, and websites, where the source file cannot be easily read.
-* Embedding small-ish amounts of raw data from .csv into Rmarkdown files. The file thus constains code documentation and data, attaining the holy trinity of reproducibility.
+* Embedding small-ish amounts of raw data from .csv into Rmarkdown files. The file thus contains code documentation and data, attaining the holy trinity of reproducibility.
 * Quickly pasting vector output from other queries into `dplyr::filter( .. %in% ..)`.
 * Adding datasets to readily reproducible examples for posting to StackOverflow, Slack channels etc.
 
-The addins and their behaviour are now described.
+Typical usage takes full advantage of addins within RStudio, however `datapasta` can be used with any R editor, even just the terminal. The typical RStudio case is described in full detail below, followed by the fallback behaviour.
+
+# Typical Usage with Rstudio
 
 ## Pasting a table as a formatted tibble definition with `tribble_paste()`
 You can copy this html table of Brisbane weather forecasts:
@@ -41,22 +43,22 @@ knitr::kable(tribble(
     ))
 ```
 
-And make this appear in your source editor, at the current cursor:
+And make this appear at the current cursor:
 
 ```{r eval=FALSE}
-tribble(
+tibble::tribble(
                                   ~X,          ~Location, ~Min, ~Max,
-                    "Partly cloudy.",         "Brisbane",   19,   29,
-                    "Partly cloudy.", "Brisbane Airport",   18,   27,
-                  "Possible shower.",       "Beaudesert",   15,   30,
-                    "Partly cloudy.",        "Chermside",   17,   29,
-    "Shower or two. Possible storm.",           "Gatton",   15,   32,
-                  "Possible shower.",          "Ipswich",   15,   30,
-                    "Partly cloudy.",    "Logan Central",   18,   29,
-                     "Mostly sunny.",            "Manly",   20,   26,
-                    "Partly cloudy.",    "Mount Gravatt",   17,   28,
-                  "Possible shower.",            "Oxley",   17,   30,
-                    "Partly cloudy.",        "Redcliffe",   19,   27
+                    "Partly cloudy.",         "Brisbane",   19L,   29L,
+                    "Partly cloudy.", "Brisbane Airport",   18L,   27L,
+                  "Possible shower.",       "Beaudesert",   15L,   30L,
+                    "Partly cloudy.",        "Chermside",   17L,   29L,
+    "Shower or two. Possible storm.",           "Gatton",   15L,   32L,
+                  "Possible shower.",          "Ipswich",   15L,   30L,
+                    "Partly cloudy.",    "Logan Central",   18L,   29L,
+                     "Mostly sunny.",            "Manly",   20L,   26L,
+                    "Partly cloudy.",    "Mount Gravatt",   17L,   28L,
+                  "Possible shower.",            "Oxley",   17L,   30L,
+                    "Partly cloudy.",        "Redcliffe",   19L,   27L
     )
 ```
 
@@ -64,7 +66,7 @@ tribble(
 
 To paste data as a `tribble()` call, just copy the table header and data rows, then paste into the source editor using the addin `Paste as tribble`. For best results, assign the addin to a memorable keyboard shortcut, e.g. `ctrl + shift + t`. See [Customizing Keyboard Shortcuts ](https://support.rstudio.com/hc/en-us/articles/206382178-Customizing-Keyboard-Shortcuts).
 
-`tribble_paste()` is a flexible function that guesses the separator and types of the data it pulls from the clipboard. Mostly this seems to work well. Ocassionally it epic-fails. The supported separators are `\|` (pipe), `\t` (tab), `,` (comma), `;`(semicolon). Most data copied from the internet or spreadsheets will be tab delimited.
+`tribble_paste()` is a flexible function that guesses the separator and types of the data it pulls from the clipboard. Mostly this seems to work well. Occasionally it epic-fails. The supported separators are `\|` (pipe), `\t` (tab), `,` (comma), `;`(semicolon). Most data copied from the internet or spreadsheets will be tab delimited.
 
 ##Pasting a list as a horizontal vector with `vector_paste()`
 A list could be a row or column of a spreadsheet or intermediate output. With the `Paste as vector` addin you can go from something like:
@@ -74,7 +76,7 @@ Mint	Fedora	Debian	Ubuntu	OpenSUSE
 ```
 or
 ```
-Mint,Fedora,Debian,Ubuntu,OpenSUSE
+Mint, Fedora, Debian, Ubuntu, OpenSUSE
 ```
 or
 ```
@@ -90,7 +92,7 @@ to
 c("Mint", "Fedora", "Debian", "Ubuntu", "OpenSUSE")
 ```
 
-This is pasted into the souce editor at the current cursor.
+This is pasted into the source editor at the current cursor.
 
 Just like `tribble_paste()`, `vector_paste()` has a flexible parser that can guess the type and separator of the data. The supported separators are `\|` (pipe), `\t` (tab), `,` (comma), `;`(semicolon) and end of line. The recommended keyboard shortcut is `crtl + alt + shift + v`.
 
@@ -108,7 +110,7 @@ c("Mint",
 This is much nicer for long lists. I have found this is actually the version I use more often. I recommend using `ctrl + shift + v` as keyboard shortcut.
 
 ##Pasting as a data.frame with `df_paste()`
-The parser here is identical to `tribble_paste()` and has all the same type and separator guessing goodness. The difference is the output will be a formatted call to `base::data.frame()`. Some sensible line wrapping rules etc are implemented. Useful for purists and educators alike. Special thanks to Jonothan Carroll for contributing this feature.
+The parser here is identical to `tribble_paste()` and has all the same type and separator guessing goodness. The difference is the output will be a formatted call to `base::data.frame()`. Some sensible line wrapping rules etc are implemented. Useful for purists and educators alike. Special thanks to Jonathan Carroll for contributing this feature.
 
 So the Brisbane weather table from above becomes:
 ```{r, eval = FALSE}
@@ -126,3 +128,108 @@ data.frame(
 ```
 
 For a shortcut you could try `ctrl + shift + d`.
+
+## Outputting data from your R evironment
+
+### Output to R with `dpasta()`
+All of the above addin functions can be called directly with an R object argument. When run, this will result in the object being output at the current cursor. Usually the next line. To make things more magical, a there is a single function `dpasta` that will match the argument with the appropriate `_paste()` function based on its class. This means:
+
+```{r, eval = FALSE}
+iris %>%
+  head() %>%
+  dpasta()
+```
+
+results in: 
+
+```{r, eval = FALSE}
+data.frame(
+      Sepal.Length = c(5.1, 4.9, 4.7, 4.6, 5, 5.4),
+       Sepal.Width = c(3.5, 3, 3.2, 3.1, 3.6, 3.9),
+      Petal.Length = c(1.4, 1.4, 1.3, 1.5, 1.4, 1.7),
+       Petal.Width = c(0.2, 0.2, 0.2, 0.2, 0.2, 0.4),
+           Species = as.factor(c("setosa", "setosa", "setosa", "setosa", "setosa",
+                                 "setosa"))
+   )
+```
+
+while:
+
+```{r, eval = FALSE}
+mpg %>%
+  select(-class) %>%  #just to fit neatly on this page
+  head() %>%
+  dpasta()
+```
+
+will give you:
+
+```{r, eval = FALSE}
+tibble::tribble(
+     ~manufacturer, ~model, ~displ, ~year, ~cyl,        ~trans, ~drv, ~cty, ~hwy,  ~fl,
+            "audi",   "a4",    1.8, 1999L,   4L,    "auto(l5)",  "f",  18L,  29L,  "p", 
+            "audi",   "a4",    1.8, 1999L,   4L,  "manual(m5)",  "f",  21L,  29L,  "p",
+            "audi",   "a4",      2, 2008L,   4L,  "manual(m6)",  "f",  20L,  31L,  "p",
+            "audi",   "a4",      2, 2008L,   4L,    "auto(av)",  "f",  21L,  30L,  "p",
+            "audi",   "a4",    2.8, 1999L,   6L,    "auto(l5)",  "f",  16L,  26L,  "p",
+            "audi",   "a4",    2.8, 1999L,   6L,  "manual(m5)",  "f",  18L,  26L,  "p"
+     )
+```
+
+## Output to clipboard with `dmdclip()`
+`dmdclip()` can help you take the data to somewhere that uses markdown format, for example a Stack Overflow question or Github issue. This function will copy the resulting formatted data object call to the clipboard, inserting 4 spaces at the head of each line, which is markdown syntax for a pre-formatted block.
+
+So:
+
+```{r, eval = FALSE}
+iris %>%
+  head() %>%
+  dmdclip()
+```
+
+Will paste the following on the clipboard:
+
+```
+    data.frame(
+       Sepal.Length = c(5.1, 4.9, 4.7, 4.6, 5, 5.4),
+        Sepal.Width = c(3.5, 3, 3.2, 3.1, 3.6, 3.9),
+       Petal.Length = c(1.4, 1.4, 1.3, 1.5, 1.4, 1.7),
+        Petal.Width = c(0.2, 0.2, 0.2, 0.2, 0.2, 0.4),
+            Species = as.factor(c("setosa", "setosa", "setosa", "setosa", "setosa",
+                                  "setosa"))
+    )
+```
+
+# Usage without RStudio
+The `rstudioapi` package enables the calling of addins and output to the cursor. If the API is not detected, all the `_paste()` functions, and `dpasta` will output their text to the console, ready for copying and pasting to an editor window.
+
+In this scenario you may wish to avoid installation of the `rstudioapi` package dependency. Use `install.packages("datapsata", dependencies = "Depends")` to avoid API installation, but be sure to follow up with `install.packages(c("readr","clipr"))`. 
+
+*note:* The `dpasta()` function can be used without `clipr` installed, but you're missing out on a fair amount of awesomeness if you limit yourself to that.
+
+## Custom Behaviour for Your Unique Slowflake Setup
+
+Custom behaviour can be created by taking advantage of the `_construct()` variants of the `_paste()` functions, as these return their output as an R object which can then be written to an appropriate buffer or clipboard.
+
+for example, if you copied the Brisbane weather forecast from above to the clipboard and then called:
+```{r, eval = FALSE}
+trib_call <- tribble_construct()
+```
+
+`trib_call` now contains a the tribble call as a character vector. You could then write this with:
+
+```{r, eval = FALSE}
+write(trib_call, file = ..your desired location..)
+#OR
+clipr::write_clip(trib_call) #Send it back to the clipboard.
+```
+
+# Configurable Options
+
+## Upping the row guard
+For your protection, `datapasta` will initially refuse to output R objects of 200 or more rows. Up the row limit for your specific scenario with `dp_set_max_rows(n)`. Large numbers of rows could take a long time to format. In extreme cases you could crash your R/RStudio session.
+
+## Deailing with "," decimal marks
+Use `dp_set_decimal_mark(",")` to handle numbers like `3,14`.
+
+

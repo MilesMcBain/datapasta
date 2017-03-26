@@ -54,7 +54,7 @@ df_construct <- function(input_table, oc = console_context()) {
       return(NULL)
     }
     if(nrow(input_table) >= .global_datapasta_env$max_rows){
-      message(paste0("Supplied large input_table (>=", .global_datapasta_env$max_rows ," rows). Was this a mistake? Large data.frame() output is not supported."))
+      message(paste0("Supplied large input_table (>=", .global_datapasta_env$max_rows ," rows). Was this a mistake? Use dp_set_max_rows(n) to increase the limit."))
       return(NULL)
     }
     col_types <- lapply(input_table, class)
