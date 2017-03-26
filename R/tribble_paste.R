@@ -4,8 +4,9 @@ globalVariables(c(".rs.readUiPref",".global_datapasta_env"), "datapasta") #ignor
 .global_datapasta_env$max_rows <- 200
 
 #' tribble_paste
-#' @description Parse the current clipboard as a table, or use the table argument supplied, and paste in at the cursor location in tribbble format.
+#' @description Parse the current clipboard as a table, or use the table argument supplied, and paste in at the cursor location in tribble format.
 #' @param input_table an optional input `data.frame`. If `input_table` is supplied, then nothing is read from the clipboard.
+#' @param output_context an optional output context that defines the target and indentation. Default is to guess between rstudio and console.
 #' Table is output as `tribble()` call. Useful for creating reproducible examples.
 #' @return Nothing.
 #' @export
@@ -21,6 +22,7 @@ tribble_paste <- function(input_table, output_context = guess_output_context()){
 #' tribble_format
 #' @description Parse the current clipboard as a table, or use the table argument supplied, and paste to the clipboard in tribbble format.
 #' @param input_table an optional input `data.frame`. If `input_table` is supplied, then nothing is read from the clipboard.
+#' @param output_context an optional output context that defines the target and indentation. Default is console.
 #' Table is output as `tribble()` call. Useful for creating reproducible examples.
 #' @return Nothing.
 tribble_format <- function(input_table, output_context = console_context()){
@@ -31,6 +33,7 @@ tribble_format <- function(input_table, output_context = console_context()){
 #' tribble_construct
 #' @description Parse the current clipboard as a table, or use the table argument supplied, and return as a character string.
 #' @param input_table an optional input `data.frame`. If `input_table` is supplied, then nothing is read from the clipboard.
+#' @param oc an optional output context that defines the target and indentation. Default is console.
 #' Table is output as `tribble()` call. Useful for creating reproducible examples.
 #' @return The parsed table text.
 #' @export
@@ -327,7 +330,7 @@ dp_set_max_rows <- function(num_rows){
 #'
 #' @return a list containint the output target, space size of indent, and number of indents at context.
 guess_output_context <- function(){
-  if(require("rstudioapi", quietly = TRUE) && rstudioapi::isAvailable()){
+  if(requireNamespace("rstudioapi", quietly = TRUE) && rstudioapi::isAvailable()){
     output_context <- rstudio_context()
   }else{
     # rstudioapi unavailable. fallback to console

@@ -223,6 +223,6 @@ test_that("Quotes \" in input are escaped",
 test_that("Attempting to input a large table generates a message",
 {
   suppressWarnings(
-    expect_message(tribble_construct(tibble(col1 = seq_len(400))),"Supplied large input_table")
+    expect_message(tribble_construct(data.frame(col1 = seq_len(400))),"Supplied large input_table")
   )
 })

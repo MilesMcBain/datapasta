@@ -6,6 +6,9 @@
 \usage{
 parse_vector(input_vector)
 }
+\arguments{
+\item{input_vector}{an optional character vector to attempt to break up, and escape.}
+}
 \value{
 A vector parsed from the clipboard as ether a character string or a
 character vector. The type attribute contains the type guessed by `readr`.

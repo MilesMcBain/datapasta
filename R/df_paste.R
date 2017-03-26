@@ -28,7 +28,8 @@ df_format <- function(input_table, output_context = clipboard_context()){
 
 #' df_construct
 #' @description Parse the current clipboard as a table and return in data.frame format.
-#' @param output_context an optional output context that defines the target and indentation.
+#' @param input_table an optional R object to parse instead of the clipboard.
+#' @param oc an optional output context that defines the target and indentation.
 #' @return a character string containing the input formatted as a data.frame definition.
 #' @export
 #'

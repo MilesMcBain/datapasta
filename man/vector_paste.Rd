@@ -19,8 +19,4 @@ nothing.
 Pastes data, either from clipboard or supplied argument, as a horizontally formatted character vector on
 a single line. Considers `,`, `tab`, `newline` as delimeters. If a single character string is passed as an argument, it will be split to form a vector.
 }
-\examples{
-vector_paste("1, 2, 3, 4")
-c(1L, 2L, 3L, 4L)
-}
 

@@ -9,7 +9,7 @@ vector_construct_vertical(input_vector, oc = console_context())
 \arguments{
 \item{input_vector}{An input vector to be formatted for output. If supplied, no data is read from the clipboard.}
 
-\item{output_context}{an optional output context that defines the output target and indentation.
+\item{oc}{an optional output context that defines the output target and indentation.
 The default behaviour is target the rstudioapi and fall back to console if it is not available.}
 }
 \value{

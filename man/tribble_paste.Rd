@@ -7,13 +7,15 @@
 tribble_paste(input_table, output_context = guess_output_context())
 }
 \arguments{
-\item{input_table}{an optional input `data.frame`. If `input_table` is supplied, then nothing is read from the clipboard.
+\item{input_table}{an optional input `data.frame`. If `input_table` is supplied, then nothing is read from the clipboard.}
+
+\item{output_context}{an optional output context that defines the target and indentation. Default is to guess between rstudio and console.
 Table is output as `tribble()` call. Useful for creating reproducible examples.}
 }
 \value{
 Nothing.
 }
 \description{
-Parse the current clipboard as a table, or use the table argument supplied, and paste in at the cursor location in tribbble format.
+Parse the current clipboard as a table, or use the table argument supplied, and paste in at the cursor location in tribble format.
 }
 

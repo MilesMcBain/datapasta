@@ -7,7 +7,9 @@
 tribble_format(input_table, output_context = console_context())
 }
 \arguments{
-\item{input_table}{an optional input `data.frame`. If `input_table` is supplied, then nothing is read from the clipboard.
+\item{input_table}{an optional input `data.frame`. If `input_table` is supplied, then nothing is read from the clipboard.}
+
+\item{output_context}{an optional output context that defines the target and indentation. Default is console.
 Table is output as `tribble()` call. Useful for creating reproducible examples.}
 }
 \value{

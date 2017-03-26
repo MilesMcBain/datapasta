@@ -18,11 +18,4 @@ nothing.
 \description{
 Pastes data, either from clipboard or supplied argument, as a vertically formatted character vector over many lines. Considers `,`, `tab`, `newline` as delimeters. If a single character string is passed as an argument, it will be split to form a vector.
 }
-\examples{
-vector_paste_vertical("1, 2, 3, 4")
-c(1L,
-  2L,
-  3L,
-  4L)
-}
 

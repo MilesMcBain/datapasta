@@ -6,10 +6,6 @@
 #' @param output_context an optional output context that defines the output target and indentation.
 #' The default behaviour is target the rstudioapi and fall back to console if it is not available.
 #' @return nothing.
-#'
-#' @examples
-#' vector_paste("1, 2, 3, 4")
-#' c(1L, 2L, 3L, 4L)
 #' @export
 #'
 vector_paste <- function(input_vector, output_context = guess_output_context()){
@@ -40,7 +36,7 @@ vector_format <- function(input_vector, output_context = console_context()){
 #' @description Returns a formatted charcater string, either from clipboard or supplied argument, as a vector definition. Considers `,`, `tab`, `newline` as delimeters.
 #' If a single character string is passed as an argument, it will be split to form a vector.
 #' @param input_vector An input vector to be formatted for output. If supplied, no data is read from the clipboard.
-#' @param output_context an optional output context that defines the output indentation.
+#' @param oc an optional output context that defines the output indentation.
 #' @return A string containing the input formatted as a vector definition.
 #' @export
 #'
@@ -75,12 +71,6 @@ vector_construct <- function(input_vector, oc = console_context()){
 #' @param output_context an optional output context that defines the output target and indentation.
 #' The default behaviour is target the rstudioapi and fall back to console if it is not available.
 #' @return nothing.
-#' @examples
-#' vector_paste_vertical("1, 2, 3, 4")
-#' c(1L,
-#'   2L,
-#'   3L,
-#'   4L)
 #' @export
 #'
 vector_paste_vertical <- function(input_vector, output_context = guess_output_context()){
@@ -112,7 +102,7 @@ vector_format_vertical <- function(input_vector, output_context = clipboard_cont
 #' @description Returns a formatted string, either from clipboard or supplied argument, as a vertically formatted character vector over many lines.
 #' Considers `,`, `tab`, `newline` as delimeters. If a single character string is passed as an argument, it will be split to form a vector.
 #' @param input_vector An input vector to be formatted for output. If supplied, no data is read from the clipboard.
-#' @param output_context an optional output context that defines the output target and indentation.
+#' @param oc an optional output context that defines the output target and indentation.
 #' The default behaviour is target the rstudioapi and fall back to console if it is not available.
 #' @return a string containing the input formatted as a vector definition.
 #' @export
@@ -145,7 +135,7 @@ vector_construct_vertical <- function(input_vector, oc = console_context()){
 #'
 #' @description Pastes data from clipboard as a vertically formatted character vector on
 #' a multiple lines. One line is used per element. Considers , | tab newline as delimeters.
-#'
+#' @param input_vector an optional character vector to attempt to break up, and escape.
 #' @return A vector parsed from the clipboard as ether a character string or a
 #' character vector. The type attribute contains the type guessed by `readr`.
 #'

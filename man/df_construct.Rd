@@ -7,7 +7,9 @@
 df_construct(input_table, oc = console_context())
 }
 \arguments{
-\item{output_context}{an optional output context that defines the target and indentation.}
+\item{input_table}{an optional R object to parse instead of the clipboard.}
+
+\item{oc}{an optional output context that defines the target and indentation.}
 }
 \value{
 a character string containing the input formatted as a data.frame definition.
