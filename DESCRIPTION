@@ -4,7 +4,7 @@ Version: 2.0.0
 Authors@R: c(
     person("Miles", "McBain", email = "miles.mcbain@gmail.com", role = c("aut", "cre")),
     person("Jonathan", "Carroll", email = "jono@jcarroll.com.au", role = "aut"))
-Description: RStudio addins and R funcitons that make copy-pasting vectors and tables to text painless.
+Description: RStudio addins and R functions that make copy-pasting vectors and tables to text painless.
 Depends:
     R (>= 3.3.0)
 Suggests:
