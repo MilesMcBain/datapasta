@@ -13,7 +13,10 @@ Mac OSX El Capitan 10.11.14, R-release 3.3.3
 
 ## R CMD check results
 
-0 errors | 0 warnings | 0 notes
+0 errors | 0 warnings | 1 notes
+
+* License components with restrictions and base license permitting such: MIT + file LICENSE 
+    - (only seen in local testing)
 
 ## Downstream dependencies
 
