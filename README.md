@@ -2,7 +2,7 @@
 [![CRAN status.](http://www.r-pkg.org/badges/version/datapasta)](http://www.r-pkg.org/pkg/datapasta)
 [![Downloads](http://cranlogs.r-pkg.org/badges/datapasta)](https://CRAN.R-project.org/package=datapasta)
 
-#The Goods
+# The Goods
 0 to `datapasta` in 65 seconds:
 
 [![Datapasta in 65 seconds](http://img.youtube.com/vi/Sz-tEVqZh5s/0.jpg)](https://youtu.be/Sz-tEVqZh5s)
