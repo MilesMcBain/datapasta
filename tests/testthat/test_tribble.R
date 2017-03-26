@@ -124,6 +124,8 @@ test_that("Data with all rows ending in commas (empty final column) has separato
 })
 
 test_that("Data with a comma decimal mark can be parsed correctly", {
+  skip_if_not(is_clipr_available, skip_msg)
+  skip_on_cran()
   dp_set_decimal_mark(",")
   on.exit(dp_set_decimal_mark("."))
   expect_equal(
