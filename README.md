@@ -3,6 +3,8 @@
 [![Downloads](http://cranlogs.r-pkg.org/badges/datapasta)](https://CRAN.R-project.org/package=datapasta)
 
 # The Goods
+![pow!](https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/tribble_paste.gif)
+
 0 to `datapasta` in 64 seconds via a video vignette:
 
 [![Datapasta in 64 seconds](http://img.youtube.com/vi/Sz-tEVqZh5s/0.jpg)](https://youtu.be/Sz-tEVqZh5s)
