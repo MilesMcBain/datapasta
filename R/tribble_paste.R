@@ -140,7 +140,7 @@ tribble_construct <- function(input_table, oc = console_context()){
   body_rows <- gsub(pattern = ",\n$", replacement = "\n", x = body_rows)
 
   #Footer
-  footer <- paste0(strrep(" ",oc$indent_context+oc$nspc),")")
+  footer <- paste0(strrep(" ",oc$indent_context+oc$nspc),")\n")
   output <- paste0(header, names_row, body_rows, footer)
 
   return(invisible(output))

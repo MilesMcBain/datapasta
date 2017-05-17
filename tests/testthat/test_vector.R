@@ -19,7 +19,7 @@ test_that("A vector of strings is formatted correctly", {
     vector_construct()
   },
   {
-    "c(\"Normal\", \"Steel\", \"Psychic\", \"Dark\", \"Dragon\", \"Normal\", \"Water\", \"Flying\")"
+    "c(\"Normal\", \"Steel\", \"Psychic\", \"Dark\", \"Dragon\", \"Normal\", \"Water\", \"Flying\")\n"
   }
 
 
@@ -41,7 +41,7 @@ test_that("vector_construct handles numeric correctly ", {
     )
     vector_construct()
   },
-  "c(7L, 8L, 7L, 6L, 6L, NA, 6L, 9L)"
+  "c(7L, 8L, 7L, 6L, 6L, NA, 6L, 9L)\n"
   )
 })
 
@@ -55,7 +55,7 @@ test_that("vector_construct combines numeric/strings correctly ", {
         )
         vector_construct()
     },
-    "c(\"a\", \"6\", \"b\", \"4\")"
+    "c(\"a\", \"6\", \"b\", \"4\")\n"
     )
 })
 
@@ -68,7 +68,7 @@ test_that("vector_construct handles empty strings", {
     )
     vector_construct()
   },
-  "c(\"a\", \"6\", NA, \"4\")"
+  "c(\"a\", \"6\", NA, \"4\")\n"
   )
 })
 
@@ -114,7 +114,7 @@ test_that("vector_construct handles leading and lagging whitespace on unquoted c
     )
     vector_construct()
   },
-  "c(\"Mint\", \"Fedora\", \"Debian\", \"Ubuntu\", \"OpenSUSE\")"
+  "c(\"Mint\", \"Fedora\", \"Debian\", \"Ubuntu\", \"OpenSUSE\")\n"
   )
 })
 

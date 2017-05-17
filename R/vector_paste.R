@@ -59,7 +59,7 @@ vector_construct <- function(input_vector, oc = console_context()){
                         paste0(
                           lapply(input_vector, render_type, vector_type),
                           collapse = ", "),
-                        ")"
+                        ")\n"
   )
   return(invisible(vector_form))
 }
@@ -126,7 +126,7 @@ vector_construct_vertical <- function(input_vector, oc = console_context()){
                           lapply(input_vector, render_type, vector_type),
                           collapse = paste0(",\n",strrep(" ", oc$indent_context + 2)) #2 to align for 'c('
                         ),
-                        ")"
+                        ")\n"
   )
   return(invisible(vector_form))
 }

@@ -101,7 +101,7 @@ df_construct <- function(input_table, oc = console_context()) {
                   "data.frame(",ifelse(contains_chars, yes = "stringsAsFactors=FALSE,", no=""),"\n"),
            paste0(sapply(list_of_cols[1:(length(list_of_cols) - 1)], function(x) tortellini(x, indent_context = oc$indent_context, add_comma = TRUE)), collapse = ""),
            paste0(sapply(list_of_cols[length(list_of_cols)], function(x) tortellini(x, indent_context = oc$indent_context, add_comma = FALSE))),
-           strrep(" ", oc$indent_context),")"
+           strrep(" ", oc$indent_context),")\n"
     ), collapse = "")
 
 
