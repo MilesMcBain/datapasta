@@ -1,5 +1,6 @@
 
-#' @importFrom backports strrep trimws
+#' @rawNamespace if (getRversion() < "3.2.0") importFrom(backports,trimws)
+#' @rawNamespace if (getRversion() < "3.3.0") importFrom(backports,strrep)
 NULL
 
 
