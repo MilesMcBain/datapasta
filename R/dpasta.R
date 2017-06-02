@@ -1,3 +1,8 @@
+
+#' @importFrom backports strrep trimws
+NULL
+
+
 #' dmdclip
 #'
 #' @param input a vector, data.frame, or tibble

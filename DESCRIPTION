@@ -6,7 +6,6 @@ Authors@R: c(
     person("Jonathan", "Carroll", email = "jono@jcarroll.com.au", role = "aut"))
 Description: RStudio addins and R functions that make copy-pasting vectors and tables to text painless.
 Depends:
-    R,
 		backports
 Suggests:
     tibble (>= 1.2),

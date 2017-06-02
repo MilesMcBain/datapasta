@@ -1,6 +1,7 @@
 # datapasta 2.0.0 'Fusilli Jerry'
 [![CRAN status.](http://www.r-pkg.org/badges/version/datapasta)](http://www.r-pkg.org/pkg/datapasta)
 [![Downloads](http://cranlogs.r-pkg.org/badges/datapasta)](https://CRAN.R-project.org/package=datapasta)
+[![Build Status](https://travis-ci.org/shabbychef/datapasta.png)](https://travis-ci.org/shabbychef/datapasta)
 
 # The Goods
 ![pow!](https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/tribble_paste.gif)
