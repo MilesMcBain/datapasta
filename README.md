@@ -2,7 +2,7 @@
 [![CRAN status.](http://www.r-pkg.org/badges/version/datapasta)](http://www.r-pkg.org/pkg/datapasta)
 [![Downloads](http://cranlogs.r-pkg.org/badges/datapasta)](https://CRAN.R-project.org/package=datapasta)
 
-<img src="https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/hex_web.png" width="250" height="250" />
+<img src="https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/hex_web.png" width="250"/>
 
 # The Goods
 ![pow!](https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/tribble_paste.gif)
