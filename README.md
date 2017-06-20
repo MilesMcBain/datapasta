@@ -9,7 +9,7 @@
 
 # Introducing datapasta
 
-`datapasta` is about reducing resistance associated with copying and pasting data to and from R. It is a response to the realisation that I often found myself using intermediate programs like Sublime to munge text into suitable formats. A lot of work has gone into making `datapasta` support a wide variety of input and output situations, so it (probably) "just works". Hopefully tools in this package will remove such intermediate steps and associated frustrations from our data slinging workflows.  
+`datapasta` is about reducing resistance associated with copying and pasting data to and from R. It is a response to the realisation that I often found myself using intermediate programs like Sublime to munge text into suitable formats. Addins and functions in `datapasta` support a wide variety of input and output situations, so it (probably) "just works". Hopefully tools in this package will remove such intermediate steps and associated frustrations from our data slinging workflows.  
 
 # Prerequisites
 * Linux users will need to install either `xsel` or `xclip`. These applications provide an interface to X selections (clipboard-like).
@@ -69,6 +69,7 @@ On system without access to the clipboard (or without `clipr` installed) `datapa
 
 
 # Pitfalls
+
 * `tribble_paste` works well with CSVs, excel files, and html tables, but is currently brittle with respect to irregular table structures like merged cells or multi-line column headings. For some reason Wikipedia seems chock full of these. :(
 * Quoted csv data, where the quotes contain commas will not be parsed correctly.
 * Nested list columns have limited support with `tribble_paste()` nested lists will work but nested `tibbles` will be converted to list calls. 
