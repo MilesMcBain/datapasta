@@ -2,18 +2,26 @@
 [![CRAN status.](http://www.r-pkg.org/badges/version/datapasta)](http://www.r-pkg.org/pkg/datapasta)
 [![Downloads](http://cranlogs.r-pkg.org/badges/datapasta)](https://CRAN.R-project.org/package=datapasta)
 
-<img src="https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/hex_web.png" width="250"/>
+<img src="https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/hex_web.png" width="200"/>
 
 # The Goods
 ![pow!](https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/tribble_paste.gif)
 
-0 to `datapasta` in 64 seconds via a video vignette:
-
-[![Datapasta in 64 seconds](http://img.youtube.com/vi/Sz-tEVqZh5s/0.jpg)](https://youtu.be/Sz-tEVqZh5s)
-
 # Introducing datapasta
 
 `datapasta` is about reducing resistance associated with copying and pasting data to and from R. It is a response to the realisation that I often found myself using intermediate programs like Sublime to munge text into suitable formats. A lot of work has gone into making `datapasta` support a wide variety of input and output situations, so it (probably) "just works". Hopefully tools in this package will remove such intermediate steps and associated frustrations from our data slinging workflows.  
+
+# Prerequisites
+* Linux users will need to install either `xsel` or `xclip`. These applications provide an interface to X selections (clipboard-like).
+    - For example: `sudo apt-get install xsel` - it's 72kb...
+* Windows and MacOS have nothing extra to do.
+
+# Installation
+
+1. Get the package: `install.packages("datapasta")`
+2. Set the keyboard shortcuts using **Tools** -> **Addins** -> **Browse Addins**, then click **Keyboard Shortcuts...**
+
+# Usage
 
 ## Use with RStudio
 
@@ -42,7 +50,7 @@ c("Mint",
 ### Getting Data out of an R session
 There are two R functions available that accept R objects and output formatted text for pasting to other applications:
 
-* `dpaste` accepts tibbles, data.frames, and vectors. Data is output in a format that matches in input class. Formatted text is pasted at the cursor.
+* `dpasta` accepts tibbles, data.frames, and vectors. Data is output in a format that matches in input class. Formatted text is pasted at the cursor.
 
 * `dmdclip` accepts the same inputs as `dpaste` but inserts the formatted text onto the clipboard, preceded by 4 spaces so that is can be as pasted as a preformatted block to Github, Stackoverflow etc.
     
@@ -65,17 +73,6 @@ On system without access to the clipboard (or without `clipr` installed) `datapa
 * Quoted csv data, where the quotes contain commas will not be parsed correctly.
 * Nested list columns have limited support with `tribble_paste()` nested lists will work but nested `tibbles` will be converted to list calls. 
 
-# Prerequisites
-* Linux users will need to install either `xsel` or `xclip`. These applications provide an interface to X selections (clipboard-like).
-    - For example: `sudo apt-get install xsel` - it's 72kb...
-* Windows and MacOS have nothing extra to do.
-
-
-# Installation
-
-1. Get the package: `install.packages("datapasta")`
-2. Set the keyboard shortcuts using **Tools** -> **Addins** -> **Browse Addins**, then click **Keyboard Shortcuts...**
-
 # Prior art
 
 This package is made possible by [mdlincon's clipr](https://github.com/mdlincoln/clipr), and Hadley's packages [tibble](https://github.com/hadley/tibble) and [readr](https://github.com/hadley/tibble) (for data-type guessing). I especially appreciate `clipr's` thoughtful approach to the clipboard on Linux, which pretty much every other R clipboard package just nope'd out on.
@@ -83,4 +80,8 @@ This package is made possible by [mdlincon's clipr](https://github.com/mdlincoln
 # Future developments
 I am interested in expanding the types of objects supported by the output functions `dpaste` and `dmdclip`. Feel free to contribute your ideas to the open issues.
 
+# Bonus
 
+0 to `datapasta` in 64 seconds via a video vignette:
+
+[![Datapasta in 64 seconds](http://img.youtube.com/vi/Sz-tEVqZh5s/0.jpg)](https://youtu.be/Sz-tEVqZh5s)
