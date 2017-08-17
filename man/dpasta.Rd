@@ -13,6 +13,6 @@ dpasta(input)
 nothing
 }
 \description{
-Formats input and insersts at either the current cursor or the console.
+Formats input and inserts at either the current cursor or the console.
 }
 
