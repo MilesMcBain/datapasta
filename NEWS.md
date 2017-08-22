@@ -1,3 +1,8 @@
+# datapasta 2.0.1
+
+* Added a trailing newline after all pastes, this works much nicer for console output.
+* Fixed handling of backslashes. Relying on built-in function deparse() for escaping chars that need it.
+
 # datapasta 2.0.0 'Fusilli Jerry'
 
 * Added the ability to parse objects from R and output as neatly formatted tibbles, dataframes and vectors with `dpasta`. The clipboard is not involved.
