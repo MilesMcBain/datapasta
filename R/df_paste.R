@@ -42,7 +42,7 @@ df_construct <- function(input_table, oc = console_context()) {
                             })
 
     if(is.null(input_table)){
-      if(!clipr::clipr_available()) message("Clipboard is not available. Is R running in RStudio Server or a C.I. machine?")
+      if(!clipr::clipr_available()) message(.global_datapasta_env$no_clip_msg)
       else message("Could not paste clipboard as data.frame. Text could not be parsed as table.")
       return(NULL)
     }
