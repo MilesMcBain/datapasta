@@ -396,13 +396,3 @@ custom_context <- function(output_mode = "console", nspc = 2, indent_context = 0
   output_context <- list(output_mode = output_mode, nspc = nspc, indent_context = indent_context, indent_head = indent_head)
   output_context
 }
-
-#' Title
-#'
-#' @param char_vec a character string with characters that may need escaping (eg. `"`)
-#'
-#' @return the original char_vec with an extra "\" inserted before each character that needs escaping.
-escape_chars <- function(char_vec){
-  gsub(pattern = "(\"|\'|\\\\)", replacement = "\\\\\\1", x = char_vec, fixed = FALSE)
-}
-
