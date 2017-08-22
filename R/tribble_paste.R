@@ -2,6 +2,7 @@ globalVariables(c(".rs.readUiPref",".global_datapasta_env"), "datapasta") #ignor
 .global_datapasta_env <- new.env(parent=emptyenv())
 .global_datapasta_env$decimal_mark <- "."
 .global_datapasta_env$max_rows <- 200
+.global_datapasta_env$no_clip_msg <- "Clipboard is not available. Is xsel or xclip installed? Is DISPLAY set?"
 
 #' tribble_paste
 #' @description Parse the current clipboard as a table, or use the table argument supplied, and paste in at the cursor location in tribble format.
@@ -47,7 +48,7 @@ tribble_construct <- function(input_table, oc = console_context()){
                             })
 
     if(is.null(input_table)){
-      if(!clipr::clipr_available()) message("Clipboard is not available. Is R running in RStudio Server or a C.I. machine?")
+      if(!clipr::clipr_available()) message(.global_datapasta_env$no_clip_msg)
       else message("Could not paste clipboard as tibble. Text could not be parsed as table.")
       return(NULL)
     }

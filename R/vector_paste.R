@@ -147,7 +147,7 @@ parse_vector <- function(input_vector){
                                      return(NULL)
                                  })
     if(is.null(input_vector)){
-        if(!clipr::clipr_available()) message("Clipboard is not available. Is R running in RStudio Server or a C.I. machine?")
+        if(!clipr::clipr_available()) message(.global_datapasta_env$no_clip_msg)
         else message("Could not paste clipboard as a vector. Text could not be parsed.")
         return(NULL)
     }
