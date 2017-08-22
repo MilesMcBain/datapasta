@@ -17,4 +17,3 @@ character vector. The type attribute contains the type guessed by `readr`.
 Pastes data from clipboard as a vertically formatted character vector on
 a multiple lines. One line is used per element. Considers , | tab newline as delimeters.
 }
-

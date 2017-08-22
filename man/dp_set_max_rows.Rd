@@ -12,4 +12,3 @@ dp_set_max_rows(num_rows)
 \description{
 dp_set_max_rows
 }
-

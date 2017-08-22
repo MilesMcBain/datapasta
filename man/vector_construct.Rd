@@ -18,4 +18,3 @@ A string containing the input formatted as a vector definition.
 Returns a formatted charcater string, either from clipboard or supplied argument, as a vector definition. Considers `,`, `tab`, `newline` as delimeters.
 If a single character string is passed as an argument, it will be split to form a vector.
 }
-

@@ -18,4 +18,3 @@ nothing.
 Writes data to the clipboard, either from clipboard or supplied argument. Writes a horizontally formatted character vector on
 a single line. Considers `,`, `tab`, `newline` as delimeters. If a single character string is passed as an argument, it will be split to form a vector.
 }
-

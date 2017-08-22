@@ -18,4 +18,3 @@ The separator chosen is the one that leads to the most columns, whilst parsing t
 The guessing algorithm ignores blank lines - which are lines that contain only the separator.
 Options are in c(",","\\t","\\|,;")
 }
-
