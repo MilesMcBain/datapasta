@@ -16,4 +16,3 @@ NULL.
 A function to optionally set the decimal mark if in a locale where it is not `.`. Will allow "3,14" to be parsed as 3.14, normally would be parsed as 314.
 Will also handle spaces in numbers.
 }
-

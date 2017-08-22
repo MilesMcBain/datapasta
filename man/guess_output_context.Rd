@@ -12,4 +12,3 @@ a list containint the output target, space size of indent, and number of indents
 \description{
 Return the a list containing the guessed output target context, either rstudio or the console.
 }
-

@@ -1,0 +1,1 @@
+\\my-server\DATA\libraries

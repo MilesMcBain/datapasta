@@ -122,3 +122,10 @@ test_that("vector_construct splits appart and parses input character arguments o
   expect_equal({eval(parse(text = vector_construct("1,2,3,4")))},
                {c(1L, 2L, 3L, 4L)})
 })
+
+test_that("vector_construct escapes backslashes correctly",{
+  expect_equal({eval(parse(text = vector_construct(
+    readr::read_lines("./backslashes.txt")
+  )))},
+  {c("\\\\my-server\\DATA\\libraries")})
+})

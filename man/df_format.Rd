@@ -17,4 +17,3 @@ nothing.
 \description{
 Parse the current clipboard as a table and paste to the clipboard in data.frame format.
 }
-

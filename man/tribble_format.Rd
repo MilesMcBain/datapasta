@@ -18,4 +18,3 @@ Nothing.
 \description{
 Parse the current clipboard as a table, or use the table argument supplied, and paste to the clipboard in tribbble format.
 }
-

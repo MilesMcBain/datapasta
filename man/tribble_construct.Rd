@@ -18,4 +18,3 @@ The parsed table text.
 \description{
 Parse the current clipboard as a table, or use the table argument supplied, and return as a character string.
 }
-

@@ -15,4 +15,3 @@ nothing
 \description{
 Formats input for presentation in mardkown as a preformatted chunk and inserts it onto the clipboard. Ready for pasting to Stack Overflow or Github.
 }
-

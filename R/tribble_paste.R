@@ -203,8 +203,8 @@ render_type <- function(char_vec, char_type){
                      "number" = readr::parse_number(char_vec, locale = readr::locale(decimal_mark = .global_datapasta_env$decimal_mark)),
                      "numeric" = as.double(char_vec),
                      "logical" = as.logical(char_vec),
-                     "factor" = ifelse(nchar(char_vec)!=0, paste0('"',char_vec,'"'), "NA"),
-                     "character" = ifelse(nchar(char_vec)!=0, paste0('"',escape_chars(char_vec),'"'), "NA"),
+                     "factor" = ifelse(nchar(char_vec)!=0, deparse(char_vec), "NA"),
+                     "character" = ifelse(nchar(char_vec)!=0, deparse(char_vec), "NA"),
                      "list" = char_vec,
                      paste0('"',char_vec,'"')
     )
@@ -396,13 +396,3 @@ custom_context <- function(output_mode = "console", nspc = 2, indent_context = 0
   output_context <- list(output_mode = output_mode, nspc = nspc, indent_context = indent_context, indent_head = indent_head)
   output_context
 }
-
-#' Title
-#'
-#' @param char_vec a character string with characters that may need escaping (eg. `"`)
-#'
-#' @return the original char_vec with an extra "\" inserted before each character that needs escaping.
-escape_chars <- function(char_vec){
-  gsub(pattern = "(\"|\')", replacement = "\\\\\\1", x = char_vec, fixed = FALSE)
-}
-

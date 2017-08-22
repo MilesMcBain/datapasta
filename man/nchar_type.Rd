@@ -17,4 +17,3 @@ The number of characters wide this data would be in when rendered in text
 \description{
 nchar_type
 }
-

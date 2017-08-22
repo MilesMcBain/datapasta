@@ -21,4 +21,3 @@ left-padded with spaces to char_length.
 Based on a type and length, render a character string as the type in text.
 Pad to the desired length.
 }
-
