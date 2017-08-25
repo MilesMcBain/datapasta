@@ -1,0 +1,26 @@
+# see https://docs.travis-ci.com/user/languages/r
+# and http://blog.rstudio.org/2016/03/09/r-on-travis-ci/
+
+language: r
+
+sudo: false
+
+cache : packages
+
+r:
+  - 3.2
+  - oldrel
+  - release
+  - devel
+
+warnings_are_errors : true
+
+r_build_args : " --compact-vignettes=gs+qpdf"
+
+notifications:
+  email:
+    on_success: change
+    on_failure: always
+
+#for vim modeline: (do not edit)
+# vim:ts=2:sw=2:tw=79:fdm=indent:cms=#%s:syn=yaml:ft=yaml:ai:si:cin:nu:

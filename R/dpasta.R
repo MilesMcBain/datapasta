@@ -1,3 +1,9 @@
+
+#' @rawNamespace if (getRversion() < "3.2.0") importFrom(backports,trimws)
+#' @rawNamespace if (getRversion() < "3.3.0") importFrom(backports,strrep)
+NULL
+
+
 #' dmdclip
 #'
 #' @param input a vector, data.frame, or tibble
