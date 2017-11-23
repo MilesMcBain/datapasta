@@ -11,7 +11,8 @@ Suggests:
     tibble (>= 1.2),
     testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    covr
 Imports:
     readr (>= 1.0.0),
     clipr (>= 0.3.0),
