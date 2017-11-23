@@ -5,7 +5,6 @@ is_rstudio_available <- rstudioapi::isAvailable()
 
 test_that("Test data.frame text wrapping works", {
   skip_if_not(is_clipr_available, skip_msg)
-  skip_if_not(is_rstudio_available)
   skip_on_cran()
   expect_equal({
     clipr::write_clip(content = readr::read_lines(file = "./route_length.txt"))
@@ -17,7 +16,6 @@ test_that("Test data.frame text wrapping works", {
 
 test_that("A Data.frame can be parsed correctly", {
   skip_if_not(is_clipr_available, skip_msg)
-  skip_if_not(is_rstudio_available)
   skip_on_cran()
   expect_equal({
     clipr::write_clip(content = readr::read_lines(file = "./route_length.txt"))
@@ -48,7 +46,6 @@ test_that("A Data.frame can be parsed correctly", {
 test_that("A pasted multi-type data.frame is rendered and parsed correctly", {
   skip_if_not(is_clipr_available, skip_msg)
   skip_on_cran()
-  skip_if_not(is_rstudio_available)
   expect_equal({
     clipr::write_clip(content = readr::read_lines(file = "./brisbane_weather.txt"))
     eval(parse(text = df_construct()))
@@ -72,7 +69,6 @@ test_that("A pasted multi-type data.frame is rendered and parsed correctly", {
 test_that("stringsAsFactors=FALSE is added correctly", {
   skip_if_not(is_clipr_available, skip_msg)
   skip_on_cran()
-  skip_if_not(is_rstudio_available)
   expect_equal({
     clipr::write_clip(content = c("char,int", "a,1", "b,3"))
     eval(parse(text = df_construct()))
