@@ -158,11 +158,22 @@ nchar_type <- function(df_col_row, df_col_type){
   n_chars <- nchar(df_col_row)
   add_chars <- switch(df_col_type,
                       "integer" = 1, #for the "L",
-                      "character" = 2 + length(gregexpr(pattern = "(\"|\')", text = df_col_row)[[1]]), #2 for outer quotes +1 "\" for each quote in string
+                      "character" = 2 + nquote_str(df_col_row), #2 for outer quotes +1 "\" for each quote in string
+                      "factor" = 2 + nquote_str(df_col_row),
                       0) #0 for other types
   return(n_chars + add_chars)
 
 }
+
+#' Count the number of quotes in a string
+#'
+#' @param char_vec the sring to count quotes in
+#'
+#' @return a number, possibly 0.
+nquote_str <- function(char_vec){
+  sum(gregexpr(pattern = "(\"|\')", text = char_vec)[[1]] > 0)
+}
+
 
 #' pad_to
 #' @description Left pad string to a certain size. A helper function for getting spacing in table correct.
