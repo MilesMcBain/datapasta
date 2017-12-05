@@ -7,7 +7,7 @@
 dp_set_max_rows(num_rows)
 }
 \arguments{
-\item{num_rows}{The number of rows of an input at which any of tribble_construct() or df_contruct() will abort parsing. Datapasta is untested on large tables. Use at own risk.}
+\item{num_rows}{The number of rows of an input at which any of tribble_construct() or df_construct() will abort parsing. Datapasta is untested on large tables. Use at own risk.}
 }
 \description{
 dp_set_max_rows

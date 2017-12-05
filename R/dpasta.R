@@ -2,7 +2,7 @@
 #'
 #' @param input a vector, data.frame, or tibble
 #'
-#' @description Formats input for presentation in mardkown as a preformatted chunk and inserts it onto the clipboard. Ready for pasting to Stack Overflow or Github.
+#' @description Formats input for presentation in markdown as a preformatted chunk and inserts it onto the clipboard. Ready for pasting to Stack Overflow or Github.
 #' @return nothing
 #'
 #' @export
@@ -20,7 +20,7 @@ dmdclip <- function(input){
 #'
 #' @param input a vector, data.frame, or tibble
 #'
-#' @description Formats input and insersts at either the current cursor or the console.
+#' @description Formats input and inserts at either the current cursor or the console.
 #' @return nothing
 #'
 #' @export

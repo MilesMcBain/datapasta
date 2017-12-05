@@ -108,10 +108,10 @@ df_construct <- function(input_table, oc = console_context()) {
   return(invisible(output))
 }
 
-#' wrap the datpasta around itself
+#' wrap the datapasta around itself
 #' @param s input string
 #' @param n number of characters for text (includes column name on line 1)
-#' @param indent_context the level of indend in spaces in the current editor pane
+#' @param indent_context the level of indent in spaces in the current editor pane
 #' @param add_comma add one final comma to the end of the wrapped column def? Useful when pasting together columns.
 #' @return w wrapped string
 

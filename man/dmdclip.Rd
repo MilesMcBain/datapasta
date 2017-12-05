@@ -13,5 +13,5 @@ dmdclip(input)
 nothing
 }
 \description{
-Formats input for presentation in mardkown as a preformatted chunk and inserts it onto the clipboard. Ready for pasting to Stack Overflow or Github.
+Formats input for presentation in markdown as a preformatted chunk and inserts it onto the clipboard. Ready for pasting to Stack Overflow or Github.
 }

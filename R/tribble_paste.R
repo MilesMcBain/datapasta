@@ -180,7 +180,7 @@ pad_to <-function(char_vec, char_length){
 #' @description Renders a character vector as R types for pasting into Rstudio.
 #' Strings are quoted. Numbers, NA, logicals etc are not.
 #'
-#' @param char_vec a chracter vector containing text to be rendered as the type indicated by type_str
+#' @param char_vec a character vector containing text to be rendered as the type indicated by type_str
 #' @param char_type a string describing the type of char_vec
 #'
 #' @return A vector parsed from the clipboard as ether a character string or a
@@ -316,7 +316,7 @@ dp_set_decimal_mark <- function(mark){
 
 #' dp_set_max_rows
 #'
-#' @param num_rows The number of rows of an input at which any of tribble_construct() or df_contruct() will abort parsing. Datapasta is untested on large tables. Use at own risk.
+#' @param num_rows The number of rows of an input at which any of tribble_construct() or df_construct() will abort parsing. Datapasta is untested on large tables. Use at own risk.
 #'
 #' @return NULL
 #' @export
@@ -329,7 +329,7 @@ dp_set_max_rows <- function(num_rows){
 #'
 #' @description Return the a list containing the guessed output target context, either rstudio or the console.
 #'
-#' @return a list containint the output target, space size of indent, and number of indents at context.
+#' @return a list containing the output target, space size of indent, and number of indents at context.
 guess_output_context <- function(){
   if(requireNamespace("rstudioapi", quietly = TRUE) && rstudioapi::isAvailable()){
     output_context <- rstudio_context()
@@ -384,13 +384,13 @@ markdown_context <- function(){
 
 #' custom_context
 #'
-#' @description the _context fuctions define lists of parameters for text formatting.
+#' @description the _context functions define lists of parameters for text formatting.
 #' The specific contexts return hard-coded values appropriate to the context they describe, while custom_context allows definition of new contexts for custom formatting.
 #' @param output_mode A named output mode, controls the target of the _paste functions options are "rstudioapi" or "console"
 #' @param nspc The number of spaces for each indent level in the output context
 #' @param indent_context The number of spaces applied initially to all lines in the output context
-#' @param indent_head Logical. Apply the indent_context to the to the header row? Use FALSE if targetting cursor location.
-#' @return an output context. An input to _paste, _format, _contruct functions used to format whitespace.
+#' @param indent_head Logical. Apply the indent_context to the to the header row? Use FALSE if targeting cursor location.
+#' @return an output context. An input to _paste, _format, _construct functions used to format whitespace.
 #' @export
 #'
 custom_context <- function(output_mode = "console", nspc = 2, indent_context = 0, indent_head = TRUE){

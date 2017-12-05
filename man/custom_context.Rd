@@ -26,12 +26,12 @@ custom_context(output_mode = "console", nspc = 2, indent_context = 0,
 
 \item{indent_context}{The number of spaces applied initially to all lines in the output context}
 
-\item{indent_head}{Logical. Apply the indent_context to the to the header row? Use FALSE if targetting cursor location.}
+\item{indent_head}{Logical. Apply the indent_context to the to the header row? Use FALSE if targeting cursor location.}
 }
 \value{
-an output context. An input to _paste, _format, _contruct functions used to format whitespace.
+an output context. An input to _paste, _format, _construct functions used to format whitespace.
 }
 \description{
-the _context fuctions define lists of parameters for text formatting.
+the _context functions define lists of parameters for text formatting.
 The specific contexts return hard-coded values appropriate to the context they describe, while custom_context allows definition of new contexts for custom formatting.
 }
