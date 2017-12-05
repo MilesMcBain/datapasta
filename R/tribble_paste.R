@@ -21,7 +21,7 @@ tribble_paste <- function(input_table, output_context = guess_output_context()){
 }
 
 #' tribble_format
-#' @description Parse the current clipboard as a table, or use the table argument supplied, and paste to the clipboard in tribbble format.
+#' @description Parse the current clipboard as a table, or use the table argument supplied, and paste to the clipboard in tribble format.
 #' @param input_table an optional input `data.frame`. If `input_table` is supplied, then nothing is read from the clipboard.
 #' @param output_context an optional output context that defines the target and indentation. Default is console.
 #' Table is output as `tribble()` call. Useful for creating reproducible examples.
@@ -236,7 +236,7 @@ render_type_pad_to <- function(char_vec, char_type, char_length){
 #' @description Guesses the seprator based on a simple heuristic over the first 10 or less rows:
 #' The separator chosen is the one that leads to the most columns, whilst parsing the same number of columns for each line (var=0).
 #' The guessing algorithm ignores blank lines - which are lines that contain only the separator.
-#' Options are in c(",","\\t","\\|,;")
+#' Options are in `c(",","\\t","\\|,;")`
 #
 #'
 #' @return the separator selected to parse char_vec as a table
@@ -390,7 +390,7 @@ markdown_context <- function(){
 #' @param nspc The number of spaces for each indent level in the output context
 #' @param indent_context The number of spaces applied initially to all lines in the output context
 #' @param indent_head Logical. Apply the indent_context to the to the header row? Use FALSE if targetting cursor location.
-#' @return an output context. An input to _paste, _format, _contruct functions used to formatt whitespace.
+#' @return an output context. An input to _paste, _format, _contruct functions used to format whitespace.
 #' @export
 #'
 custom_context <- function(output_mode = "console", nspc = 2, indent_context = 0, indent_head = TRUE){
