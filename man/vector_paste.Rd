@@ -10,12 +10,12 @@ vector_paste(input_vector, output_context = guess_output_context())
 \item{input_vector}{An input vector to be formatted for output. If supplied, no data is read from the clipboard.}
 
 \item{output_context}{an optional output context that defines the output target and indentation.
-The default behaviour is target the rstudioapi and fall back to console if it is not available.}
+The default behaviour is to target the rstudioapi and fall back to console if it is not available.}
 }
 \value{
 nothing.
 }
 \description{
 Pastes data, either from clipboard or supplied argument, as a horizontally formatted character vector on
-a single line. Considers `,`, `tab`, `newline` as delimeters. If a single character string is passed as an argument, it will be split to form a vector.
+a single line. Considers `,`, `tab`, `newline` as delimiters. If a single character string is passed as an argument, it will be split to form a vector.
 }

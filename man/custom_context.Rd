@@ -29,7 +29,7 @@ custom_context(output_mode = "console", nspc = 2, indent_context = 0,
 \item{indent_head}{Logical. Apply the indent_context to the to the header row? Use FALSE if targetting cursor location.}
 }
 \value{
-an output context. An input to _paste, _format, _contruct functions used to formatt whitespace.
+an output context. An input to _paste, _format, _contruct functions used to format whitespace.
 }
 \description{
 the _context fuctions define lists of parameters for text formatting.
