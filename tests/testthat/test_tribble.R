@@ -4,55 +4,55 @@ is_clipr_available <- clipr::clipr_available()
 
 test_that("Brisbane Weather is parsed", {
 
-    expect_equal(
-        read_clip_tbl_guess(readr::read_lines(file = "./brisbane_weather.txt")),
-        as.data.frame(tibble::tribble(
-                            ~Precis.Icon,          ~Location, ~Min, ~Max,
-                      "Possible shower.",         "Brisbane", "17", "29",
-                         "Mostly sunny.", "Brisbane Airport", "16", "28",
-        "Shower or two. Possible storm.",       "Beaudesert", "14", "30",
-                      "Possible shower.",        "Chermside", "16", "30",
-        "Shower or two. Possible storm.",           "Gatton", "14", "32",
-             "Possible shower or storm.",          "Ipswich", "14", "31",
-             "Possible shower or storm.",    "Logan Central", "16", "30",
-                         "Mostly sunny.",            "Manly", "18", "26",
-                      "Possible shower.",    "Mount Gravatt", "16", "29",
-                      "Possible shower.",            "Oxley", "15", "30",
-                         "Mostly sunny.",        "Redcliffe", "18", "28"
-        )
-    ))
+  expect_equal(
+      read_clip_tbl_guess(readr::read_lines(file = "./brisbane_weather.txt")),
+      as.data.frame(tibble::tribble(
+                          ~Precis.Icon,          ~Location, ~Min, ~Max,
+                    "Possible shower.",         "Brisbane", "17", "29",
+                       "Mostly sunny.", "Brisbane Airport", "16", "28",
+      "Shower or two. Possible storm.",       "Beaudesert", "14", "30",
+                    "Possible shower.",        "Chermside", "16", "30",
+      "Shower or two. Possible storm.",           "Gatton", "14", "32",
+           "Possible shower or storm.",          "Ipswich", "14", "31",
+           "Possible shower or storm.",    "Logan Central", "16", "30",
+                       "Mostly sunny.",            "Manly", "18", "26",
+                    "Possible shower.",    "Mount Gravatt", "16", "29",
+                    "Possible shower.",            "Oxley", "15", "30",
+                       "Mostly sunny.",        "Redcliffe", "18", "28"
+      )
+  ))
 })
 
 test_that("Odd strings are parsed as strings", {
-    expect_equal(
-        read_clip_tbl_guess(readr::read_lines(file = "./dates_currency.txt")),
-        as.data.frame(tibble::tribble(
-                                                 ~date,       ~id,  ~ammount,
-                                    "27/10/2016 21:00", "0001234",  "$18.50",
-                                    "28/10/2016 21:05", "0001235", "-$18.50"
-                                    )
-                      )
-    )
+  expect_equal(
+      read_clip_tbl_guess(readr::read_lines(file = "./dates_currency.txt")),
+      as.data.frame(tibble::tribble(
+                                               ~date,       ~id,  ~ammount,
+                                  "27/10/2016 21:00", "0001234",  "$18.50",
+                                  "28/10/2016 21:05", "0001235", "-$18.50"
+                                  )
+                    )
+  )
 })
 
 test_that("All delimeters work for parsing as table", {
-    expect_equal(read_clip_tbl_guess(readr::read_lines(file = "./pipe_delim.txt")),
-                 as.data.frame(tibble::tribble(
-                                             ~event,       ~id,
-                                             "TYPE1", "01",
-                                             "type2,", "02"
-                                              )
-                 )
-    )
+  expect_equal(read_clip_tbl_guess(readr::read_lines(file = "./pipe_delim.txt")),
+               as.data.frame(tibble::tribble(
+                                           ~event,       ~id,
+                                           "TYPE1", "01",
+                                           "type2,", "02"
+                                            )
+               )
+  )
 
-    expect_equal(read_clip_tbl_guess(readr::read_lines(file = "./semi_colon_delim.txt")),
-                 as.data.frame(tibble::tribble(
-                     ~event,       ~id,
-                     "TYPE1", "01",
-                     "type2,", "02"
-                 )
-                 )
-    )
+  expect_equal(read_clip_tbl_guess(readr::read_lines(file = "./semi_colon_delim.txt")),
+               as.data.frame(tibble::tribble(
+                   ~event,       ~id,
+                   "TYPE1", "01",
+                   "type2,", "02"
+               )
+               )
+  )
 
 
 
@@ -60,18 +60,18 @@ test_that("All delimeters work for parsing as table", {
 
 test_that("Table rows with all missing are not ignored", {
 
-    expect_equal(
-        read_clip_tbl_guess(readr::read_lines(file = "./tab_with_blank.txt")),
-        as.data.frame(tibble::tribble(
-                                    ~a,      ~b,
-                                    "2",    "hi",
-                                    "3", "there",
-                                     NA,      NA,
-                                    "4",  "robot"
-                                    )
+  expect_equal(
+      read_clip_tbl_guess(readr::read_lines(file = "./tab_with_blank.txt")),
+      as.data.frame(tibble::tribble(
+                                  ~a,      ~b,
+                                  "2",    "hi",
+                                  "3", "there",
+                                   NA,      NA,
+                                  "4",  "robot"
+                                  )
 
-                      )
-        )
+                    )
+      )
 })
 
 test_that("Brisbane Weather with empty lines has separator guessed as tab.", {
@@ -151,88 +151,92 @@ test_that("The decimal mark is returned to .", {
   )
 })
 
-test_that("tribble_paste() input data.framess can render correctly as tribbles",
-          {
-            expect_equal(
-              {
-                eval( parse(text = tribble_construct(datasets::airquality[1:6,])) )
-              },
-              {
-                tibble::as_tibble(datasets::airquality[1:6,])
-              }
-            )
-          })
+test_that("tribble_paste() input data.framess can render correctly as tribbles",{
+  expect_equal(
+    {
+      eval( parse(text = tribble_construct(datasets::airquality[1:6,])) )
+    },
+    {
+      tibble::as_tibble(datasets::airquality[1:6,])
+    }
+  )
+})
 
-test_that("Input tibbles with basic char, int, double render as tibbles transparently",
-          {
-            expect_equal(
-              {
-                eval( parse(text = tribble_construct(tibble::tribble(
-                  ~char, ~int,  ~dbl,
-                  "a",   1L,   1.1,
-                  "b",   3L,   3.3
-                ))) )
-              },
-              {
-                tibble::tribble(
-                  ~char, ~int,  ~dbl,
-                  "a",   1L,   1.1,
-                  "b",   3L,   3.3
-                )
-              }
-            )
-          })
+test_that("Input tibbles with basic char, int, double render as tibbles transparently", {
+  expect_equal(
+    {
+      eval( parse(text = tribble_construct(tibble::tribble(
+        ~char, ~int,  ~dbl,
+        "a",   1L,   1.1,
+        "b",   3L,   3.3
+      ))) )
+    },
+    {
+      tibble::tribble(
+        ~char, ~int,  ~dbl,
+        "a",   1L,   1.1,
+        "b",   3L,   3.3
+      )
+    }
+  )
+})
 
-test_that("Attempting to input non-table generates a message",
-{
+test_that("Attempting to input non-table generates a message", {
   suppressWarnings(
     expect_message(tribble_construct(as.list(datasets::mtcars)),"Could not format input_table as table")
   )
 })
 
-test_that("Quotes \' in input are escaped",
-          {
-            skip_if_not(is_clipr_available, skip_msg)
-            expect_equal({
-              clipr::write_clip("a,b,c\nthis,is,testing\nnow,you\'re,testing")
-              eval(parse(text = tribble_construct()))
-            },
-            {
-              tibble::tribble(
-                ~a,        ~b,         ~c,
-                "this",      "is",  "testing",
-                "now", "you\'re",  "testing"
-              )
-            })}
-)
+test_that("Quotes \' in input are escaped", {
+  skip_if_not(is_clipr_available, skip_msg)
+  expect_equal({
+    clipr::write_clip("a,b,c\nthis,is,testing\nnow,you\'re,testing")
+    eval(parse(text = tribble_construct()))
+  },
+  {
+    tibble::tribble(
+      ~a,        ~b,         ~c,
+      "this",      "is",  "testing",
+      "now", "you\'re",  "testing"
+    )
+  })
+})
 
-test_that("Quotes \" in input are escaped",
-          {
-            skip_if_not(is_clipr_available, skip_msg)
-            expect_equal({
-              clipr::write_clip("a,b,c\nthis,is,testing\nnow,you\"re,testing")
-              eval(parse(text = tribble_construct()))
-              },
-              {
-              tibble::tribble(
-                ~a,        ~b,         ~c,
-                "this",      "is",  "testing",
-                "now",  "you\"re",  "testing"
-              )}
-             )
-          }
-)
-test_that("Attempting to input a large table generates a message",
-{
+test_that("Quotes \" in input are escaped", {
+    skip_if_not(is_clipr_available, skip_msg)
+    expect_equal({
+      clipr::write_clip("a,b,c\nthis,is,testing\nnow,you\"re,testing")
+      eval(parse(text = tribble_construct()))
+      },
+      {
+      tibble::tribble(
+        ~a,        ~b,         ~c,
+        "this",      "is",  "testing",
+        "now",  "you\"re",  "testing"
+      )}
+     )
+})
+
+test_that("Attempting to input a large table generates a message", {
   suppressWarnings(
     expect_message(tribble_construct(data.frame(col1 = seq_len(400))),"Supplied large input_table")
   )
 })
 
-test_that("Tribble construct calcultes column widths correctly",{
+test_that("Tribble construct calcultes column widths correctly", {
   tst <- head(iris)
   tst$Species <- as.character(tst$Species)
   tst <- tibble::as_tibble(tst)
   expect_equal(eval(parse( text = tribble_construct(head(iris)))),
                tst)
 })
+
+test_that("Tribble contruct recognises raw data with no column headings and adds dummy headers", {
+  expect_equal(
+    readr::read_csv(file = "./just_data.txt", col_names = FALSE),
+    { clipr::write_clip(readr::read_lines("./just_data.txt"))
+      eval(parse(text = tribble_construct()))}
+  )
+})
+
+
