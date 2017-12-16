@@ -7,7 +7,7 @@
 guess_output_context()
 }
 \value{
-a list containint the output target, space size of indent, and number of indents at context.
+a list containing the output target, space size of indent, and number of indents at context.
 }
 \description{
 Return the a list containing the guessed output target context, either rstudio or the console.

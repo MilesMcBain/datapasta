@@ -16,5 +16,5 @@ Table is output as `tribble()` call. Useful for creating reproducible examples.}
 Nothing.
 }
 \description{
-Parse the current clipboard as a table, or use the table argument supplied, and paste to the clipboard in tribbble format.
+Parse the current clipboard as a table, or use the table argument supplied, and paste to the clipboard in tribble format.
 }
