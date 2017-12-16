@@ -232,7 +232,7 @@ test_that("Attempting to input a large table generates a message",
 test_that("Tribble construct calcultes column widths correctly",{
   tst <- head(iris)
   tst$Species <- as.character(tst$Species)
-  tst <- as_tibble(tst)
+  tst <- tibble::as_tibble(tst)
   expect_equal(eval(parse( text = tribble_construct(head(iris)))),
                tst)
 })
