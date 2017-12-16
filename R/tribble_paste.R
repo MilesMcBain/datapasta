@@ -52,8 +52,8 @@ tribble_construct <- function(input_table, oc = console_context()){
       else message("Could not paste clipboard as tibble. Text could not be parsed as table.")
       return(NULL)
     }
-    #Parse data types from string using readr::parse_guess
-    input_table_types <- lapply(input_table, readr::guess_parser)
+    #Parse data types from string using readr::guess_parser
+    input_table_types <- attr(input_table, "col_types")
   }else{
     if(!is.data.frame(input_table) && !tibble::is_tibble(input_table)){
       message("Could not format input_table as table. Unexpected class.")
@@ -296,7 +296,7 @@ read_clip_tbl_guess <- function (x = clipr::read_clip(), ...)
   .dots <- list(...)
   .dots$file <- textConnection(x)
   if (is.null(.dots$header))
-    .dots$header <- TRUE
+    .dots$header <- FALSE
   if (is.null(.dots$sep)){
     .dots$sep <- guess_sep(x)
   }
@@ -309,7 +309,28 @@ read_clip_tbl_guess <- function (x = clipr::read_clip(), ...)
   if (is.null(.dots$strip.white))
     .dots$strip.white <- TRUE
     .dots$quote <-  ""
-  do.call(utils::read.table, args = .dots)
+  x_table <- do.call(utils::read.table, args = .dots)
+
+  # Determine if row 1 a header
+  types_header <- lapply(x_table[1,], readr::guess_parser)
+  types_body <- lapply(x_table[-1,], readr::guess_parser)
+  if( !identical(types_header, types_body) ){
+    # Row 1 is a header
+    colnames(x_table) <- x_table[1, ]
+    x_table <- x_table[-1, ]
+  } else {
+    if( unique(c(types_body, types_header) == "character") ){
+      # Row 1 is again a header
+      colnames(x_table) <- x_table[1, ]
+      x_table <- x_table[-1, ]
+    }
+    else{
+      # Row 1 is data
+      # Nothing to do.
+    }
+  }
+  attr(x_table, "col_types") <-types_body
+  x_table
 }
 
 #' dp_set_decimal_mark
