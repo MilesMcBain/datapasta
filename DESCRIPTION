@@ -3,7 +3,8 @@ Title: R Tools for Data Copy-Pasta
 Version: 2.0.1
 Authors@R: c(
     person("Miles", "McBain", email = "miles.mcbain@gmail.com", role = c("aut", "cre")),
-    person("Jonathan", "Carroll", email = "jono@jcarroll.com.au", role = "aut"))
+    person("Jonathan", "Carroll", email = "jono@jcarroll.com.au", role = "aut"),
+    person("Mark", "Dulhunty", role = "ctb"))
 Description: RStudio addins and R functions that make copy-pasting vectors and tables to text painless.
 Depends:
     R (>= 3.3.0)

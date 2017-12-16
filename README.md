@@ -79,7 +79,7 @@ On system without access to the clipboard (or without `clipr` installed) `datapa
 This package is made possible by [mdlincon's clipr](https://github.com/mdlincoln/clipr), and Hadley's packages [tibble](https://github.com/hadley/tibble) and [readr](https://github.com/hadley/tibble) (for data-type guessing). I especially appreciate `clipr's` thoughtful approach to the clipboard on Linux, which pretty much every other R clipboard package just nope'd out on.
 
 # Future developments
-I am interested in expanding the types of objects supported by the output functions `dpaste` and `dmdclip`. Feel free to contribute your ideas to the open issues.
+I am interested in expanding the types of objects supported by the output functions `dpasta` and `dmdclip`. Feel free to contribute your ideas to the open issues.
 
 # Bonus
 

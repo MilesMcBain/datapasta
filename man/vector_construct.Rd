@@ -15,6 +15,6 @@ vector_construct(input_vector, oc = console_context())
 A string containing the input formatted as a vector definition.
 }
 \description{
-Returns a formatted charcater string, either from clipboard or supplied argument, as a vector definition. Considers `,`, `tab`, `newline` as delimeters.
+Returns a formatted character string, either from clipboard or supplied argument, as a vector definition. Considers `,`, `tab`, `newline` as delimiters.
 If a single character string is passed as an argument, it will be split to form a vector.
 }

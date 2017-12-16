@@ -21,7 +21,7 @@ tribble_paste <- function(input_table, output_context = guess_output_context()){
 }
 
 #' tribble_format
-#' @description Parse the current clipboard as a table, or use the table argument supplied, and paste to the clipboard in tribbble format.
+#' @description Parse the current clipboard as a table, or use the table argument supplied, and paste to the clipboard in tribble format.
 #' @param input_table an optional input `data.frame`. If `input_table` is supplied, then nothing is read from the clipboard.
 #' @param output_context an optional output context that defines the target and indentation. Default is console.
 #' Table is output as `tribble()` call. Useful for creating reproducible examples.
@@ -191,7 +191,7 @@ pad_to <-function(char_vec, char_length){
 #' @description Renders a character vector as R types for pasting into Rstudio.
 #' Strings are quoted. Numbers, NA, logicals etc are not.
 #'
-#' @param char_vec a chracter vector containing text to be rendered as the type indicated by type_str
+#' @param char_vec a character vector containing text to be rendered as the type indicated by type_str
 #' @param char_type a string describing the type of char_vec
 #'
 #' @return A vector parsed from the clipboard as ether a character string or a
@@ -244,10 +244,10 @@ render_type_pad_to <- function(char_vec, char_type, char_length){
 #'
 #' @param char_vec a table from the clipboard in character vector form.
 #'
-#' @description Guesses the seprator based on a simple heuristic over the first 10 or less rows:
+#' @description Guesses the separator based on a simple heuristic over the first 10 or less rows:
 #' The separator chosen is the one that leads to the most columns, whilst parsing the same number of columns for each line (var=0).
 #' The guessing algorithm ignores blank lines - which are lines that contain only the separator.
-#' Options are in c(",","\\t","\\|,;")
+#' Options are in `c(",","\\t","\\|",";")`
 #
 #'
 #' @return the separator selected to parse char_vec as a table
@@ -327,7 +327,7 @@ dp_set_decimal_mark <- function(mark){
 
 #' dp_set_max_rows
 #'
-#' @param num_rows The number of rows of an input at which any of tribble_construct() or df_contruct() will abort parsing. Datapasta is untested on large tables. Use at own risk.
+#' @param num_rows The number of rows of an input at which any of tribble_construct() or df_construct() will abort parsing. Datapasta is untested on large tables. Use at own risk.
 #'
 #' @return NULL
 #' @export
@@ -340,7 +340,7 @@ dp_set_max_rows <- function(num_rows){
 #'
 #' @description Return the a list containing the guessed output target context, either rstudio or the console.
 #'
-#' @return a list containint the output target, space size of indent, and number of indents at context.
+#' @return a list containing the output target, space size of indent, and number of indents at context.
 guess_output_context <- function(){
   if(requireNamespace("rstudioapi", quietly = TRUE) && rstudioapi::isAvailable()){
     output_context <- rstudio_context()
@@ -395,13 +395,13 @@ markdown_context <- function(){
 
 #' custom_context
 #'
-#' @description the _context fuctions define lists of parameters for text formatting.
+#' @description the _context functions define lists of parameters for text formatting.
 #' The specific contexts return hard-coded values appropriate to the context they describe, while custom_context allows definition of new contexts for custom formatting.
 #' @param output_mode A named output mode, controls the target of the _paste functions options are "rstudioapi" or "console"
 #' @param nspc The number of spaces for each indent level in the output context
 #' @param indent_context The number of spaces applied initially to all lines in the output context
-#' @param indent_head Logical. Apply the indent_context to the to the header row? Use FALSE if targetting cursor location.
-#' @return an output context. An input to _paste, _format, _contruct functions used to formatt whitespace.
+#' @param indent_head Logical. Apply the indent_context to the to the header row? Use FALSE if targeting cursor location.
+#' @return an output context. An input to _paste, _format, _construct functions used to format whitespace.
 #' @export
 #'
 custom_context <- function(output_mode = "console", nspc = 2, indent_context = 0, indent_head = TRUE){

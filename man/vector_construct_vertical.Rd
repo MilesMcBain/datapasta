@@ -10,12 +10,12 @@ vector_construct_vertical(input_vector, oc = console_context())
 \item{input_vector}{An input vector to be formatted for output. If supplied, no data is read from the clipboard.}
 
 \item{oc}{an optional output context that defines the output target and indentation.
-The default behaviour is target the rstudioapi and fall back to console if it is not available.}
+The default behaviour is to target the rstudioapi and fall back to console if it is not available.}
 }
 \value{
 a string containing the input formatted as a vector definition.
 }
 \description{
 Returns a formatted string, either from clipboard or supplied argument, as a vertically formatted character vector over many lines.
-Considers `,`, `tab`, `newline` as delimeters. If a single character string is passed as an argument, it will be split to form a vector.
+Considers `,`, `tab`, `newline` as delimiters. If a single character string is passed as an argument, it will be split to form a vector.
 }
