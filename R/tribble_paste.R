@@ -316,22 +316,22 @@ read_clip_tbl_guess <- function (x = clipr::read_clip(), ...)
   types_body <- lapply(x_table[-1,], readr::guess_parser)
   if( !identical(types_header, types_body) ){
     # Row 1 is a header
-    colnames(x_table) <- x_table[1, ]
-    x_table <- x_table[-1, ]
+    x_table <- first_row_to_header(x_table)
   } else {
-    if( unique(c(types_body, types_header) == "character") ){
+    if( all(c(types_body, types_header) == "character") ){
       # Row 1 is again a header
-      colnames(x_table) <- x_table[1, ]
-      x_table <- x_table[-1, ]
+      x_table <- first_row_to_header(x_table)
     }
     else{
       # Row 1 is data
       # Nothing to do.
     }
   }
-  attr(x_table, "col_types") <-types_body
+  attr(x_table, "col_types") <- types_body
   x_table
 }
+
+
 
 #' dp_set_decimal_mark
 #'

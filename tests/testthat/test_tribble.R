@@ -5,7 +5,9 @@ is_clipr_available <- clipr::clipr_available()
 test_that("Brisbane Weather is parsed", {
 
   expect_equal(
-      read_clip_tbl_guess(readr::read_lines(file = "./brisbane_weather.txt")),
+      {a_table <- read_clip_tbl_guess(readr::read_lines(file = "./brisbane_weather.txt"))
+       attr(a_table,"col_types") <- NULL
+       a_table},
       as.data.frame(tibble::tribble(
                           ~Precis.Icon,          ~Location, ~Min, ~Max,
                     "Possible shower.",         "Brisbane", "17", "29",
@@ -25,7 +27,10 @@ test_that("Brisbane Weather is parsed", {
 
 test_that("Odd strings are parsed as strings", {
   expect_equal(
-      read_clip_tbl_guess(readr::read_lines(file = "./dates_currency.txt")),
+      {a_table <- read_clip_tbl_guess(readr::read_lines(file = "./dates_currency.txt"))
+       attr(a_table,"col_types") <- NULL
+       a_table
+      },
       as.data.frame(tibble::tribble(
                                                ~date,       ~id,  ~ammount,
                                   "27/10/2016 21:00", "0001234",  "$18.50",
@@ -36,22 +41,28 @@ test_that("Odd strings are parsed as strings", {
 })
 
 test_that("All delimeters work for parsing as table", {
-  expect_equal(read_clip_tbl_guess(readr::read_lines(file = "./pipe_delim.txt")),
-               as.data.frame(tibble::tribble(
-                                           ~event,       ~id,
-                                           "TYPE1", "01",
-                                           "type2,", "02"
-                                            )
-               )
+  expect_equal(
+    {a_table <- read_clip_tbl_guess(readr::read_lines(file = "./pipe_delim.txt"))
+     attr(a_table, "col_types") <- NULL
+     a_table},
+     as.data.frame(tibble::tribble(
+                                 ~event,       ~id,
+                                 "TYPE1", "01",
+                                 "type2,", "02"
+                                  )
+     )
   )
 
-  expect_equal(read_clip_tbl_guess(readr::read_lines(file = "./semi_colon_delim.txt")),
-               as.data.frame(tibble::tribble(
-                   ~event,       ~id,
-                   "TYPE1", "01",
-                   "type2,", "02"
-               )
-               )
+  expect_equal(
+    {a_table <- read_clip_tbl_guess(readr::read_lines(file = "./semi_colon_delim.txt"))
+     attr(a_table, "col_types") <- NULL
+     a_table},
+     as.data.frame(tibble::tribble(
+           ~event,       ~id,
+           "TYPE1", "01",
+           "type2,", "02"
+           )
+      )
   )
 
 
@@ -61,7 +72,9 @@ test_that("All delimeters work for parsing as table", {
 test_that("Table rows with all missing are not ignored", {
 
   expect_equal(
-      read_clip_tbl_guess(readr::read_lines(file = "./tab_with_blank.txt")),
+      {a_table <- read_clip_tbl_guess(readr::read_lines(file = "./tab_with_blank.txt"))
+       attr(a_table, "col_types") <- NULL
+       a_table},
       as.data.frame(tibble::tribble(
                                   ~a,      ~b,
                                   "2",    "hi",
@@ -233,9 +246,17 @@ test_that("Tribble construct calcultes column widths correctly", {
 
 test_that("Tribble contruct recognises raw data with no column headings and adds dummy headers", {
   expect_equal(
-    readr::read_csv(file = "./just_data.txt", col_names = FALSE),
-    { clipr::write_clip(readr::read_lines("./just_data.txt"))
-      eval(parse(text = tribble_construct()))}
+  { tibble::tribble(
+       ~V1,  ~V2,  ~V3, ~V4,
+      52.4, 46.9, 33.7, "A",
+      53.4,   52, 51.8, "A",
+        86, 86.6,   84, "B",
+        73, 73.3,   71, "B",
+        79, 79.5, 77.5, "B",
+        73, 73.5, 73.6, "C"
+      )},
+  { clipr::write_clip(readr::read_lines("./just_data.txt"))
+    eval(parse(text = tribble_construct()))}
   )
 })
 

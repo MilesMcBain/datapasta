@@ -81,6 +81,17 @@ test_that("stringsAsFactors=FALSE is added correctly", {
   })
 })
 
-
+test_that("Date frame contruct recognises raw data with no column headings and adds dummy headers", {
+  expect_equal(
+  { data.frame(stringsAsFactors=FALSE,
+          V1 = c(52.4, 53.4, 86, 73, 79, 73),
+          V2 = c(46.9, 52, 86.6, 73.3, 79.5, 73.5),
+          V3 = c(33.7, 51.8, 84, 71, 77.5, 73.6),
+          V4 = c("A", "A", "B", "B", "B", "C"))
+  },
+  { clipr::write_clip(readr::read_lines("./just_data.txt"))
+    eval(parse(text = df_construct()))}
+  )
+})
 
 
