@@ -245,6 +245,7 @@ test_that("Tribble construct calcultes column widths correctly", {
 })
 
 test_that("Tribble contruct recognises raw data with no column headings and adds dummy headers", {
+  skip_if_not(is_clipr_available, skip_msg)
   expect_equal(
   { tibble::tribble(
        ~V1,  ~V2,  ~V3, ~V4,

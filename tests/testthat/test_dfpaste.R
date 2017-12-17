@@ -81,7 +81,8 @@ test_that("stringsAsFactors=FALSE is added correctly", {
   })
 })
 
-test_that("Date frame contruct recognises raw data with no column headings and adds dummy headers", {
+test_that("Data frame contruct recognises raw data with no column headings and adds dummy headers", {
+  skip_if_not(is_clipr_available, skip_msg)
   expect_equal(
   { data.frame(stringsAsFactors=FALSE,
           V1 = c(52.4, 53.4, 86, 73, 79, 73),
