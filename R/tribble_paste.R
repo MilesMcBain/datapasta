@@ -156,10 +156,14 @@ tribble_construct <- function(input_table, oc = console_context()){
 #' @return The number of characters wide this data would be in when rendered in text
 nchar_type <- function(df_col_row, df_col_type){
   n_chars <- nchar(df_col_row)
+
+  if(length(df_col_type) > 1) df_col_type = "complex" # We can't really handle it.
+
   add_chars <- switch(df_col_type,
                       "integer" = 1, #for the "L",
                       "character" = 2 + nquote_str(df_col_row), #2 for outer quotes +1 "\" for each quote in string
                       "factor" = 2 + nquote_str(df_col_row),
+                      "complex" = 2 + nquote_str(df_col_row), #Assume we print as a quoted char
                       0) #0 for other types
   return(n_chars + add_chars)
 
@@ -199,6 +203,10 @@ pad_to <-function(char_vec, char_length){
 #'
 #'
 render_type <- function(char_vec, char_type){
+
+  if(length(char_type) > 1) char_type <- "complex"
+  # We can't handle special classes. Just fall through defaults.
+
   if(is.na(char_vec)){
     output <- switch(char_type,
                      "integer" = "NA",

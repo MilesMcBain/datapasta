@@ -261,4 +261,23 @@ test_that("Tribble contruct recognises raw data with no column headings and adds
   )
 })
 
+test_that("Date columns fall back to string pasting", {
+  date_df <-     data.frame( Start_Date =
+      structure(
+        c(
+          1420217880,
+          1420217880,
+          1420218180,
+          1420218180,
+          1420218180,
+          1420218180
+        ),
+        class = c("POSIXct", "POSIXt"),
+        tzone = "UTC"))
+  date_df_char <- tibble::as_tibble(date_df)
+  date_df_char$Start_Date <- as.character(date_df_char$Start_Date)
+  expect_equal(date_df_char,
+               eval(parse( text = tribble_construct(date_df)))
+  )
+})
 
