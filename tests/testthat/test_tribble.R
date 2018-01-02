@@ -1,6 +1,7 @@
 context("test tribble paste")
 skip_msg <- "System clipboard is not available - skipping test."
-is_clipr_available <- clipr::clipr_available()
+is_clipr_available <- clipr::clipr_available()skip_if_not(is_interactive)
+is_RStudio_session <- interactive() & rstudioapi::isAvailable()
 
 test_that("Brisbane Weather is parsed", {
 
@@ -98,7 +99,7 @@ test_that("Brisbane Weather with empty lines has separator guessed as tab.", {
 test_that("Brisbane Weather with empty lines is parsed, types are guessed, rendered and then can be parsed by R correctly as a tibble", {
   skip_if_not(is_clipr_available, skip_msg)
   skip_on_cran()
-  skip_if_not(rstudioapi::isAvailable())
+  skip_if_not(is_RStudio_session)
   expect_equal(
     {clipr::write_clip(readr::read_lines(file = "./brisbane_weather_empty_lines.txt"))
     eval(parse(text = tribble_construct()))},
@@ -122,7 +123,7 @@ test_that("Brisbane Weather with empty lines is parsed, types are guessed, rende
 test_that("Data with all rows ending in commas (empty final column) has separator guessed correctly", {
   skip_if_not(is_clipr_available, skip_msg)
   skip_on_cran()
-  skip_if_not(rstudioapi::isAvailable())
+  skip_if_not(is_RStudio_session)
   expect_equal(
     {clipr::write_clip(readr::read_lines(file = "./empty_final_col_comma.txt"))
       suppressWarnings(eval(parse(text = tribble_construct())))}, #Will generate a warning about all NA to max
@@ -139,6 +140,7 @@ test_that("Data with all rows ending in commas (empty final column) has separato
 test_that("Data with a comma decimal mark can be parsed correctly", {
   skip_if_not(is_clipr_available, skip_msg)
   skip_on_cran()
+  skip_if_not(is_RStudio_session)
   dp_set_decimal_mark(",")
   on.exit(dp_set_decimal_mark("."))
   expect_equal(
@@ -202,6 +204,8 @@ test_that("Attempting to input non-table generates a message", {
 
 test_that("Quotes \' in input are escaped", {
   skip_if_not(is_clipr_available, skip_msg)
+  skip_if_not(is_RStudio_session)
+  skip_on_cran()
   expect_equal({
     clipr::write_clip("a,b,c\nthis,is,testing\nnow,you\'re,testing")
     eval(parse(text = tribble_construct()))
@@ -217,6 +221,8 @@ test_that("Quotes \' in input are escaped", {
 
 test_that("Quotes \" in input are escaped", {
     skip_if_not(is_clipr_available, skip_msg)
+    skip_if_not(is_RStudio_session)
+    skip_on_cran()
     expect_equal({
       clipr::write_clip("a,b,c\nthis,is,testing\nnow,you\"re,testing")
       eval(parse(text = tribble_construct()))
@@ -246,6 +252,8 @@ test_that("Tribble construct calcultes column widths correctly", {
 
 test_that("Tribble contruct recognises raw data with no column headings and adds dummy headers", {
   skip_if_not(is_clipr_available, skip_msg)
+  skip_if_not(is_RStudio_session)
+  skip_on_cran()
   expect_equal(
   { tibble::tribble(
        ~V1,  ~V2,  ~V3, ~V4,
