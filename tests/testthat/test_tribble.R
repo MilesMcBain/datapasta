@@ -1,6 +1,6 @@
 context("test tribble paste")
 skip_msg <- "System clipboard is not available - skipping test."
-is_clipr_available <- clipr::clipr_available()skip_if_not(is_interactive)
+is_clipr_available <- clipr::clipr_available()
 is_RStudio_session <- interactive() & rstudioapi::isAvailable()
 
 test_that("Brisbane Weather is parsed", {

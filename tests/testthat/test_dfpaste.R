@@ -6,7 +6,7 @@ is_RStudio_session <- interactive() & rstudioapi::isAvailable()
 test_that("Test data.frame text wrapping works", {
   skip_if_not(is_clipr_available, skip_msg)
   skip_on_cran()
-  skip_if_not(is_interactive)
+  skip_if_not(is_RStudio_session)
   expect_equal({
     clipr::write_clip(content = readr::read_lines(file = "./route_length.txt"))
     df_construct()
