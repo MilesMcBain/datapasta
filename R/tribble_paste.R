@@ -52,7 +52,7 @@ tribble_construct <- function(input_table, oc = console_context()){
       else message("Could not paste clipboard as tibble. Text could not be parsed as table.")
       return(NULL)
     }
-    #Parse data types from string using readr::guess_parser
+    # Parse data types from string using readr::guess_parser
     input_table_types <- attr(input_table, "col_types")
   }else{
     if(!is.data.frame(input_table) && !tibble::is_tibble(input_table)){
@@ -67,8 +67,13 @@ tribble_construct <- function(input_table, oc = console_context()){
     #Store types as characters so the char lengths can be computed
     input_table <- as.data.frame(lapply(input_table, as.character), stringsAsFactors = FALSE)
   }
+  # Warn if there is any factors, they will be converted to strings.
+  factor_cols <- which(input_table_types == "factor")
+  if( length(factor_cols > 0) ){
+    warning("Column(s) ", paste0(factor_cols, collapse = ","), " have been converted from factor to character in tribble output.")
+  }
 
-  #Find the max length of data as string in each column
+  # Find the max length of data as string in each column
   col_widths <- mapply(input_table,
                        FUN =
                          function(df_col, df_col_type){
@@ -83,15 +88,15 @@ tribble_construct <- function(input_table, oc = console_context()){
                        df_col_type = input_table_types
 
   )
-  #Set the column width depending on the max length of data as string or the header, whichever is longer.
+  # Set the column width depending on the max length of data as string or the header, whichever is longer.
   col_widths <- mapply(max,
                        col_widths,
                        nchar(names(input_table))+1) #+1 for "~"
 
-  #Header
+  # Header
   header <- paste0(ifelse(oc$indent_head, yes = strrep(" ", oc$indent_context), no = ""), "tibble::tribble(\n")
 
-  #Column names
+  # Column names
   names_row <- paste0(
                   paste0(strrep(" ",oc$indent_context+oc$nspc),
                       paste0(
@@ -109,7 +114,7 @@ tribble_construct <- function(input_table, oc = console_context()){
                 )
 
 
-  #Write correct data types
+  # Write correct data types
   body_rows <- lapply(X = as.data.frame(t(input_table), stringsAsFactors = FALSE),
                       FUN =
                         function(col){
@@ -136,11 +141,11 @@ tribble_construct <- function(input_table, oc = console_context()){
 
 
 
-  #Need to remove the final comma that will break everything.
+  # Need to remove the final comma that will break everything.
   body_rows <- paste0(as.vector(body_rows),collapse = "")
   body_rows <- gsub(pattern = ",\n$", replacement = "\n", x = body_rows)
 
-  #Footer
+  # Footer
   footer <- paste0(strrep(" ",oc$indent_context+oc$nspc),")\n")
   output <- paste0(header, names_row, body_rows, footer)
 

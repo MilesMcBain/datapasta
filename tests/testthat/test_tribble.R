@@ -242,11 +242,11 @@ test_that("Attempting to input a large table generates a message", {
   )
 })
 
-test_that("Tribble construct calcultes column widths correctly", {
+test_that("Tribble construct calculates column widths correctly", {
   tst <- head(iris)
   tst$Species <- as.character(tst$Species)
   tst <- tibble::as_tibble(tst)
-  expect_equal(eval(parse( text = tribble_construct(head(iris)))),
+  expect_equal(eval(parse( text = suppressWarnings(tribble_construct(head(iris)))) ),
                tst)
 })
 
@@ -289,3 +289,7 @@ test_that("Date columns fall back to string pasting", {
   )
 })
 
+test_that("DFs/Tibbles with factors generate a warning about string conversion",{
+  expect_warning(tribble_construct(head(iris)),
+                 "have been converted from factor to character in tribble output.")
+})
