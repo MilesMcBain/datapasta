@@ -5,3 +5,9 @@ first_row_to_header <- function(a_table){
   rownames(a_table) <- seq(nrow(a_table))
   a_table
 }
+
+is_rstudio_selection <- function(){
+  context <- rstudioapi::getActiveDocumentContext()
+  !all(context$selection[[1]]$range$start ==
+         context$selection[[1]]$range$end)
+}

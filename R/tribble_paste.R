@@ -13,6 +13,15 @@ globalVariables(c(".rs.readUiPref",".global_datapasta_env"), "datapasta") #ignor
 #' @export
 #'
 tribble_paste <- function(input_table, output_context = guess_output_context()){
+
+  # if there's a selection, try to parse it as a tibble or a data.frame
+  # and if it is use that as input table.
+  if( is_rstudio_selection() ){
+    doc_context <- rstudioapi::primary_selection(rstudioapi::getActiveDocumentContext())
+    eval_env <- new.env()
+    selection_result <- eval(parse(text = doc_context$text), envir = eval_env())
+  }
+
   output <- tribble_construct(input_table, oc = output_context)
 
   switch(output_context$output_mode,
