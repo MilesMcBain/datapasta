@@ -9,6 +9,7 @@
 #' @export
 #'
 vector_paste <- function(input_vector, output_context = guess_output_context()){
+
   vector_form <- vector_construct(input_vector, oc = output_context)
 
   #output depending on mode
