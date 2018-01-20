@@ -11,3 +11,5 @@ is_rstudio_selection <- function(){
   !all(context$selection[[1]]$range$start ==
          context$selection[[1]]$range$end)
 }
+
+
