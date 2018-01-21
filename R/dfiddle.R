@@ -24,16 +24,17 @@ dfiddle <- function(){
         ),
         ")"
       )
+    nlines <- length(gregexpr(pattern = "\n", text = vector_form)[[1]])+1
     insert_range <-
       rstudioapi::document_range(doc_context$range$start,
-                     c(doc_context$range$start[1] + length(vector_form)-1, nchar(vector_form[length(vector_form)]))
+                     c(doc_context$range$start[1] + nlines-1, nchar(vector_form[length(vector_form)]))
       )
    } # pivot to vertical vector
 
   if(is_vert_vec(doc_context$text)){
     indent_context <- attr(regexpr(pattern = "^\\s*(?=\\S)", text = doc_context$text, perl = TRUE), "match.length")
     regular_delimited <- paste0(split_vert_vec(doc_context$text), collapse = ",")
-    vector_form <- paste0("c(",regular_delimited,")")
+    vector_form <- paste0(strrep(" ", indent_context),"c(",regular_delimited,")")
     insert_range <- rstudioapi::document_range(doc_context$range$start,
                                                c(doc_context$range$start[2], nchar(vector_form)+1)
     )
