@@ -1,11 +1,34 @@
-dfiddle <- function(){
+zzz_rs_dfiddle <- function(){
   if(!is_rstudio_selection()) return(invisible(NULL))
 
+  # If we have a data.frame or tibble, repaste (or replace) to get a neatly formatted output.
   doc_context <- rstudioapi::primary_selection(rstudioapi::getActiveDocumentContext())
+  indent_context <- attr(regexpr(pattern = "^\\s*(?=\\S)", text = doc_context$text, perl = TRUE), "match.length")
   eval_env <- new.env()
 
+  selection_result <-
+    tryCatch( expr = eval(parse(text = doc_context$text), envir = eval_env),
+              error = function(e) NULL)
+
+  if(tibble::is_tibble(selection_result) | is.data.frame(selection_result)){
+    if(is_tibble(selection_result)) {
+      table_form <- tribble_construct(selection_result, oc = rstudio_context())
+    } else {
+      table_form <- df_construct(selection_result, oc = rstudio_context())
+    }
+    nlines <- n_lines(table_form)
+    end_of_range <- last_line_content_length(table_form) + indent_context + 1
+    insert_range <- rstudioapi::document_range(doc_context$range$start,
+                                               c(doc_context$range$start[1] + n_lines(table_form)-1, 1)
+                    )
+    rstudioapi::modifyRange(doc_context$range, text = table_form)
+    rstudioapi::setSelectionRanges(insert_range)
+    return(invisible(table_form)) # done
+  }
+
+  # It wasn't a tibble or data.frame, let's try vector options
+
   if(is_naked_vec(doc_context$text)){
-    indent_context <- attr(regexpr(pattern = "^\\s*(?=\\S)", text = doc_context$text, perl = TRUE), "match.length")
     regular_delimited <-
       paste0(split_naked_vector(doc_context$text), collapse=", ")
     vector_form <- paste0("c(",regular_delimited,")")
@@ -15,7 +38,6 @@ dfiddle <- function(){
   } # parse to a vector
 
   if(is_horiz_vec(doc_context$text)){
-    indent_context <- attr(regexpr(pattern = "^\\s*(?=\\S)", text = doc_context$text, perl = TRUE), "match.length")
     vector_form <-
       paste0(strrep(" ", indent_context), "c(",
         paste0(
@@ -24,15 +46,14 @@ dfiddle <- function(){
         ),
         ")"
       )
-    nlines <- length(gregexpr(pattern = "\n", text = vector_form)[[1]])+1
+    end_of_range <- last_line_content_length(vector_form) + indent_context + 1
     insert_range <-
       rstudioapi::document_range(doc_context$range$start,
-                     c(doc_context$range$start[1] + nlines-1, nchar(vector_form[length(vector_form)]))
+                     c(doc_context$range$start[1] + n_lines(vector_form)-1, end_of_range)
       )
    } # pivot to vertical vector
 
   if(is_vert_vec(doc_context$text)){
-    indent_context <- attr(regexpr(pattern = "^\\s*(?=\\S)", text = doc_context$text, perl = TRUE), "match.length")
     regular_delimited <- paste0(split_vert_vec(doc_context$text), collapse = ",")
     vector_form <- paste0(strrep(" ", indent_context),"c(",regular_delimited,")")
     insert_range <- rstudioapi::document_range(doc_context$range$start,
@@ -41,20 +62,9 @@ dfiddle <- function(){
 
   } # pivot horiz vector
 
-  #is_quoted_horiz_vec # pivot to quoted vertical vector
-
-  #is_quoted_vert_vec # pivot to unqoted horizontal
-
   rstudioapi::modifyRange(doc_context$range, text = vector_form)
   rstudioapi::setSelectionRanges(insert_range)
-
-  #selection_result <-
-  #  tryCatch( expr = eval(parse(text = doc_context$text), envir = eval_env),
-  #            error = NULL)
-
-  #if(tibble::is_tibble(selection_result) |
-  #   is.data.frame(selection_result)){ df_paste(selection_result) }
-
+  return(invisible(vector_form))
 
 }
 
@@ -100,4 +110,19 @@ split_vert_vec <- function(vert_vec){
                       replacement = "",
                       x = vert_vec)
   trimws(strsplit(vert_elems, split = "(?<=(\"|\'|\\w))[[:blank:]]*,\n", perl = TRUE)[[1]])
+}
+
+n_lines <- function(a_structure){
+  length(gregexpr(pattern = "\n", text = a_structure)[[1]])+1 #The last line won't have a /n on it so +1.
+}
+
+last_line_content_length <- function(a_structure){
+  attr(gregexpr(pattern = "(?<=\n).*$", text = a_structure, perl = TRUE)[[1]], "match.length")
+}
+
+zzz_rs_toggle_quotes <- function(){
+  if(!is_rstudio_selection()) return(invisible(NULL))
+  doc_context <- rstudioapi::primary_selection(rstudioapi::getActiveDocumentContext())
+  indent_context <- attr(regexpr(pattern = "^\\s*(?=\\S)", text = doc_context$text, perl = TRUE), "match.length")
+
 }
