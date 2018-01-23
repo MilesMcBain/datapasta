@@ -1,3 +1,11 @@
+#' dfiddle
+#' @description An addin to fiddle your RStudio selections to better things.
+#' Make a selection in RStudio and dfiddle will update it inline. Good for:
+#' Converting Text to vectors (`c()`), pivoting between horizontal and vertical vectors,
+#' reflowing tribble() and data.frame() definitions to have nice indenting and padding.
+#'
+#' @return a fiddled version of your selection (invisibly)
+#' @export
 zzz_rs_dfiddle <- function(){
   if(!is_rstudio_selection()) return(invisible(NULL))
 
@@ -69,6 +77,11 @@ zzz_rs_dfiddle <- function(){
 
 }
 
+#' Toggle Quotes
+#' @description An addin to toggle between quotes and bare vectors. Applies to a vector selected
+#' in an RStudio source editor. Works with horizontal or vertical form.
+#' @return The toggled vector (invisibly).
+#' @export
 zzz_rs_toggle_quotes <- function(){
   if(!is_rstudio_selection()) return(invisible(NULL))
   doc_context <- rstudioapi::primary_selection(rstudioapi::getActiveDocumentContext())
