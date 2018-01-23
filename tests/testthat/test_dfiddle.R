@@ -14,4 +14,5 @@ test_that("horizontal vectors are identified",{
   expect_true(is_horiz_vec("c(1, 2, 3)"))
   expect_true(is_horiz_vec("c( 1  , 2     , 3     )"))
   expect_true(is_horiz_vec("     c(1, 2, 3)     "))
+  expect_true(is_horiz_vec("  c( 'word', word,     \"word\" )" ))
 })
