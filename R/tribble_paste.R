@@ -27,6 +27,7 @@ tribble_paste <- function(input_table, output_context = guess_output_context()){
 #' Table is output as `tribble()` call. Useful for creating reproducible examples.
 #' @return Nothing.
 tribble_format <- function(input_table, output_context = console_context()){
+  if(!interactive()) stop("Cannot write to clipboard in non-interactive sessions.")
   output <- tribble_construct(input_table, oc = output_context)
   clipr::write_clip(output)
 }

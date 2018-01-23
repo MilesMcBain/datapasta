@@ -28,6 +28,7 @@ vector_paste <- function(input_vector, output_context = guess_output_context()){
 #'
 #'
 vector_format <- function(input_vector, output_context = console_context()){
+  if(!interactive()) stop("Cannot write to clipboard in non-interactive sessions.")
   vector_form <- vector_construct(input_vector, output_context)
   clipr::write_clip(vector_form)
 }
@@ -94,6 +95,7 @@ vector_paste_vertical <- function(input_vector, output_context = guess_output_co
 #'
 #'
 vector_format_vertical <- function(input_vector, output_context = clipboard_context()){
+  if(!interactive()) stop("Cannot write to clipboard in non-interactive sessions.")
   vector_form <- vector_construct_vertical(input_vector, output_context)
   clipr::write_clip(vector_form)
 }
