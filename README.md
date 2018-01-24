@@ -54,10 +54,10 @@ There are two Addins that can help with creating and aliging data in your editor
     - Turn raw data delimited by any combination of commas, spaces, and newlines into a `c()` expression
     - Pivot a `c()` expr between horizontal and vertical layout.
     - Reflow messy `tribble()` and `data.frame()` exprs.
-    - Recommend kbd>Ctrl</kbd> +<kbd>Shift</kbd> + <kbd>f</kbd> as shortcut.
+    - Recommend <kbd>Ctrl</kbd> +<kbd>Shift</kbd> + <kbd>f</kbd> as shortcut.
 
 * `Toggle Vector Quotes` will toggle a `c()` expr between all elements wrapped in `""` and all bare unquoted form. Handy in combination with above to save mucho keystrokes.
-    - Recommend kbd>Ctrl</kbd> +<kbd>Shift</kbd> + <kbd>q</kbd> as shortcut.
+    - Recommend <kbd>Ctrl</kbd> +<kbd>Shift</kbd> + <kbd>q</kbd> as shortcut.
 
 ### Getting Data out of an R session
 There are two R functions available that accept R objects and output formatted text for pasting to a [repex](https://github.com/tidyverse/reprex) or other application:
