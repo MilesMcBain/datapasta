@@ -177,7 +177,7 @@ nchar_type <- function(df_col_row, df_col_type){
 
 #' Count the number of quotes in a string
 #'
-#' @param char_vec the sring to count quotes in
+#' @param char_vec the string to count quotes in
 #'
 #' @return a number, possibly 0.
 nquote_str <- function(char_vec){

@@ -60,7 +60,7 @@ There are two Addins that can help with creating and aliging data in your editor
     - Recommend <kbd>Ctrl</kbd> +<kbd>Shift</kbd> + <kbd>q</kbd> as shortcut.
 
 ### Getting Data out of an R session
-There are two R functions available that accept R objects and output formatted text for pasting to a [repex](https://github.com/tidyverse/reprex) or other application:
+There are two R functions available that accept R objects and output formatted text for pasting to a [reprex](https://github.com/tidyverse/reprex) or other application:
 
 * `dpasta` accepts tibbles, data.frames, and vectors. Data is output in a format that matches in input class. Formatted text is pasted at the cursor.
 
