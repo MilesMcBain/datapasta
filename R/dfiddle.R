@@ -20,7 +20,7 @@ zzz_rs_dfiddle <- function(){
               error = function(e) NULL)
 
   if(tibble::is_tibble(selection_result) | is.data.frame(selection_result)){
-    if(is_tibble(selection_result)) {
+    if(tibble::is_tibble(selection_result)) {
       table_form <- tribble_construct(selection_result, oc = rstudio_context())
     } else {
       table_form <- df_construct(selection_result, oc = rstudio_context())
@@ -39,7 +39,7 @@ zzz_rs_dfiddle <- function(){
 
   if(is_naked_vec(doc_context$text)){
     regular_delimited <-
-      paste0(split_naked_vector(doc_context$text), collapse=", ")
+      paste0(split_naked_vec(doc_context$text), collapse=", ")
     vector_form <- paste0("c(",regular_delimited,")")
     insert_range <- rstudioapi::document_range(doc_context$range$start,
                                                c(doc_context$range$start[2], nchar(vector_form)+1)
@@ -137,7 +137,7 @@ is_naked_vec <- function(text){
  length(matches) > 0 && matches == 1
 }
 
-split_naked_vector<- function(naked_vec){
+split_naked_vec<- function(naked_vec){
   naked_vec <- trimws(naked_vec)
   trimws(strsplit(x = naked_vec, split = "(?<=(\"|\'|\\w))[[:blank:],\n]+",
            perl = TRUE)[[1]])
@@ -145,7 +145,7 @@ split_naked_vector<- function(naked_vec){
 
 is_horiz_vec <- function(text){
   text <- trimws(text)
-  horiz_vector <- "c\\(([[:blank:]]*((\"|\')[^\'\"]+(\"|\')|\\w+)[[:blank:]]*(,)*[[:blank:]]*)+\\)"
+  horiz_vector <- "c\\(([[:blank:]]*((\"|\')[^\'\"]+(\"|\')|\\w+)[[:blank:]]*,)+[[:blank:]]*((\"|\')[^\'\"]+(\"|\')|\\w+)[[:blank:]]*\\)"
   matches <- grep(x = text, pattern = horiz_vector)
   length(matches) > 0 && matches == 1
 }
@@ -161,7 +161,7 @@ split_horiz_vec <- function(horiz_vec){
 
 is_vert_vec <- function(text){
   text <- trimws(text)
-  vert_vector <- "c\\(((\\s)*((\"|\')[^\'\"]+(\"|\')|\\w+)([[:blank:]])*(,\n)*)+\\)"
+  vert_vector <- "c\\(((\\s)*((\"|\')[^\'\"]+(\"|\')|\\w+)[[:blank:]]*,[[:blank:]]*\n)+[[:blank:]]*((\"|\')[^\'\"]+(\"|\')|\\w+)[[:blank:]]*\\)"
   matches <- grep(x = text, pattern = vert_vector)
   length(matches) > 0 && matches == 1
 }
@@ -171,15 +171,18 @@ split_vert_vec <- function(vert_vec){
   vert_elems <- gsub( pattern = "(^c\\(|\\)$)",
                       replacement = "",
                       x = vert_vec)
-  trimws(strsplit(vert_elems, split = "(?<=(\"|\'|\\w))[[:blank:]]*,\n", perl = TRUE)[[1]])
+  trimws(strsplit(vert_elems, split = "(?<=(\"|\'|\\w))[[:blank:]]*,[[:blank:]]*\n", perl = TRUE)[[1]])
 }
 
 n_lines <- function(a_structure){
-  length(gregexpr(pattern = "\n", text = a_structure)[[1]])+1 # The last line won't have a /n on it so +1.
+  matches <- gregexpr(pattern = "\n", text = a_structure)[[1]]
+  if(length(matches) == 1 && matches == -1) 1
+  else length(matches) + 1 # The last line won't have a /n on it so +1.
 }
 
 last_line_content_length <- function(a_structure){
-  attr(gregexpr(pattern = "(?<=\n).*$", text = a_structure, perl = TRUE)[[1]], "match.length")
+  if(length(grep(pattern = "\n$", a_structure)) != 0) 0
+  else attr(gregexpr(pattern = "(?<=\n).*$", text = a_structure, perl = TRUE)[[1]], "match.length")
 }
 
 toggle_quote_elems <- function(content){
@@ -187,9 +190,9 @@ toggle_quote_elems <- function(content){
   # If not all quoted, then quote all
   # If all quotes unqoute all
   if( !(all(quoted_content)) ){
-    content[!quoted_content] <- vapply(content[!quoted_content], quote_elem, character(1))
+    content[!quoted_content] <- vapply(content[!quoted_content], quote_elem, character(1), USE.NAMES = FALSE)
   } else {
-    content <- vapply(content, unquote_elem, character(1))
+    content <- vapply(content, unquote_elem, character(1), USE.NAMES = FALSE)
   }
   content
 }
