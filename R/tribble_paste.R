@@ -27,6 +27,7 @@ tribble_paste <- function(input_table, output_context = guess_output_context()){
 #' Table is output as `tribble()` call. Useful for creating reproducible examples.
 #' @return Nothing.
 tribble_format <- function(input_table, output_context = console_context()){
+  if(!interactive()) stop("Cannot write to clipboard in non-interactive sessions.")
   output <- tribble_construct(input_table, oc = output_context)
   clipr::write_clip(output)
 }
@@ -52,8 +53,8 @@ tribble_construct <- function(input_table, oc = console_context()){
       else message("Could not paste clipboard as tibble. Text could not be parsed as table.")
       return(NULL)
     }
-    #Parse data types from string using readr::parse_guess
-    input_table_types <- lapply(input_table, readr::guess_parser)
+    # Parse data types from string using readr::guess_parser
+    input_table_types <- attr(input_table, "col_types")
   }else{
     if(!is.data.frame(input_table) && !tibble::is_tibble(input_table)){
       message("Could not format input_table as table. Unexpected class.")
@@ -67,8 +68,13 @@ tribble_construct <- function(input_table, oc = console_context()){
     #Store types as characters so the char lengths can be computed
     input_table <- as.data.frame(lapply(input_table, as.character), stringsAsFactors = FALSE)
   }
+  # Warn if there is any factors, they will be converted to strings.
+  factor_cols <- which(input_table_types == "factor")
+  if( length(factor_cols > 0) ){
+    warning("Column(s) ", paste0(factor_cols, collapse = ","), " have been converted from factor to character in tribble output.")
+  }
 
-  #Find the max length of data as string in each column
+  # Find the max length of data as string in each column
   col_widths <- mapply(input_table,
                        FUN =
                          function(df_col, df_col_type){
@@ -83,15 +89,15 @@ tribble_construct <- function(input_table, oc = console_context()){
                        df_col_type = input_table_types
 
   )
-  #Set the column width depending on the max length of data as string or the header, whichever is longer.
+  # Set the column width depending on the max length of data as string or the header, whichever is longer.
   col_widths <- mapply(max,
                        col_widths,
                        nchar(names(input_table))+1) #+1 for "~"
 
-  #Header
+  # Header
   header <- paste0(ifelse(oc$indent_head, yes = strrep(" ", oc$indent_context), no = ""), "tibble::tribble(\n")
 
-  #Column names
+  # Column names
   names_row <- paste0(
                   paste0(strrep(" ",oc$indent_context+oc$nspc),
                       paste0(
@@ -109,7 +115,7 @@ tribble_construct <- function(input_table, oc = console_context()){
                 )
 
 
-  #Write correct data types
+  # Write correct data types
   body_rows <- lapply(X = as.data.frame(t(input_table), stringsAsFactors = FALSE),
                       FUN =
                         function(col){
@@ -136,11 +142,11 @@ tribble_construct <- function(input_table, oc = console_context()){
 
 
 
-  #Need to remove the final comma that will break everything.
+  # Need to remove the final comma that will break everything.
   body_rows <- paste0(as.vector(body_rows),collapse = "")
   body_rows <- gsub(pattern = ",\n$", replacement = "\n", x = body_rows)
 
-  #Footer
+  # Footer
   footer <- paste0(strrep(" ",oc$indent_context+oc$nspc),")\n")
   output <- paste0(header, names_row, body_rows, footer)
 
@@ -156,13 +162,28 @@ tribble_construct <- function(input_table, oc = console_context()){
 #' @return The number of characters wide this data would be in when rendered in text
 nchar_type <- function(df_col_row, df_col_type){
   n_chars <- nchar(df_col_row)
+
+  if(length(df_col_type) > 1) df_col_type = "complex" # We can't really handle it.
+
   add_chars <- switch(df_col_type,
                       "integer" = 1, #for the "L",
-                      "character" = 2 + length(gregexpr(pattern = "(\"|\')", text = df_col_row)[[1]]), #2 for outer quotes +1 "\" for each quote in string
+                      "character" = 2 + nquote_str(df_col_row), #2 for outer quotes +1 "\" for each quote in string
+                      "factor" = 2 + nquote_str(df_col_row),
+                      "complex" = 2 + nquote_str(df_col_row), #Assume we print as a quoted char
                       0) #0 for other types
   return(n_chars + add_chars)
 
 }
+
+#' Count the number of quotes in a string
+#'
+#' @param char_vec the sring to count quotes in
+#'
+#' @return a number, possibly 0.
+nquote_str <- function(char_vec){
+  sum(gregexpr(pattern = "(\"|\')", text = char_vec)[[1]] > 0)
+}
+
 
 #' pad_to
 #' @description Left pad string to a certain size. A helper function for getting spacing in table correct.
@@ -188,6 +209,10 @@ pad_to <-function(char_vec, char_length){
 #'
 #'
 render_type <- function(char_vec, char_type){
+
+  if(length(char_type) > 1) char_type <- "complex"
+  # We can't handle special classes. Just fall through defaults.
+
   if(is.na(char_vec)){
     output <- switch(char_type,
                      "integer" = "NA",
@@ -285,7 +310,7 @@ read_clip_tbl_guess <- function (x = clipr::read_clip(), ...)
   .dots <- list(...)
   .dots$file <- textConnection(x)
   if (is.null(.dots$header))
-    .dots$header <- TRUE
+    .dots$header <- FALSE
   if (is.null(.dots$sep)){
     .dots$sep <- guess_sep(x)
   }
@@ -298,8 +323,29 @@ read_clip_tbl_guess <- function (x = clipr::read_clip(), ...)
   if (is.null(.dots$strip.white))
     .dots$strip.white <- TRUE
     .dots$quote <-  ""
-  do.call(utils::read.table, args = .dots)
+  x_table <- do.call(utils::read.table, args = .dots)
+
+  # Determine if row 1 a header
+  types_header <- lapply(x_table[1,], readr::guess_parser)
+  types_body <- lapply(x_table[-1,], readr::guess_parser)
+  if( !identical(types_header, types_body) ){
+    # Row 1 is a header
+    x_table <- first_row_to_header(x_table)
+  } else {
+    if( all(c(types_body, types_header) == "character") ){
+      # Row 1 is again a header
+      x_table <- first_row_to_header(x_table)
+    }
+    else{
+      # Row 1 is data
+      # Nothing to do.
+    }
+  }
+  attr(x_table, "col_types") <- types_body
+  x_table
 }
+
+
 
 #' dp_set_decimal_mark
 #'

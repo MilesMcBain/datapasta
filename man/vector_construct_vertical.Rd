@@ -2,7 +2,7 @@
 % Please edit documentation in R/vector_paste.R
 \name{vector_construct_vertical}
 \alias{vector_construct_vertical}
-\title{vector_format_vertical}
+\title{vector_construct_vertical}
 \usage{
 vector_construct_vertical(input_vector, oc = console_context())
 }

@@ -17,3 +17,13 @@ Name: Paste as data.frame
 Description: Pastes a table from the clipboard to the editor as a data.frame definition
 Binding: df_paste
 Interactive: false
+
+Name: Fiddle Selection
+Description: Take a selection and fiddle it to something better (maybe).
+Binding: zzz_rs_dfiddle
+Interactive: false
+
+Name: Toggle Vector Quotes
+Description: Toggle quotes in a vector defintion
+Binding: zzz_rs_toggle_quotes
+Interactive: false

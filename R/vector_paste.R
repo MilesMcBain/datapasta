@@ -9,6 +9,7 @@
 #' @export
 #'
 vector_paste <- function(input_vector, output_context = guess_output_context()){
+
   vector_form <- vector_construct(input_vector, oc = output_context)
 
   #output depending on mode
@@ -27,6 +28,7 @@ vector_paste <- function(input_vector, output_context = guess_output_context()){
 #'
 #'
 vector_format <- function(input_vector, output_context = console_context()){
+  if(!interactive()) stop("Cannot write to clipboard in non-interactive sessions.")
   vector_form <- vector_construct(input_vector, output_context)
   clipr::write_clip(vector_form)
 }
@@ -93,11 +95,12 @@ vector_paste_vertical <- function(input_vector, output_context = guess_output_co
 #'
 #'
 vector_format_vertical <- function(input_vector, output_context = clipboard_context()){
+  if(!interactive()) stop("Cannot write to clipboard in non-interactive sessions.")
   vector_form <- vector_construct_vertical(input_vector, output_context)
   clipr::write_clip(vector_form)
 }
 
-#' vector_format_vertical
+#' vector_construct_vertical
 #'
 #' @description Returns a formatted string, either from clipboard or supplied argument, as a vertically formatted character vector over many lines.
 #' Considers `,`, `tab`, `newline` as delimiters. If a single character string is passed as an argument, it will be split to form a vector.

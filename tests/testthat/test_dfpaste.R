@@ -1,11 +1,12 @@
 context("test data.frame paste")
 skip_msg <- "System clipboard is not available - skipping test."
 is_clipr_available <- clipr::clipr_available()
-is_rstudio_available <- rstudioapi::isAvailable()
+is_RStudio_session <- interactive() & rstudioapi::isAvailable()
 
 test_that("Test data.frame text wrapping works", {
   skip_if_not(is_clipr_available, skip_msg)
   skip_on_cran()
+  skip_if_not(is_RStudio_session)
   expect_equal({
     clipr::write_clip(content = readr::read_lines(file = "./route_length.txt"))
     df_construct()
@@ -17,6 +18,7 @@ test_that("Test data.frame text wrapping works", {
 test_that("A Data.frame can be parsed correctly", {
   skip_if_not(is_clipr_available, skip_msg)
   skip_on_cran()
+  skip_if_not(is_RStudio_session)
   expect_equal({
     clipr::write_clip(content = readr::read_lines(file = "./route_length.txt"))
     eval(parse(text = df_construct()))
@@ -46,6 +48,7 @@ test_that("A Data.frame can be parsed correctly", {
 test_that("A pasted multi-type data.frame is rendered and parsed correctly", {
   skip_if_not(is_clipr_available, skip_msg)
   skip_on_cran()
+  skip_if_not(is_RStudio_session)
   expect_equal({
     clipr::write_clip(content = readr::read_lines(file = "./brisbane_weather.txt"))
     eval(parse(text = df_construct()))
@@ -69,6 +72,7 @@ test_that("A pasted multi-type data.frame is rendered and parsed correctly", {
 test_that("stringsAsFactors=FALSE is added correctly", {
   skip_if_not(is_clipr_available, skip_msg)
   skip_on_cran()
+  skip_if_not(is_RStudio_session)
   expect_equal({
     clipr::write_clip(content = c("char,int", "a,1", "b,3"))
     eval(parse(text = df_construct()))
@@ -81,6 +85,20 @@ test_that("stringsAsFactors=FALSE is added correctly", {
   })
 })
 
-
+test_that("Data frame contruct recognises raw data with no column headings and adds dummy headers", {
+  skip_if_not(is_clipr_available, skip_msg)
+  skip_on_cran()
+  skip_if_not(is_RStudio_session)
+  expect_equal(
+  { data.frame(stringsAsFactors=FALSE,
+          V1 = c(52.4, 53.4, 86, 73, 79, 73),
+          V2 = c(46.9, 52, 86.6, 73.3, 79.5, 73.5),
+          V3 = c(33.7, 51.8, 84, 71, 77.5, 73.6),
+          V4 = c("A", "A", "B", "B", "B", "C"))
+  },
+  { clipr::write_clip(readr::read_lines("./just_data.txt"))
+    eval(parse(text = df_construct()))}
+  )
+})
 
 

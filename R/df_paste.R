@@ -22,6 +22,7 @@ df_paste <- function(input_table, output_context = guess_output_context()){
 #' @return nothing.
 #'
 df_format <- function(input_table, output_context = clipboard_context()){
+  if(!interactive()) stop("Cannot write to clipboard in non-interactive sessions.")
   output <- df_construct(input_table, oc = output_context)
   clipr::write_clip(output)
 }
