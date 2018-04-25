@@ -26,6 +26,8 @@ tribble_paste <- function(input_table, output_context = guess_output_context()){
 #' @param output_context an optional output context that defines the target and indentation. Default is console.
 #' Table is output as `tribble()` call. Useful for creating reproducible examples.
 #' @return Nothing.
+#' @export
+#'
 tribble_format <- function(input_table, output_context = console_context()){
   if(!interactive()) stop("Cannot write to clipboard in non-interactive sessions.")
   output <- tribble_construct(input_table, oc = output_context)

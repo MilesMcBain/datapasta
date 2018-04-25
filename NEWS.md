@@ -1,3 +1,7 @@
+# datapasta 3.0.1
+* Exported `_format` functions
+
+
 # datapasta 3.0.0 'Colander Helmet'
 
 * When pasting from clipboard it now attempts to guess if there is no header row, in the case where the clipboard is all data. If you're lucky it will create a default header for you when pasting (V1, V2, V3 etc.).
