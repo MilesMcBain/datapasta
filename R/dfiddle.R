@@ -42,7 +42,7 @@ zzz_rs_dfiddle <- function(){
       paste0(split_naked_vec(doc_context$text), collapse=", ")
     vector_form <- paste0("c(",regular_delimited,")")
     insert_range <- rstudioapi::document_range(doc_context$range$start,
-                                               c(doc_context$range$start[2], nchar(vector_form)+1)
+                                               c(doc_context$range$start[1], nchar(vector_form)+1)
                                                )
   } # parse to a vector
 
@@ -66,7 +66,7 @@ zzz_rs_dfiddle <- function(){
     regular_delimited <- paste0(split_vert_vec(doc_context$text), collapse = ",")
     vector_form <- paste0(strrep(" ", indent_context),"c(",regular_delimited,")")
     insert_range <- rstudioapi::document_range(doc_context$range$start,
-                                               c(doc_context$range$start[2], nchar(vector_form)+1)
+                                               c(doc_context$range$start[1], nchar(vector_form)+1)
     )
 
   } # pivot horiz vector
@@ -114,7 +114,7 @@ zzz_rs_toggle_quotes <- function(){
                           paste0(content , collapse = ","),
                           ")")
     insert_range <- rstudioapi::document_range(doc_context$range$start,
-                                               c(doc_context$range$start[2], nchar(vector_form)+1)
+                                               c(doc_context$range$start[1], nchar(vector_form)+1)
     )
 
   }

@@ -1,3 +1,15 @@
+# datapasta 3.0.1
+* Exported `_format` functions
+
+
+# datapasta 3.0.0 'Colander Helmet'
+
+* When pasting from clipboard it now attempts to guess if there is no header row, in the case where the clipboard is all data. If you're lucky it will create a default header for you when pasting (V1, V2, V3 etc.).
+* `dpasta()` will now handle tribbles with R classes that cannot be represented in tribble form. It falls back to their character representation. This works well for things like dates.
+* New addin: 'Fiddle Selection'. This is a kind of magic wand that can be waved over RStudio editor selections to: Reflow messy tribble and data.frame definitions, create `c()` expressions from raw data, and pivot `c()` exprs between vertical and horizontal format.
+* New addin: 'Toggle Vector Quotes'. Given a horizontal or vertical `c()` expr, it will toggle all elements between quoted and bare format.
+* Complies with new CRAN policy on clipboard use. You cannot write to the clipboard in non-interactive sessions with `dmdclip()` - Why would you?. Tests containing clipboard use are skipped on CI and CRAN.
+
 # datapasta 2.0.1
 
 * Added a trailing newline after all pastes, this works much nicer for console output.

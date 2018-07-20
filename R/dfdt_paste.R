@@ -37,6 +37,7 @@ dt_paste <- function(input_table, output_context = guess_output_context()){
 #' @param input_table an optional input tibble or data.frame to format.
 #' @param output_context an optional output context that defines the target and indentation.
 #' @return nothing.
+#' @export
 #'
 df_format <- function(input_table, output_context = clipboard_context()){
   if(!interactive()) stop("Cannot write to clipboard in non-interactive sessions.")
@@ -49,6 +50,7 @@ df_format <- function(input_table, output_context = clipboard_context()){
 #' @param input_table an optional input tibble or data.frame to format.
 #' @param output_context an optional output context that defines the target and indentation.
 #' @return nothing.
+#' @export
 #'
 dt_format <- function(input_table, output_context = clipboard_context()){
   if(!interactive()) stop("Cannot write to clipboard in non-interactive sessions.")

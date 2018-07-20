@@ -17,6 +17,7 @@ Places I've found this power useful:
 * Embedding small-ish amounts of raw data from .csv into Rmarkdown files. The file thus contains code documentation and data, attaining the holy trinity of reproducibility.
 * Quickly pasting vector output from other queries into `dplyr::filter( .. %in% ..)`.
 * Adding datasets to readily reproducible examples for posting to StackOverflow, Slack channels etc.
+* Creating `c()` expressions with a LOT less typing and fiddling.
 
 Typical usage takes full advantage of addins within RStudio, however `datapasta` can be used with any R editor, even just the terminal. The typical RStudio case is described in full detail below, followed by the fallback behaviour.
 
@@ -66,9 +67,9 @@ tibble::tribble(
 
 To paste data as a `tribble()` call, just copy the table header and data rows, then paste into the source editor using the addin `Paste as tribble`. For best results, assign the addin to a memorable keyboard shortcut, e.g. `ctrl + shift + t`. See [Customizing Keyboard Shortcuts ](https://support.rstudio.com/hc/en-us/articles/206382178-Customizing-Keyboard-Shortcuts).
 
-`tribble_paste()` is a flexible function that guesses the separator and types of the data it pulls from the clipboard. Mostly this seems to work well. Occasionally it epic-fails. The supported separators are `\|` (pipe), `\t` (tab), `,` (comma), `;`(semicolon). Most data copied from the internet or spreadsheets will be tab delimited.
+`tribble_paste()` is a flexible function that guesses the separator and types of the data it pulls from the clipboard. Mostly this seems to work well. Occasionally it epic-fails. The supported separators are `\|` (pipe), `\t` (tab), `,` (comma), `;`(semicolon). Most data copied from the internet or spreadsheets will be tab delimited. It will also attempt to recognise a lack of a header row and create a default for you, although this is not always possible.
 
-##Pasting a list as a horizontal vector with `vector_paste()`
+## Pasting a list as a horizontal vector with `vector_paste()`
 A list could be a row or column of a spreadsheet or intermediate output. With the `Paste as vector` addin you can go from something like:
 
 ```
@@ -96,7 +97,7 @@ This is pasted into the source editor at the current cursor.
 
 Just like `tribble_paste()`, `vector_paste()` has a flexible parser that can guess the type and separator of the data. The supported separators are `\|` (pipe), `\t` (tab), `,` (comma), `;`(semicolon) and end of line. The recommended keyboard shortcut is `crtl + alt + shift + v`.
 
-##Pasting a list as a vertical vector with `vector_paste_vertical()`
+## Pasting a list as a vertical vector with `vector_paste_vertical()`
 Given the same types of list inputs as above, the `Paste as vector (vertical)` addin pastes the output with each element on its own line, e.g.:
 
 ```{r, eval = FALSE}
@@ -175,6 +176,42 @@ tibble::tribble(
             "audi",   "a4",    2.8, 1999L,   6L,  "manual(m5)",  "f",  18L,  26L,  "p"
      )
 ```
+
+## Avoiding fiddly data formatting
+
+There are two addins that operate on RStudio cursor selections to make your life easier:
+
+### Fiddle Selections unitl they're better
+
+`Fiddle Selection` is intended to remove some fiddly tasks from your workflow. It can turn raw data like `1 2 3` into `c(1,2,3)`, then pivot from that to:
+```
+c(1,
+  2,
+  3)
+```
+and back again to `c(1,2,3)`. The parser here is really flexible too. It will accept data delimited by any combination of spaces, commas, and newlines.
+
+`Fiddle Selection` Can also reflow messy `tribble()` and `data.frame()` expressions into neatly aligned ones, say after hand editing.
+
+### Toggle Quotes
+
+`Toggle Vector Quotes` will convert a selected expression like `c(a,b,c)` to a quoted version i.e `c("a","b","c")`. If it's already quoted it will convert the other way to a bare version. All elements will be quoted if there's a mixture. It also works with vertically algined expressions.
+
+With the combination of these two you can get really lazy e.g. go from: 
+```
+some stuff I typed
+
+#To
+
+c("some",
+  "stuff",
+  "I",
+  "typed") # mostly
+
+```
+in a couple of keystrokes!
+
+Try assigning these addins to `ctrl + shift + f` and `ctrl + shift + q` respectively.
 
 ## Output to clipboard with `dmdclip()`
 `dmdclip()` can help you take the data to somewhere that uses markdown format, for example a Stack Overflow question or Github issue. This function will copy the resulting formatted data object call to the clipboard, inserting 4 spaces at the head of each line, which is markdown syntax for a pre-formatted block.

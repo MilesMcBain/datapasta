@@ -25,7 +25,7 @@ vector_paste <- function(input_vector, output_context = guess_output_context()){
 #' @param input_vector An input vector to be formatted for output. If supplied, no data is read from the clipboard.
 #' @param output_context an optional output context that defines the output indentation.
 #' @return nothing.
-#'
+#' @export
 #'
 vector_format <- function(input_vector, output_context = console_context()){
   if(!interactive()) stop("Cannot write to clipboard in non-interactive sessions.")
