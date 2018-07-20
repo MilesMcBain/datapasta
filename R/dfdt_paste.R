@@ -7,7 +7,24 @@
 #' @export
 #'
 df_paste <- function(input_table, output_context = guess_output_context()){
-  output <- df_construct(input_table, oc = output_context)
+  output <- dfdt_construct(input_table, oc = output_context, class = "data.frame")
+
+  #output depending on mode
+  switch(output_context$output_mode,
+         rstudioapi = rstudioapi::insertText(output),
+         console = cat(output))
+}
+
+#' dt_paste
+#' @description Parse either: the current clipboard, or a supplied argument, as a table and paste in at the cursor location in data.table format.
+#' @param input_table an optional input tibble or data.frame to format.
+#' @param output_context an optional output context that defines the target and indentation.
+#' The default behaviour is target the rstudioapi and fall back to console if it is not available.
+#' @return nothing.
+#' @export
+#'
+dt_paste <- function(input_table, output_context = guess_output_context()){
+  output <- dfdt_construct(input_table, oc = output_context, class = "data.table")
 
   #output depending on mode
   switch(output_context$output_mode,
@@ -23,18 +40,19 @@ df_paste <- function(input_table, output_context = guess_output_context()){
 #'
 df_format <- function(input_table, output_context = clipboard_context()){
   if(!interactive()) stop("Cannot write to clipboard in non-interactive sessions.")
-  output <- df_construct(input_table, oc = output_context)
+  output <- dfdt_construct(input_table, oc = output_context, class = "data.table")
   clipr::write_clip(output)
 }
 
-#' df_construct
+#' dfdt_construct
 #' @description Parse the current clipboard as a table and return in data.frame format.
 #' @param input_table an optional R object to parse instead of the clipboard.
 #' @param oc an optional output context that defines the target and indentation.
+#' @param class either data.frame or data.table.
 #' @return a character string containing the input formatted as a data.frame definition.
 #' @export
 #'
-df_construct <- function(input_table, oc = console_context()) {
+dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
 
   if(missing(input_table)){
     input_table <- tryCatch({read_clip_tbl_guess()},
@@ -42,9 +60,11 @@ df_construct <- function(input_table, oc = console_context()) {
                               return(NULL)
                             })
 
+    if (is.null(class)) stop("Requires either \"data.frame\" or \"data.table\" class")
+
     if(is.null(input_table)){
       if(!clipr::clipr_available()) message(.global_datapasta_env$no_clip_msg)
-      else message("Could not paste clipboard as data.frame. Text could not be parsed as table.")
+      else message("Could not paste clipboard as data.frame/data.table. Text could not be parsed as table.")
       return(NULL)
     }
     #Parse data types from string using readr::parse_guess
@@ -99,7 +119,8 @@ df_construct <- function(input_table, oc = console_context()) {
 
   output <- paste0(
     paste0(paste0(ifelse(oc$indent_head, yes = strrep(" ", oc$indent_context), no = ""),
-                  "data.frame(",ifelse(contains_chars, yes = "stringsAsFactors=FALSE,", no=""),"\n"),
+                  ifelse(class == "data.frame", "data.frame(", "data.table::data.table("),
+                  ifelse(contains_chars && class == "data.frame", yes = "stringsAsFactors=FALSE,", no=""), "\n"),
            paste0(sapply(list_of_cols[1:(length(list_of_cols) - 1)], function(x) tortellini(x, indent_context = oc$indent_context, add_comma = TRUE)), collapse = ""),
            paste0(sapply(list_of_cols[length(list_of_cols)], function(x) tortellini(x, indent_context = oc$indent_context, add_comma = FALSE))),
            strrep(" ", oc$indent_context),")\n"

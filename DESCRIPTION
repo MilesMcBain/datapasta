@@ -13,7 +13,8 @@ Suggests:
     testthat,
     knitr,
     rmarkdown,
-    covr
+    covr,
+    data.table
 Imports:
     readr (>= 1.0.0),
     clipr (>= 0.3.0),
