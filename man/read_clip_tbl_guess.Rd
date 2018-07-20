@@ -19,4 +19,3 @@ Similar to read_clip_tbl from clipr,
 however it will error if there are less than 2 rows
 and it tries to guess the separator.
 }
-

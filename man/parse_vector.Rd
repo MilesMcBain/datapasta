@@ -4,7 +4,10 @@
 \alias{parse_vector}
 \title{parse_vector}
 \usage{
-parse_vector()
+parse_vector(input_vector)
+}
+\arguments{
+\item{input_vector}{an optional character vector to attempt to break up, and escape.}
 }
 \value{
 A vector parsed from the clipboard as ether a character string or a
@@ -12,6 +15,5 @@ character vector. The type attribute contains the type guessed by `readr`.
 }
 \description{
 Pastes data from clipboard as a vertically formatted character vector on
-a multiple lines. One line is used per element. Considers , | tab newline as delimeters.
+multiple lines. One line is used per element. Considers `,`, `tab`, `newline` as delimiters.
 }
-

@@ -2,7 +2,7 @@
 % Please edit documentation in R/df_paste.R
 \name{tortellini}
 \alias{tortellini}
-\title{wrap the datpasta around itself}
+\title{wrap the datapasta around itself}
 \usage{
 tortellini(s, n = 80, indent_context = 0, add_comma = TRUE)
 }
@@ -11,7 +11,7 @@ tortellini(s, n = 80, indent_context = 0, add_comma = TRUE)
 
 \item{n}{number of characters for text (includes column name on line 1)}
 
-\item{indent_context}{the level of indend in spaces in the current editor pane}
+\item{indent_context}{the level of indent in spaces in the current editor pane}
 
 \item{add_comma}{add one final comma to the end of the wrapped column def? Useful when pasting together columns.}
 }
@@ -19,6 +19,5 @@ tortellini(s, n = 80, indent_context = 0, add_comma = TRUE)
 w wrapped string
 }
 \description{
-wrap the datpasta around itself
+wrap the datapasta around itself
 }
-

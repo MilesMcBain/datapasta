@@ -17,4 +17,3 @@ char_vec left-padded with spaces to char_length.
 \description{
 Left pad string to a certain size. A helper function for getting spacing in table correct.
 }
-

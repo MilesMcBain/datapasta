@@ -13,9 +13,8 @@ guess_sep(char_vec)
 the separator selected to parse char_vec as a table
 }
 \description{
-Guesses the seprator based on a simple heuristic over the first 10 or less rows:
+Guesses the separator based on a simple heuristic over the first 10 or less rows:
 The separator chosen is the one that leads to the most columns, whilst parsing the same number of columns for each line (var=0).
 The guessing algorithm ignores blank lines - which are lines that contain only the separator.
-Options are in c(",","\\t","\\|,;")
+Options are in `c(",","\\t","\\|",";")`
 }
-

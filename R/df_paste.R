@@ -1,64 +1,119 @@
 #' df_paste
-#' @description Parse the current clipboard as a table and paste in at the cursor location in data.frame format.
-#' @return the text pasted to the console. Useful for testing purposes.
+#' @description Parse either: the current clipboard, or a supplied argument, as a table and paste in at the cursor location in data.frame format.
+#' @param input_table an optional input tibble or data.frame to format.
+#' @param output_context an optional output context that defines the target and indentation.
+#' The default behaviour is target the rstudioapi and fall back to console if it is not available.
+#' @return nothing.
 #' @export
 #'
-df_paste <- function() {
+df_paste <- function(input_table, output_context = guess_output_context()){
+  output <- df_construct(input_table, oc = output_context)
 
-  clipboard_table <- tryCatch({
-    read_clip_tbl_guess()
-  }, error = function(e) {
-    return(NULL)
-  })
-  if (is.null(clipboard_table)) {
-    if (!clipr::clipr_available())
-      message("Clipboard is not available. Is R running in RStudio Server or a C.I. machine?")
-    else message("Could not paste clipboard as data.frame. Text could not be parsed as table.")
-    return(NULL)
+  #output depending on mode
+  switch(output_context$output_mode,
+         rstudioapi = rstudioapi::insertText(output),
+         console = cat(output))
+}
+
+#' df_format
+#' @description Parse the current clipboard as a table and paste to the clipboard in data.frame format.
+#' @param input_table an optional input tibble or data.frame to format.
+#' @param output_context an optional output context that defines the target and indentation.
+#' @return nothing.
+#' @export
+#'
+df_format <- function(input_table, output_context = clipboard_context()){
+  if(!interactive()) stop("Cannot write to clipboard in non-interactive sessions.")
+  output <- df_construct(input_table, oc = output_context)
+  clipr::write_clip(output)
+}
+
+#' df_construct
+#' @description Parse the current clipboard as a table and return in data.frame format.
+#' @param input_table an optional R object to parse instead of the clipboard.
+#' @param oc an optional output context that defines the target and indentation.
+#' @return a character string containing the input formatted as a data.frame definition.
+#' @export
+#'
+df_construct <- function(input_table, oc = console_context()) {
+
+  if(missing(input_table)){
+    input_table <- tryCatch({read_clip_tbl_guess()},
+                            error = function(e) {
+                              return(NULL)
+                            })
+
+    if(is.null(input_table)){
+      if(!clipr::clipr_available()) message(.global_datapasta_env$no_clip_msg)
+      else message("Could not paste clipboard as data.frame. Text could not be parsed as table.")
+      return(NULL)
+    }
+    #Parse data types from string using readr::parse_guess
+    col_types <- lapply(input_table, readr::guess_parser)
+    cols <- as.list(input_table)
+  }else{
+    if(!is.data.frame(input_table) && !tibble::is_tibble(input_table)){
+      message("Could not format input_table as table. Unexpected class.")
+      return(NULL)
+    }
+    if(nrow(input_table) >= .global_datapasta_env$max_rows){
+      message(paste0("Supplied large input_table (>=", .global_datapasta_env$max_rows ," rows). Was this a mistake? Use dp_set_max_rows(n) to increase the limit."))
+      return(NULL)
+    }
+    col_types <- lapply(input_table, class)
+    #Store types as characters so the char lengths can be computed
+    input_table <- as.data.frame(lapply(input_table, as.character), stringsAsFactors = FALSE)
+    #Store types as characters so the char lengths can be computed
+    cols <- as.list(input_table)
   }
 
-  nspc <- .rs.readUiPref('num_spaces_for_tab')
-  context <- rstudioapi::getActiveDocumentContext()
-  context_row <- context$selection[[1]]$range$start["row"]
-  if(all(context$selection[[1]]$range$start == context$selection[[1]]$range$end)){
-    indent_context <- nchar(context$contents[context_row])
-  } else{
-    indent_context <- attr(regexpr("^\\s+", context$contents[context_row]),"match.length")+1 #first pos = 1 not 0
-  }
+  contains_chars <- any(col_types == "character") #we'll need to add stringsAsFactors=FALSE if so.
 
-  cols <- as.list(clipboard_table)
-  col_types <- lapply(cols, readr::guess_parser)
-  #convert the column lists to guessed types.
-  cols <- mapply(function(cols, col_type){eval(parse(text = paste0("as.", col_type,"(cols)")))} , cols, col_types, SIMPLIFY = FALSE)
-
-  ## indent by at least 12 characters
-  ## nchar('data.frame(')
-  ## #> 12
-
+  #Set the column name width
   charw <- max(max(nchar(names(cols))) + 3L, 12L)
 
-  list_of_cols <- lapply(seq_along(cols), function(x) paste(pad_to(names(cols[x]), charw), "=",  cols[x]))
+  #Generate lists of data formatted for output
+  list_of_cols <- lapply(which(col_types != "factor"), function(x) paste(pad_to(names(cols[x]), charw), "=",
+                                                                         paste0("c(",
+                                                                                paste0( unlist(lapply(cols[[x]], render_type, col_types[[x]])), collapse=", "),
+                                                                                ")"
+                                                                         )
+                                                                   )
+                   )
+  #Handle the factor columns specially.
+  if(any(col_types == "factor")){
+    list_of_factor_cols <-
+      lapply(which(col_types == "factor"), function(x) paste(pad_to(names(cols[x]), charw), "=",
+                                                             paste0("as.factor(c(",
+                                                                    paste0( unlist(lapply(cols[[x]], render_type, col_types[[x]])), collapse=", "),
+                                                                    "))"
+                                                             )
+      )
+      )
+    list_of_cols <- c(list_of_cols, list_of_factor_cols)
+    names(list_of_cols) <- names(cols)
+  }
 
   #paste0 inserts its own "\n" for lists which will mess witch what we're trying to do with tortellini.
   #For now, just stripping "\n" from the output.
   list_of_cols <- lapply(list_of_cols, function(X) gsub("\n", "", X))
 
   output <- paste0(
-    paste0("data.frame(\n",
-           paste0(sapply(list_of_cols[1:(length(list_of_cols) - 1)], function(x) tortellini(x, indent_context = indent_context, add_comma = TRUE)), collapse = ""),
-           paste0(sapply(list_of_cols[length(list_of_cols)], function(x) tortellini(x, indent_context = indent_context, add_comma = FALSE))),
-           strrep(" ", indent_context), ")"
+    paste0(paste0(ifelse(oc$indent_head, yes = strrep(" ", oc$indent_context), no = ""),
+                  "data.frame(",ifelse(contains_chars, yes = "stringsAsFactors=FALSE,", no=""),"\n"),
+           paste0(sapply(list_of_cols[1:(length(list_of_cols) - 1)], function(x) tortellini(x, indent_context = oc$indent_context, add_comma = TRUE)), collapse = ""),
+           paste0(sapply(list_of_cols[length(list_of_cols)], function(x) tortellini(x, indent_context = oc$indent_context, add_comma = FALSE))),
+           strrep(" ", oc$indent_context),")\n"
     ), collapse = "")
 
 
-  rstudioapi::insertText(output)
-  output
+  return(invisible(output))
 }
 
-#' wrap the datpasta around itself
+#' wrap the datapasta around itself
 #' @param s input string
 #' @param n number of characters for text (includes column name on line 1)
-#' @param indent_context the level of indend in spaces in the current editor pane
+#' @param indent_context the level of indent in spaces in the current editor pane
 #' @param add_comma add one final comma to the end of the wrapped column def? Useful when pasting together columns.
 #' @return w wrapped string
 
@@ -97,7 +152,7 @@ tortellini <- function(s, n = 80, indent_context = 0, add_comma = TRUE) {
 
   } else { ## if no splitting is required
 
-    wrapped_s <- s
+    wrapped_s <- paste0(strrep(" ", indent_context), s)
 
   }
 
