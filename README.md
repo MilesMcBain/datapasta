@@ -68,7 +68,7 @@ There are two R functions available that accept R objects and output formatted t
     
 ## Use with other editors
 
-The only hard dependency of `datapasta` is `readr` for type guessing. All the above `*paste` functions can be called directly instead of as an addin, and will fall back to console output if the `rsudioapi` is not available.
+The only hard dependency of `datapasta` is `readr` for type guessing. All the above `*paste` functions can be called directly instead of as an addin, and will fall back to console output if the `rstudioapi` is not available.
 
 On system without access to the clipboard (or without `clipr` installed) `datapasta` can still be used to output R objects from an R session. `dpasta` is probably the only function you care about in this scenario.
 
