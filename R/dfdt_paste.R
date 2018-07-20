@@ -40,6 +40,18 @@ dt_paste <- function(input_table, output_context = guess_output_context()){
 #'
 df_format <- function(input_table, output_context = clipboard_context()){
   if(!interactive()) stop("Cannot write to clipboard in non-interactive sessions.")
+  output <- dfdt_construct(input_table, oc = output_context, class = "data.frame")
+  clipr::write_clip(output)
+}
+
+#' dt_format
+#' @description Parse the current clipboard as a table and paste to the clipboard in data.table format.
+#' @param input_table an optional input tibble or data.frame to format.
+#' @param output_context an optional output context that defines the target and indentation.
+#' @return nothing.
+#'
+df_format <- function(input_table, output_context = clipboard_context()){
+  if(!interactive()) stop("Cannot write to clipboard in non-interactive sessions.")
   output <- dfdt_construct(input_table, oc = output_context, class = "data.table")
   clipr::write_clip(output)
 }

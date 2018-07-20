@@ -2,18 +2,29 @@
 % Please edit documentation in R/dfdt_paste.R
 \name{df_format}
 \alias{df_format}
+\alias{df_format}
 \title{df_format}
 \usage{
+df_format(input_table, output_context = clipboard_context())
+
 df_format(input_table, output_context = clipboard_context())
 }
 \arguments{
 \item{input_table}{an optional input tibble or data.frame to format.}
 
 \item{output_context}{an optional output context that defines the target and indentation.}
+
+\item{input_table}{an optional input tibble or data.frame to format.}
+
+\item{output_context}{an optional output context that defines the target and indentation.}
 }
 \value{
+nothing.
+
 nothing.
 }
 \description{
 Parse the current clipboard as a table and paste to the clipboard in data.frame format.
+
+Parse the current clipboard as a table and paste to the clipboard in data.table format.
 }
