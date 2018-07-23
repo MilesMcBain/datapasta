@@ -93,7 +93,7 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
       message(paste0("Supplied large input_table (>=", .global_datapasta_env$max_rows ," rows). Was this a mistake? Use dp_set_max_rows(n) to increase the limit."))
       return(NULL)
     }
-    col_types <- lapply(input_table, class)
+    col_types <- lapply(input_table, base::class) # prevent clobbering by local class variable
     #Store types as characters so the char lengths can be computed
     input_table <- as.data.frame(lapply(input_table, as.character), stringsAsFactors = FALSE)
     #Store types as characters so the char lengths can be computed
