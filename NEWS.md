@@ -1,6 +1,7 @@
 # datapasta 3.0.1
 * Exported `_format` functions
 * Adds `dt_paste` function for pasting as `data.table` (@jonocarroll, #72, closes #70)
+* Factor levels are now preserved (even if unseen) when pasting (@jonocarroll, #75, closes #39)
 
 # datapasta 3.0.0 'Colander Helmet'
 
