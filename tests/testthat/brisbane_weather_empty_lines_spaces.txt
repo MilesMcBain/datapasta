@@ -1,0 +1,13 @@
+
+X Location Min Max
+Partly_cloudy. Brisbane 19 29
+Partly_cloudy. Brisbane_Airport 18 27
+Possible_shower. Beaudesert 15 30
+Partly_cloudy. Chermside 17 29
+Shower_or_two._Possible_storm. Gatton 15 32
+Possible_shower. Ipswich 15 30
+Partly_cloudy. Logan_Central 18 29
+Mostly_sunny. Manly 20 26
+Partly_cloudy. Mount_Gravatt 17 28
+Possible_shower. Oxley 17 30
+Partly_cloudy. Redcliffe 19 27
