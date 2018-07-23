@@ -118,7 +118,7 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
   if(any(col_types == "factor")){
     list_of_factor_cols <-
       lapply(which(col_types == "factor"), function(x) paste(pad_to(names(cols[x]), charw), "=",
-                                                             paste0("as.factor(c(",
+                                                             paste0("factor(c(",
                                                                     paste0( unlist(lapply(cols[[x]], render_type, col_types[[x]])), collapse=", "),
                                                                     "), levels = c(",
                                                                     paste0(unlist(lapply(factor_levels[[x]], render_type, col_types[[x]])), collapse = ", "),"))"
