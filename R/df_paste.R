@@ -66,14 +66,15 @@ df_construct <- function(input_table, oc = console_context()) {
     #Store types as characters so the char lengths can be computed
     cols <- as.list(input_table)
   }
+  names(cols) <- sapply(names(cols), function(x) ifelse(is.na(x), "\"NA\"", x)) # can't have NA as a column name
 
   contains_chars <- any(col_types == "character") #we'll need to add stringsAsFactors=FALSE if so.
 
   #Set the column name width
-  charw <- max(max(nchar(names(cols))) + 3L, 12L)
+  charw <- max(max(nchar(paste(names(cols)))) + 3L, 12L)
 
   #Generate lists of data formatted for output
-  list_of_cols <- lapply(which(col_types != "factor"), function(x) paste(pad_to(names(cols[x]), charw), "=",
+  list_of_cols <- lapply(which(col_types != "factor"), function(x) paste(pad_to(paste(names(cols[x])), charw), "=",
                                                                          paste0("c(",
                                                                                 paste0( unlist(lapply(cols[[x]], render_type, col_types[[x]])), collapse=", "),
                                                                                 ")"
@@ -83,7 +84,7 @@ df_construct <- function(input_table, oc = console_context()) {
   #Handle the factor columns specially.
   if(any(col_types == "factor")){
     list_of_factor_cols <-
-      lapply(which(col_types == "factor"), function(x) paste(pad_to(names(cols[x]), charw), "=",
+      lapply(which(col_types == "factor"), function(x) paste(pad_to(paste(names(cols[x])), charw), "=",
                                                              paste0("as.factor(c(",
                                                                     paste0( unlist(lapply(cols[[x]], render_type, col_types[[x]])), collapse=", "),
                                                                     "))"
@@ -91,7 +92,7 @@ df_construct <- function(input_table, oc = console_context()) {
       )
       )
     list_of_cols <- c(list_of_cols, list_of_factor_cols)
-    names(list_of_cols) <- names(cols)
+    names(list_of_cols) <- paste(names(cols))
   }
 
   #paste0 inserts its own "\n" for lists which will mess witch what we're trying to do with tortellini.

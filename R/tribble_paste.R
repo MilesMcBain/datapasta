@@ -94,7 +94,7 @@ tribble_construct <- function(input_table, oc = console_context()){
   # Set the column width depending on the max length of data as string or the header, whichever is longer.
   col_widths <- mapply(max,
                        col_widths,
-                       nchar(names(input_table))+1) #+1 for "~"
+                       nchar(paste(names(input_table)))+1) #+1 for "~"
 
   # Header
   header <- paste0(ifelse(oc$indent_head, yes = strrep(" ", oc$indent_context), no = ""), "tibble::tribble(\n")
@@ -106,7 +106,7 @@ tribble_construct <- function(input_table, oc = console_context()){
                         paste0(
                           mapply(
                             pad_to,
-                            paste0("~",names(input_table)),
+                            paste0("~",paste(names(input_table))),
                             col_widths
                           ),
                           ","
@@ -115,6 +115,7 @@ tribble_construct <- function(input_table, oc = console_context()){
                       )
                     ), "\n"
                 )
+  names_row <- sub("~NA,", "~\"NA\",", names_row) # can't have NA as a column name
 
 
   # Write correct data types
@@ -268,9 +269,12 @@ render_type_pad_to <- function(char_vec, char_type, char_length){
 #'
 #' @return the separator selected to parse char_vec as a table
 #'
-guess_sep <- function(char_vec){
-  candidate_seps <- c(",","\t","\\|",";")
+guess_sep <- function(char_vec) {
+  candidate_seps <- c(",","\t","\\|",";"," ")
   table_sample <- char_vec[1:min(length(char_vec),10)]
+
+  #reduce multiple spaces to single space
+  table_sample <- gsub("[ ]+", " ", table_sample)
 
   #handle seps at end of line. A sep at the end of line is effectively an NA in the last column.
   table_sample <- gsub(",$", ", ", table_sample)
@@ -309,6 +313,8 @@ read_clip_tbl_guess <- function (x = clipr::read_clip(), ...)
     return(NULL)
   if(length(x) < 2)  #You're just a header row, get outta here!
     return(NULL)
+  # reduce multiple spaces to single
+  x <- gsub("[ ]+", " ", x)
   .dots <- list(...)
   .dots$file <- textConnection(x)
   if (is.null(.dots$header))
@@ -323,7 +329,7 @@ read_clip_tbl_guess <- function (x = clipr::read_clip(), ...)
   if (is.null(.dots$na.strings))
     .dots$na.strings <- c("NA", "")
   if (is.null(.dots$strip.white))
-    .dots$strip.white <- TRUE
+    .dots$strip.white <- !.dots$sep == " "
     .dots$quote <-  ""
   x_table <- do.call(utils::read.table, args = .dots)
 
