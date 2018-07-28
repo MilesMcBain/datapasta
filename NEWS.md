@@ -1,6 +1,6 @@
 # datapasta 3.0.1
 * Exported `_format` functions
-
+* Adds `dt_paste` function for pasting as `data.table` (@jonocarroll, #72, closes #70)
 
 # datapasta 3.0.0 'Colander Helmet'
 

@@ -1,6 +1,6 @@
 Package: datapasta
 Title: R Tools for Data Copy-Pasta
-Version: 3.0.0
+Version: 3.1.0
 Authors@R: c(
     person("Miles", "McBain", email = "miles.mcbain@gmail.com", role = c("aut", "cre")),
     person("Jonathan", "Carroll", email = "jono@jcarroll.com.au", role = "aut"),
@@ -13,7 +13,8 @@ Suggests:
     testthat,
     knitr,
     rmarkdown,
-    covr
+    covr,
+    data.table
 Imports:
     readr (>= 1.0.0),
     clipr (>= 0.3.0),

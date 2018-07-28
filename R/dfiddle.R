@@ -19,11 +19,14 @@ zzz_rs_dfiddle <- function(){
     tryCatch( expr = eval(parse(text = doc_context$text), envir = eval_env),
               error = function(e) NULL)
 
-  if(tibble::is_tibble(selection_result) | is.data.frame(selection_result)){
+  if(tibble::is_tibble(selection_result) |
+     is.data.frame(selection_result)){
     if(tibble::is_tibble(selection_result)) {
       table_form <- tribble_construct(selection_result, oc = rstudio_context())
+    } else if (data.table::is.data.table(selection_result)) {
+      table_form <- dfdt_construct(selection_result, oc = rstudio_context(), class = "data.table")
     } else {
-      table_form <- df_construct(selection_result, oc = rstudio_context())
+      table_form <- dfdt_construct(selection_result, oc = rstudio_context(), class = "data.frame")
     }
     nlines <- n_lines(table_form)
     end_of_range <- last_line_content_length(table_form) + indent_context + 1
