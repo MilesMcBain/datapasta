@@ -18,6 +18,11 @@ Description: Pastes a table from the clipboard to the editor as a data.frame def
 Binding: df_paste
 Interactive: false
 
+Name: Paste as data.table
+Description: Pastes a table from the clipboard to the editor as a data.table definition
+Binding: dt_paste
+Interactive: false
+
 Name: Fiddle Selection
 Description: Take a selection and fiddle it to something better (maybe).
 Binding: zzz_rs_dfiddle

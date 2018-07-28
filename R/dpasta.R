@@ -27,6 +27,8 @@ dmdclip <- function(input){
 dpasta <- function(input){
   if(tibble::is_tibble(input)){
     tribble_paste(input, output_context = guess_output_context())
+  }else if(data.table::is.data.table(input)){ # data.table inherits data.frame so test this first
+    dt_paste(input, output_context = guess_output_context())
   }else if(is.data.frame(input)){
     df_paste(input, output_context = guess_output_context())
   }else if(is.vector(input)){
