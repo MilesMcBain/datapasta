@@ -7,7 +7,7 @@ Authors@R: c(
     person("Jonathan", "Carroll", email = "rpkg@jcarroll.com.au", role = "aut", 
     comment = c(ORCID = "0000-0002-1404-5264")),
     person("Mark", "Dulhunty", role = "ctb"),
-    person("Andrew", "Collier", role = "ctb"))
+    person("Andrew", "Collier", email = "andrew@exegetic.biz", role = "ctb"))
 Description: RStudio addins and R functions that make copy-pasting vectors and tables to text painless.
 Depends:
     R (>= 3.3.0)
