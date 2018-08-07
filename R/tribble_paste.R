@@ -165,7 +165,7 @@ tribble_construct <- function(input_table, oc = console_context()){
 nchar_type <- function(df_col_row, df_col_type){
   n_chars <- nchar(df_col_row)
 
-  if(length(df_col_type) > 1) df_col_type = "complex" # We can't really handle it.
+  if(length(df_col_type) > 1) df_col_type <- "complex" # We can't really handle it.
 
   add_chars <- switch(df_col_type,
                       "integer" = 1, #for the "L",
