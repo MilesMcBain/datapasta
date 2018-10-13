@@ -32,3 +32,13 @@ Name: Toggle Vector Quotes
 Description: Toggle quotes in a vector defintion
 Binding: zzz_rs_toggle_quotes
 Interactive: false
+
+Name: Paste clipboard evaluation
+Description: Paste the evaluation of the clipboard using the class of the result to determine the shape.
+Binding: eval_clip_dpasta
+Interactive: false
+
+Name: Paste clipboard evaluation as tribble
+Description: Paste the evaluation of a clipboard as a tribble call.
+Binding: eval_clip_tribble
+Interactive: false
