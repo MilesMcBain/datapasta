@@ -4,7 +4,8 @@
 \alias{vector_format_vertical}
 \title{vector_format_vertical}
 \usage{
-vector_format_vertical(input_vector, output_context = clipboard_context())
+vector_format_vertical(input_vector,
+  output_context = clipboard_context())
 }
 \arguments{
 \item{input_vector}{An input vector to be formatted for output. If supplied, no data is read from the clipboard.}
