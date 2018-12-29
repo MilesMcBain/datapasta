@@ -169,9 +169,9 @@ nchar_type <- function(df_col_row, df_col_type){
 
   add_chars <- switch(df_col_type,
                       "integer" = 1, #for the "L",
-                      "character" = 2 + nquote_str(df_col_row), #2 for outer quotes +1 "\" for each quote in string
-                      "factor" = 2 + nquote_str(df_col_row),
-                      "complex" = 2 + nquote_str(df_col_row), #Assume we print as a quoted char
+                      "character" = 2 + nquote_str(df_col_row) + nslash_str(df_col_row), #2 for outer quotes +1 "\" for each quote and slash in string
+                      "factor" = 2 + nquote_str(df_col_row) + nslash_str(df_col_row),
+                      "complex" = 2 + nquote_str(df_col_row) + nslash_str(df_col_row), #Assume we print as a quoted char
                       0) #0 for other types
   return(n_chars + add_chars)
 
@@ -186,7 +186,9 @@ nquote_str <- function(char_vec){
   sum(gregexpr(pattern = "(\"|\')", text = char_vec)[[1]] > 0)
 }
 
-
+nslash_str <- function(char_vec){
+  sum(gregexpr(pattern = "\\\\", text = char_vec)[[1]] > 0)
+}
 #' pad_to
 #' @description Left pad string to a certain size. A helper function for getting spacing in table correct.
 #' @param char_vec character vector.

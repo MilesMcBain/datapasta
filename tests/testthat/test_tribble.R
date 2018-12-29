@@ -293,3 +293,24 @@ test_that("DFs/Tibbles with factors generate a warning about string conversion",
   expect_warning(tribble_construct(head(iris)),
                  "have been converted from factor to character in tribble output.")
 })
+
+test_that("Data with backlashes is escaped in tribbles correctly", {
+  skip_if_not(is_clipr_available, skip_msg)
+  skip_on_cran()
+  skip_if_not(is_RStudio_session)
+  expect_equal(
+    {clipr::write_clip(readr::read_lines(file = "./escapes.txt"))
+      eval(parse(text = tribble_construct()))},
+    {
+tibble::tribble(
+  ~Usual.notation, ~Signif..stars,                                ~English.translation, ~The.null.is...,
+               NA,             NA,                                                  NA,              NA,
+        "$p>.05$",             NA,                       "The test wasn't significant",      "Retained",
+        "$p<.05$",            "*",       "The test was significant at $\\alpha = .05$",      "Rejected",
+               NA,             NA,   "but not at  $\\alpha =.01$ or $\\alpha = .001$.",              NA,
+        "$p<.01$",           "**",       "The test was significant at $\\alpha = .05$",      "Rejected",
+               NA,             NA, "and $\\alpha = .01$ but not at  $\\alpha = .001$.",              NA,
+       "$p<.001$",          "***",            "The test was significant at all levels",              NA
+  )}
+  )
+})

@@ -1,0 +1,8 @@
+Usual notation ,   Signif. stars ,   English translation ,   The null is...
+,,,
+$p>.05$ ,  , The test wasn't significant ,   Retained
+$p<.05$ , * , The test was significant at $\alpha = .05$  , Rejected
+        ,   , but not at  $\alpha =.01$ or $\alpha = .001$. ,
+$p<.01$ , **  ,The test was significant at $\alpha = .05$  , Rejected
+        ,   ,and $\alpha = .01$ but not at  $\alpha = .001$. ,
+$p<.001$ , *** , The test was significant at all levels  ,
