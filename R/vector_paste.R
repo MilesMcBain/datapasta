@@ -164,6 +164,16 @@ parse_vector <- function(input_vector){
         perl= TRUE))
     )
   }else{
+        perl= TRUE)))
+
+   ## If it's still length 1, it had no delimeters, we can try to split on spaces.
+     if (!length(input_vector) > 1){
+      input_vector <- unlist(strsplit(x = input_vector,
+                               split = "\\s+",
+                               perl = TRUE))
+     }
+
+  } else {
     input_vector <- trimws(input_vector)
   }
   #strip ending comma delim

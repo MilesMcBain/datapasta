@@ -137,3 +137,39 @@ test_that("vector_construct escapes backslashes correctly",{
   )))},
   {c("\\\\my-server\\DATA\\libraries")})
 })
+
+test_that("vectors of length 1 are handled correctly",{
+
+  expect_equal({
+    eval(parse(text =
+                 vector_construct("Mint	Fedora	Debian	Ubuntu	OpenSUSE")))
+    },
+    {
+      c("Mint", "Fedora", "Debian", "Ubuntu", "OpenSUSE")
+    })
+
+  expect_equal({
+    eval(parse(text =
+                 vector_construct("Mint, Fedora, Debian, Ubuntu, OpenSUSE")))
+    },
+    {
+      c("Mint", "Fedora", "Debian", "Ubuntu", "OpenSUSE")
+    })
+
+  expect_equal({
+    eval(parse(text =
+                 vector_construct("Mint Fedora Debian Ubuntu OpenSUSE")))
+    },
+    {
+      c("Mint", "Fedora", "Debian", "Ubuntu", "OpenSUSE")
+    })
+
+  expect_equal({
+    eval(parse(text =
+                 vector_construct("  Mint  Fedora  Debian  Ubuntu  OpenSUSE  ")))
+    },
+    {
+      c("Mint", "Fedora", "Debian", "Ubuntu", "OpenSUSE")
+    })
+})
+
