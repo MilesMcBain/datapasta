@@ -46,11 +46,13 @@ vector_construct <- function(input_vector, oc = console_context()){
 
   if( missing(input_vector) ){
     input_vector <- parse_vector()
-    vector_type <- readr::guess_parser(input_vector)
+    vector_type <- readr::guess_parser(input_vector,
+                                       guess_integer = TRUE)
   }else{
     if(class(input_vector) == "character" && length(input_vector == 1)){ #Passed in a single string, going to try to break it up.
       input_vector <- parse_vector(input_vector)
-      vector_type <- readr::guess_parser(input_vector)
+      vector_type <- readr::guess_parser(input_vector,
+                                         guess_integer = TRUE)
     }else{ #You passed in a vector assume you have it delimited and set to a type you want.
       vector_type <- class(input_vector)
       input_vector <- as.character(input_vector)
@@ -113,11 +115,13 @@ vector_format_vertical <- function(input_vector, output_context = clipboard_cont
 vector_construct_vertical <- function(input_vector, oc = console_context()){
   if( missing(input_vector) ){
     input_vector <- parse_vector()
-    vector_type <- readr::guess_parser(input_vector)
+    vector_type <- readr::guess_parser(input_vector,
+                                       guess_integer = TRUE)
   }else{
     if(class(input_vector) == "character" && length(input_vector == 1)){ #Passed in a single string, going to try to break it up.
       input_vector <- parse_vector(input_vector)
-      vector_type <- readr::guess_parser(input_vector)
+      vector_type <- readr::guess_parser(input_vector,
+                                         guess_integer = TRUE)
     }else{ #You passed in a vector assume you have it delimited and set to a type you want.
       vector_type <- class(input_vector)
       input_vector <- as.character(input_vector)
@@ -161,9 +165,6 @@ parse_vector <- function(input_vector){
       strsplit(
         x = input_vector,
         split = "\t|,",
-        perl= TRUE))
-    )
-  }else{
         perl= TRUE)))
 
    ## If it's still length 1, it had no delimeters, we can try to split on spaces.

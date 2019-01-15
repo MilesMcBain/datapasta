@@ -82,7 +82,7 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
       return(NULL)
     }
     #Parse data types from string using readr::parse_guess
-    col_types <- lapply(input_table, readr::guess_parser)
+    col_types <- lapply(input_table, readr::guess_parser, guess_integer = TRUE)
     cols <- as.list(input_table)
   }else{
     if(!is.data.frame(input_table) && !tibble::is_tibble(input_table)){
