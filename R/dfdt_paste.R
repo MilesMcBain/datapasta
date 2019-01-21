@@ -102,11 +102,14 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
 
   contains_chars <- any(col_types == "character") #we'll need to add stringsAsFactors=FALSE if so.
 
+  #Extract column names, surrounding with backticks if they do not start with a latin character
+  col_names_backticks <- ifelse(grepl("[a-z]", substr(names(cols), 1, 1)), names(cols), paste0("`", names(cols), "`"))
+
   #Set the column name width
-  charw <- max(max(nchar(names(cols))) + 3L, 12L)
+  charw <- max(max(nchar(col_names_backticks)) + 3L, 12L)
 
   #Generate lists of data formatted for output
-  list_of_cols <- lapply(which(col_types != "factor"), function(x) paste(pad_to(names(cols[x]), charw), "=",
+  list_of_cols <- lapply(which(col_types != "factor"), function(x) paste(pad_to(col_names_backticks[x], charw), "=",
                                                                          paste0("c(",
                                                                                 paste0( unlist(lapply(cols[[x]], render_type, col_types[[x]])), collapse=", "),
                                                                                 ")"
@@ -116,7 +119,7 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
   #Handle the factor columns specially.
   if(any(col_types == "factor")){
     list_of_factor_cols <-
-      lapply(which(col_types == "factor"), function(x) paste(pad_to(names(cols[x]), charw), "=",
+      lapply(which(col_types == "factor"), function(x) paste(pad_to(col_names_backticks[x], charw), "=",
                                                              paste0("as.factor(c(",
                                                                     paste0( unlist(lapply(cols[[x]], render_type, col_types[[x]])), collapse=", "),
                                                                     "))"
