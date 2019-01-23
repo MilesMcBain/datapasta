@@ -94,6 +94,7 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
       return(NULL)
     }
     col_types <- lapply(input_table, base::class) # prevent clobbering by local class variable
+    factor_levels <- lapply(input_table, levels)
     #Store types as characters so the char lengths can be computed
     input_table <- as.data.frame(lapply(input_table, as.character), stringsAsFactors = FALSE)
     #Store types as characters so the char lengths can be computed
@@ -117,9 +118,10 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
   if(any(col_types == "factor")){
     list_of_factor_cols <-
       lapply(which(col_types == "factor"), function(x) paste(pad_to(names(cols[x]), charw), "=",
-                                                             paste0("as.factor(c(",
+                                                             paste0("factor(c(",
                                                                     paste0( unlist(lapply(cols[[x]], render_type, col_types[[x]])), collapse=", "),
-                                                                    "))"
+                                                                    "), levels = c(",
+                                                                    paste0(unlist(lapply(factor_levels[[x]], render_type, col_types[[x]])), collapse = ", "),"))"
                                                              )
       )
       )
