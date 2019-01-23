@@ -315,13 +315,13 @@ tibble::tribble(
   )
 })
 
-test_that("Columns starting with non-Latin characters can be parsed, with names surrounded by backticks", {
+test_that("Columns with non-valid names can be parsed, with names surrounded by backticks", {
   expect_equal(
-    {clipr::write_clip(readr::read_lines(file = "./non_latin_colnames.txt"))
+    {clipr::write_clip(readr::read_lines(file = "./non_valid_colnames.txt"))
       eval(parse(text = tribble_construct()))},
     {
       tibble::tribble(
-        ~`!!`, ~`2015`, ~`%`, ~`??`,
+        ~`!!`, ~`2015`, ~`%`, ~`TRUE`,
         1L,     "b",   3L,   "D"
       )
     }
