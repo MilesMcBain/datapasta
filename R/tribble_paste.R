@@ -93,7 +93,7 @@ tribble_construct <- function(input_table, oc = console_context()){
   )
   # Create the vector of names, surrounded by `` if it does not start with a latin character
   input_names <- names(input_table)
-  input_names_backticks <- ifelse(grepl("[a-z]", substr(input_names, 1, 1)), input_names, paste0("`", input_names, "`"))
+  input_names_backticks <- ifelse(make.names(input_names) == input_names, input_names, paste0("`", input_names, "`"))
 
   # Set the column width depending on the max length of data as string or the header, whichever is longer.
   col_widths <- mapply(max,
