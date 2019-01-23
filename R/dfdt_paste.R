@@ -119,7 +119,7 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
   #Handle the factor columns specially.
   if(any(col_types == "factor")){
     list_of_factor_cols <-
-      lapply(which(col_types == "factor"), function(x) paste(pad_to(col_names_backticks[x], charw), "=",
+      lapply(which(col_types == "factor"), function(x) paste(pad_to(col_names_valid[x], charw), "=",
                                                              paste0("as.factor(c(",
                                                                     paste0( unlist(lapply(cols[[x]], render_type, col_types[[x]])), collapse=", "),
                                                                     "))"
