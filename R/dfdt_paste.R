@@ -103,7 +103,7 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
   contains_chars <- any(col_types == "character") #we'll need to add stringsAsFactors=FALSE if so.
 
   #Extract column names, surrounding with backticks if they do not start with a latin character
-  col_names_backticks <- ifelse(make.names(input_names) == input_names, names(cols), paste0("`", names(cols), "`"))
+  col_names_backticks <- ifelse(make.names(names(cols)) == names(cols), names(cols), paste0("`", names(cols), "`"))
 
   #Set the column name width
   charw <- max(max(nchar(col_names_backticks)) + 3L, 12L)
