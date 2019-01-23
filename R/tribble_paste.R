@@ -91,10 +91,14 @@ tribble_construct <- function(input_table, oc = console_context()){
                        df_col_type = input_table_types
 
   )
+  # Create the vector of names, surrounded by `` if it does not start with a latin character
+  input_names <- names(input_table)
+  input_names_valid <- ifelse(make.names(input_names) == input_names, input_names, paste0("`", input_names, "`"))
+
   # Set the column width depending on the max length of data as string or the header, whichever is longer.
   col_widths <- mapply(max,
                        col_widths,
-                       nchar(names(input_table))+1) #+1 for "~"
+                       nchar(input_names_valid)+1) #+1 for "~"
 
   # Header
   header <- paste0(ifelse(oc$indent_head, yes = strrep(" ", oc$indent_context), no = ""), "tibble::tribble(\n")
@@ -106,7 +110,7 @@ tribble_construct <- function(input_table, oc = console_context()){
                         paste0(
                           mapply(
                             pad_to,
-                            paste0("~",names(input_table)),
+                            paste0("~",input_names_valid),
                             col_widths
                           ),
                           ","
