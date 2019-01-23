@@ -103,6 +103,9 @@ test_that("Data frame contruct recognises raw data with no column headings and a
 
 
 test_that("Columns with non-valid names can be parsed as a data.frame, with names surrounded by backticks and check.names FALSE", {
+  skip_if_not(is_clipr_available, skip_msg)
+  skip_on_cran()
+  skip_if_not(is_RStudio_session)
   expect_equal(
     {clipr::write_clip(readr::read_lines(file = "./non_valid_colnames.txt"))
       eval(parse(text = dfdt_construct(class = "data.frame")))},
