@@ -121,3 +121,15 @@ test_that("Columns with non-valid names can be parsed as a data.frame, with name
   )
 })
 
+
+test_that("rownames are returned when input_table has rownames", {
+  expect_equal(
+    eval(parse(text = dfdt_construct(mtcars[1:3, 1:3], class = "data.frame"))),
+    data.frame(stringsAsFactors=FALSE,
+      row.names = c("Mazda RX4", "Mazda RX4 Wag", "Datsun 710"),
+      mpg = c(21, 21, 22.8),
+      cyl = c(6, 6, 4),
+      disp = c(160, 160, 108)
+    )
+  )
+})

@@ -93,6 +93,10 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
       message(paste0("Supplied large input_table (>=", .global_datapasta_env$max_rows ," rows). Was this a mistake? Use dp_set_max_rows(n) to increase the limit."))
       return(NULL)
     }
+    #Keep meaningful rownames so they can be returned
+    if(!all(rownames(input_table) == seq(nrow(input_table)))){
+      row_names <- rownames(input_table)
+    }
     col_types <- lapply(input_table, base::class) # prevent clobbering by local class variable
     #Store types as characters so the char lengths can be computed
     input_table <- as.data.frame(lapply(input_table, as.character), stringsAsFactors = FALSE)
@@ -139,6 +143,7 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
                   ifelse(class == "data.frame", "data.frame(", "data.table::data.table("),
                   ifelse(contains_chars && class == "data.frame", yes = "stringsAsFactors=FALSE,", no=""), "\n",
                   ifelse(any(col_names_valid != names(cols)), yes = tortellini("check.names=FALSE", indent_context = nchar("data.frame("), add_comma = TRUE), no = "")),
+           tortellini(paste0("row.names = c(", paste0(paste0("'", row_names, "'"), collapse = ", "), ")"), indent_context = oc$indent_context, add_comma = TRUE),
            paste0(sapply(list_of_cols[1:(length(list_of_cols) - 1)], function(x) tortellini(x, indent_context = oc$indent_context, add_comma = TRUE)), collapse = ""),
            paste0(sapply(list_of_cols[length(list_of_cols)], function(x) tortellini(x, indent_context = oc$indent_context, add_comma = FALSE))),
            strrep(" ", oc$indent_context),")\n"
