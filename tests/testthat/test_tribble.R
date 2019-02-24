@@ -330,3 +330,15 @@ test_that("Columns with non-valid names can be parsed, with names surrounded by 
     }
   )
 })
+
+test_that("rownames are returned as the first column when input_table has rownames", {
+  expect_equal(
+    eval(parse(text = tribble_construct(mtcars[1:3, 1:3]))),
+    tibble::tribble(
+      ~rownames, ~mpg, ~cyl, ~disp,
+      "Mazda RX4",   21,    6,   160,
+      "Mazda RX4 Wag",   21,    6,   160,
+      "Datsun 710", 22.8,    4,   108
+    )
+  )
+})
