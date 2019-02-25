@@ -143,7 +143,7 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
                   ifelse(class == "data.frame", "data.frame(", "data.table::data.table("),
                   ifelse(contains_chars && class == "data.frame", yes = "stringsAsFactors=FALSE,", no=""), "\n",
                   ifelse(any(col_names_valid != names(cols)), yes = tortellini("check.names=FALSE", indent_context = nchar("data.frame("), add_comma = TRUE), no = "")),
-           tortellini(paste0("row.names = c(", paste0(paste0("'", row_names, "'"), collapse = ", "), ")"), indent_context = oc$indent_context, add_comma = TRUE),
+           ifelse(exists("row_names"), yes = tortellini(paste0("row.names = c(", paste0(paste0("'", row_names, "'"), collapse = ", "), ")"), indent_context = oc$indent_context, add_comma = TRUE), no = ""),
            paste0(sapply(list_of_cols[1:(length(list_of_cols) - 1)], function(x) tortellini(x, indent_context = oc$indent_context, add_comma = TRUE)), collapse = ""),
            paste0(sapply(list_of_cols[length(list_of_cols)], function(x) tortellini(x, indent_context = oc$indent_context, add_comma = FALSE))),
            strrep(" ", oc$indent_context),")\n"
