@@ -66,11 +66,6 @@ tribble_construct <- function(input_table, oc = console_context()){
       message(paste0("Supplied large input_table (>= ",.global_datapasta_env$max_rows," rows). Was this a mistake? Use dp_set_max_rows(n) to increase the limit."))
       return(NULL)
     }
-    #Keep meaningful rownames so they can be returned
-    if(!all(rownames(input_table) == seq(nrow(input_table)))){
-      row_names <- rownames(input_table)
-      input_table <- cbind(rownames = as.character(row_names), input_table, stringsAsFactors = FALSE)
-    }
     input_table_types <- lapply(input_table, class)
     #Store types as characters so the char lengths can be computed
     input_table <- as.data.frame(lapply(input_table, as.character), stringsAsFactors = FALSE)
