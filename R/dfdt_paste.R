@@ -93,8 +93,9 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
       message(paste0("Supplied large input_table (>=", .global_datapasta_env$max_rows ," rows). Was this a mistake? Use dp_set_max_rows(n) to increase the limit."))
       return(NULL)
     }
-    #Keep meaningful rownames so they can be returned
-    if(!all(rownames(input_table) == seq(nrow(input_table)))){
+    #If data.drame (vs. data.table), keep meaningful rownames (to return later)
+    if(is(input_table, "data.frame") & !is(input_table, "data.table") &
+        !all(rownames(input_table) == seq(nrow(input_table)))){
       row_names <- rownames(input_table)
     }
     col_types <- lapply(input_table, base::class) # prevent clobbering by local class variable

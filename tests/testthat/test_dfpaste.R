@@ -141,6 +141,14 @@ test_that("meaningful rownames are included when input_table is a data.frame", {
     )
   )
   expect_equal(
+    eval(parse(text = dfdt_construct(`rownames<-`(data.table::as.data.table(mtcars[1:3, 1:3]), rownames(mtcars[1:3, 1:3])), class = "data.table"))),
+    data.table::data.table(stringsAsFactors=FALSE,
+      mpg = c(21, 21, 22.8),
+      cyl = c(6, 6, 4),
+      disp = c(160, 160, 108)
+    )
+  )
+  expect_equal(
     eval(parse(text = dfdt_construct(data.table::as.data.table(mtcars[1:3, 1:3]), class = "data.table"))),
     data.table::data.table(stringsAsFactors=FALSE,
       mpg = c(21, 21, 22.8),
