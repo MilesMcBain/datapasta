@@ -80,12 +80,14 @@ tribble_construct <- function(input_table, oc = console_context()){
   col_widths <- mapply(input_table,
                        FUN =
                          function(df_col, df_col_type){
-                           max( vapply(X = df_col,
-                                       FUN = nchar_type,
-                                       FUN.VALUE = numeric(1),
-                                       df_col_type = df_col_type
-                                ),
-                           na.rm = TRUE
+                           suppressWarnings(
+                             max( vapply(X = df_col,
+                                        FUN = nchar_type,
+                                         FUN.VALUE = numeric(1),
+                                         df_col_type = df_col_type
+                                  ),
+                              na.rm = TRUE
+                              ) # blank cols will be all NA
                            )
                          },
                        df_col_type = input_table_types
@@ -106,7 +108,7 @@ tribble_construct <- function(input_table, oc = console_context()){
     input_table <- input_table[-NA_cols]
     input_names_valid <- input_names_valid[-NA_cols]
     input_table_types <- input_table_types[-NA_cols]
-    col_widths <- col_widths[-col_widths]
+    col_widths <- col_widths[-NA_cols]
   }
 
   # Header

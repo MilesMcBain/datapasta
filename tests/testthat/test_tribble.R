@@ -330,3 +330,20 @@ test_that("Columns with non-valid names can be parsed, with names surrounded by 
     }
   )
 })
+
+test_that("Columns that are completely blank (NA) are dropped", {
+  skip_if_not(is_clipr_available, skip_msg)
+  skip_on_cran()
+  skip_if_not(is_RStudio_session)
+  expect_equal(
+    {clipr::write_clip(readr::read_lines(file = "./athletes.txt"))
+      eval(parse(text = tribble_construct()))},
+    {tibble::tribble(
+            ~Country, ~Average.height,   ~Weight, ~BMI, ~Average.height,   ~Weight, ~BMI,
+       "Netherlands",        "1.83 m", "87.4 kg", 26.1,        "1.69 m", "72.3 kg", 25.3,
+            "Latvia",        "1.81 m", "88.8 kg", 27.1,        "1.69 m", "75.4 kg", 26.4,
+           "Denmark",        "1.81 m", "86.2 kg", 26.3,        "1.68 m", "69.4 kg", 24.6
+       )}
+  )
+})
+
