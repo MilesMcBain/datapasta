@@ -100,6 +100,15 @@ tribble_construct <- function(input_table, oc = console_context()){
                        col_widths,
                        nchar(input_names_valid)+1) #+1 for "~"
 
+  # if col_widths contains NAs these represent completely blank columns. Drop these.
+  NA_cols <- which(is.na(col_widths))
+  if (length(NA_cols) != 0){
+    input_table <- input_table[-NA_cols]
+    input_names_valid <- input_names_valid[-NA_cols]
+    input_table_types <- input_table_types[-NA_cols]
+    col_widths <- col_widths[-col_widths]
+  }
+
   # Header
   header <- paste0(ifelse(oc$indent_head, yes = strrep(" ", oc$indent_context), no = ""), "tibble::tribble(\n")
 
