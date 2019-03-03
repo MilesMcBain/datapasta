@@ -287,10 +287,11 @@ render_type_pad_to <- function(char_vec, char_type, char_length){
 #'
 guess_sep <- function(char_vec){
   candidate_seps <- c(",","\t","\\|",";")
+  candidate_seps_pattern <- paste0("([", paste0(candidate_seps, collapse = ""),"])$", collapse = "")
   table_sample <- char_vec[1:min(length(char_vec),10)]
 
   #handle seps at end of line. A sep at the end of line is effectively an NA in the last column.
-  table_sample <- gsub(",$", ", ", table_sample)
+  table_sample <- gsub(candidate_seps_pattern, "\\1 ", table_sample)
 
  splits <-
       lapply(

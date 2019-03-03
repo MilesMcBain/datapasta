@@ -347,3 +347,11 @@ test_that("Columns that are completely blank (NA) are dropped", {
   )
 })
 
+test_that("blank final row has separator guessed as tab", {
+
+  expect_equal(
+    guess_sep(c("A\tB\tC", "1\t5\t9", "2\t6\t", "3\t7\t10", "4\t8\t11")),
+    "\t"
+  )
+})
+
