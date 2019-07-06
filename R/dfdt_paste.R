@@ -113,24 +113,21 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
   #Set the column name width
   charw <- max(max(nchar(col_names_valid)) + 3L, 12L)
 
-  #Generate lists of data formatted for output
-  list_of_cols <- lapply(which(col_types != "factor"), function(x) paste(pad_to(col_names_valid[x], charw), "=",
-                                                                         paste0("c(",
-                                                                                paste0( unlist(lapply(cols[[x]], render_type, col_types[[x]])), collapse=", "),
-                                                                                ")"
-                                                                         )
-                                                                   )
+  #Generate lists of data ready for formatting
+  list_of_cols <- lapply(which(col_types != "factor"), function(x) list(name = paste0(pad_to(col_names_valid[x], charw),
+                                                                        call = "c("),
+                                                                        data = unlist(lapply(cols[[x]], render_type, col_types[[x]])),
+                                                                        close = ")")
                    )
   #Handle the factor columns specially.
   if(any(col_types == "factor")){
     list_of_factor_cols <-
-      lapply(which(col_types == "factor"), function(x) paste(pad_to(col_names_valid[x], charw), "=",
-                                                             paste0("as.factor(c(",
-                                                                    paste0( unlist(lapply(cols[[x]], render_type, col_types[[x]])), collapse=", "),
-                                                                    "))"
-                                                             )
+      lapply(which(col_types == "factor"), function(x) list(name = pad_to(col_names_valid[x], charw),
+                                                            call = "as.factor(c(",
+                                                            data = unlist(lapply(cols[[x]], render_type, col_types[[x]])),
+                                                            close = "))")
       )
-      )
+
     list_of_cols <- c(list_of_cols, list_of_factor_cols)
     names(list_of_cols) <- names(cols)
   }
@@ -143,7 +140,7 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
     paste0(paste0(ifelse(oc$indent_head, yes = strrep(" ", oc$indent_context), no = ""),
 
                   ifelse(class == "data.frame", "data.frame(", "data.table::data.table("),
-           
+
                   ifelse(contains_chars && class == "data.frame", yes = "stringsAsFactors=FALSE,", no=""), "\n",
 
                   ifelse(any(col_names_valid != names(cols)),
