@@ -110,8 +110,22 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
   #Extract column names, surrounding with backticks if they do not start with a latin character
   col_names_valid <- ifelse(make.names(names(cols)) == names(cols), names(cols), paste0("`", names(cols), "`"))
 
+
+
   #Set the column name width
-  charw <- max(max(nchar(col_names_valid)) + 3L, 12L)
+  ##Work out lengths of needed args
+  row_names_length <- if (exists("row_names")) nchar("row.names") else 0
+  strings_as_factors_length <-
+    if (contains_chars && class == "data.frame") nchar("stringsAsFactors") else 0
+  check_names_length <-
+    if (any(col_names_valid != names(cols))) nchar("check.names") else 0
+  ##compare lengths of col names and needed args, choose min = 10,
+  ##max = longest col name or arg + 2 for an indent
+  charw <- max(max(nchar(col_names_valid)),
+               row_names_length,
+               strings_as_factors_length,
+               check_names_length,
+               10L) + 2L
 
   #Generate lists of data ready for formatting
   list_of_cols <- lapply(which(col_types != "factor"), function(x) list(name = paste0(pad_to(col_names_valid[x], charw)),
@@ -131,36 +145,48 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
     names(list_of_cols) <- names(cols)
   }
 
-  output <- paste0(
-    paste0(paste0(ifelse(oc$indent_head,
+  output <-
+    paste0(
+      c(paste0(ifelse(oc$indent_head,
                          yes = strrep(" ", oc$indent_context),
                          no = ""),
                   ifelse(class == "data.frame",
                          yes = "data.frame(",
-                         no = "data.table::data.table("),
-
-                  ifelse(contains_chars && class == "data.frame",
-                         yes = "stringsAsFactors=FALSE,\n",
-                         no=""),
-
-                  ifelse(any(col_names_valid != names(cols)),
-                         yes = "check.names=FALSE,\n",
-                         no = "")
+                         no = "data.table::data.table(")
                   ),
-           ifelse(exists("row_names"),
-                  yes = tortellini(list(name = "row.names",
-                                        call = "= c(",
-                                        data = row_names,
-                                        close =  ")"),
-                                   indent_context = oc$indent_context,
-                                   add_comma = TRUE),
-                  no = ""),
+           if (strings_as_factors_length > 0)
+             tortellini(list(name = pad_to("stringsAsFactors", charw),
+                             call = "= ",
+                             data = "FALSE",
+                             close =  ""),
+                        indent_context = oc$indent_context,
+                        add_comma = TRUE),
+           if (check_names_length > 0)
+             tortellini(list(name = pad_to("check.names", charw),
+                             call = "= ",
+                             data = "FALSE",
+                             close =  ""),
+                        indent_context = oc$indent_context,
+                        add_comma = TRUE),
+           if (row_names_length > 0)
+                 tortellini(list(name = pad_to("row.names", charw),
+                                 call = "= c(",
+                                 data = lapply(row_names, render_type, rep("character", length(row_names))),
+                                 close =  ")"),
+                                 indent_context = oc$indent_context,
+                                 add_comma = TRUE),
            paste0(sapply(list_of_cols[1:(length(list_of_cols) - 1)],
-                         function(x) tortellini(x, indent_context = oc$indent_context, add_comma = TRUE)), collapse = ""),
-           paste0(sapply(list_of_cols[length(list_of_cols)],
-                         function(x) tortellini(x, indent_context = oc$indent_context, add_comma = FALSE))),
-           strrep(" ", oc$indent_context),")\n"
-    ), collapse = "")
+                         function(x) tortellini(x,
+                                                indent_context = oc$indent_context,
+                                                add_comma = TRUE)),
+                  collapse = "\n"),
+           sapply(list_of_cols[length(list_of_cols)],
+                  function(x) tortellini(x,
+                                        indent_context = oc$indent_context,
+                                        add_comma = FALSE)),
+           paste0(strrep(" ", oc$indent_context),")")
+          ),
+      collapse = "\n")
 
   return(invisible(output))
 }
@@ -201,9 +227,8 @@ tortellini <- function(col_struct, defn_width = 80, indent_context = 0, add_comm
 
   ## paste groups together
   wrapped_data <- sapply(unique(groups),
-                      function(x) paste0(
-                        strrep(" ", indent_context),
-                        paste0(split_s[[2]][groups == x], collapse = ",")))
+                      function(x)
+                        paste0(split_s[[2]][groups == x], collapse = ","))
 
   ## for group 1 add the definition call
   ## needs whitespace trimmed because it had indent_context added which needs to be
@@ -225,7 +250,7 @@ tortellini <- function(col_struct, defn_width = 80, indent_context = 0, add_comm
 
   ## append a new comma and newline to the end of each
   w <- paste0(wrapped_s, collapse = ",\n")
-  w <- if(add_comma) paste0(w, ",\n") else paste0(w, "\n")
+  w <- if(add_comma) paste0(w, ",") else w
 
   return(w)
 

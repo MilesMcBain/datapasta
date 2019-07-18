@@ -1,6 +1,8 @@
 # datapasta 3.0.1
 * Exported `_format` functions
 * Adds `dt_paste` function for pasting as `data.table` (@jonocarroll, #72, closes #70)
+* Fixes issue with commas inside character vectors getting wrapped on
+* data.frame (and data.table) print is much prettier and robust with all args and cols aligned on '='
 
 # datapasta 3.0.0 'Colander Helmet'
 
