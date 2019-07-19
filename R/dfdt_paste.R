@@ -94,7 +94,7 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
       return(NULL)
     }
     #If data.drame (vs. data.table), keep meaningful rownames (to return later)
-    if(is(input_table, "data.frame") & !is(input_table, "data.table") &
+    if(methods::is(input_table, "data.frame") & !methods::is(input_table, "data.table") &
         !all(rownames(input_table) == seq(nrow(input_table)))){
       row_names <- rownames(input_table)
     }

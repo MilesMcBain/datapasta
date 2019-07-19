@@ -1,4 +1,4 @@
-# datapasta 3.0.1
+# datapasta 3.1.0
 * Exported `_format` functions
 * Adds `dt_paste` function for pasting as `data.table` (@jonocarroll, #72, closes #70)
 * Fixes issue with commas inside character vectors getting wrapped on
