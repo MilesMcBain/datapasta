@@ -94,7 +94,7 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
       return(NULL)
     }
     #If data.drame (vs. data.table), keep meaningful rownames (to return later)
-    if(is(input_table, "data.frame") & !is(input_table, "data.table") &
+    if(methods::is(input_table, "data.frame") & !methods::is(input_table, "data.table") &
         !all(rownames(input_table) == seq(nrow(input_table)))){
       row_names <- rownames(input_table)
     }
@@ -110,115 +110,147 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
   #Extract column names, surrounding with backticks if they do not start with a latin character
   col_names_valid <- ifelse(make.names(names(cols)) == names(cols), names(cols), paste0("`", names(cols), "`"))
 
-  #Set the column name width
-  charw <- max(max(nchar(col_names_valid)) + 3L, 12L)
 
-  #Generate lists of data formatted for output
-  list_of_cols <- lapply(which(col_types != "factor"), function(x) paste(pad_to(col_names_valid[x], charw), "=",
-                                                                         paste0("c(",
-                                                                                paste0( unlist(lapply(cols[[x]], render_type, col_types[[x]])), collapse=", "),
-                                                                                ")"
-                                                                         )
-                                                                   )
-                   )
+
+  #Set the column name width
+  ##Work out lengths of needed args
+  row_names_length <- if (exists("row_names")) nchar("row.names") else 0
+  strings_as_factors_length <-
+    if (contains_chars && class == "data.frame") nchar("stringsAsFactors") else 0
+  check_names_length <-
+    if (any(col_names_valid != names(cols))) nchar("check.names") else 0
+  ##compare lengths of col names and needed args, choose min = 10,
+  ##max = longest col name or arg + 2 for an indent
+  charw <- max(max(nchar(col_names_valid)),
+               row_names_length,
+               strings_as_factors_length,
+               check_names_length,
+               10L) + 2L
+
+  #Generate lists of data ready for formatting
+  list_of_cols <- lapply(which(col_types != "factor"), function(x) list(name = paste0(pad_to(col_names_valid[x], charw)),
+                                                                        call = "= c(",
+                                                                        data = unlist(lapply(cols[[x]], render_type, col_types[[x]])),
+                                                                        close = ")"))
+
   #Handle the factor columns specially.
   if(any(col_types == "factor")){
     list_of_factor_cols <-
-      lapply(which(col_types == "factor"), function(x) paste(pad_to(col_names_valid[x], charw), "=",
-                                                             paste0("as.factor(c(",
-                                                                    paste0( unlist(lapply(cols[[x]], render_type, col_types[[x]])), collapse=", "),
-                                                                    "))"
-                                                             )
-      )
-      )
+      lapply(which(col_types == "factor"), function(x) list(name = pad_to(col_names_valid[x], charw),
+                                                            call = "= as.factor(c(",
+                                                            data = unlist(lapply(cols[[x]], render_type, col_types[[x]])),
+                                                            close = "))"))
+
     list_of_cols <- c(list_of_cols, list_of_factor_cols)
     names(list_of_cols) <- names(cols)
   }
 
-  #paste0 inserts its own "\n" for lists which will mess witch what we're trying to do with tortellini.
-  #For now, just stripping "\n" from the output.
-  list_of_cols <- lapply(list_of_cols, function(X) gsub("\n", "", X))
-
-  output <- paste0(
-    paste0(paste0(ifelse(oc$indent_head, yes = strrep(" ", oc$indent_context), no = ""),
-
-                  ifelse(class == "data.frame", "data.frame(", "data.table::data.table("),
-           
-                  ifelse(contains_chars && class == "data.frame", yes = "stringsAsFactors=FALSE,", no=""), "\n",
-
-                  ifelse(any(col_names_valid != names(cols)),
-                         yes = tortellini("check.names=FALSE",
-                                          indent_context = nchar("data.frame("),
-                                          add_comma = TRUE), no = "")),
-
-           ifelse(exists("row_names"),
-                  yes = tortellini(paste0("row.names = c(",
-                                          paste0(paste0("'", row_names, "'"), collapse = ", "),
-                                          ")"),
-                                   indent_context = oc$indent_context,
-                                   add_comma = TRUE),
-                  no = ""),
-
+  output <-
+    paste0(
+      c(paste0(ifelse(oc$indent_head,
+                         yes = strrep(" ", oc$indent_context),
+                         no = ""),
+                  ifelse(class == "data.frame",
+                         yes = "data.frame(",
+                         no = "data.table::data.table(")
+                  ),
+           if (strings_as_factors_length > 0)
+             tortellini(list(name = pad_to("stringsAsFactors", charw),
+                             call = "= ",
+                             data = "FALSE",
+                             close =  ""),
+                        indent_context = oc$indent_context,
+                        add_comma = TRUE),
+           if (check_names_length > 0)
+             tortellini(list(name = pad_to("check.names", charw),
+                             call = "= ",
+                             data = "FALSE",
+                             close =  ""),
+                        indent_context = oc$indent_context,
+                        add_comma = TRUE),
+           if (row_names_length > 0)
+                 tortellini(list(name = pad_to("row.names", charw),
+                                 call = "= c(",
+                                 data = lapply(row_names, render_type, rep("character", length(row_names))),
+                                 close =  ")"),
+                                 indent_context = oc$indent_context,
+                                 add_comma = TRUE),
            paste0(sapply(list_of_cols[1:(length(list_of_cols) - 1)],
-                         function(x) tortellini(x, indent_context = oc$indent_context, add_comma = TRUE)), collapse = ""),
-           paste0(sapply(list_of_cols[length(list_of_cols)],
-                         function(x) tortellini(x, indent_context = oc$indent_context, add_comma = FALSE))),
-           strrep(" ", oc$indent_context),")\n"
-    ), collapse = "")
-
+                         function(x) tortellini(x,
+                                                indent_context = oc$indent_context,
+                                                add_comma = TRUE)),
+                  collapse = "\n"),
+           sapply(list_of_cols[length(list_of_cols)],
+                  function(x) tortellini(x,
+                                        indent_context = oc$indent_context,
+                                        add_comma = FALSE)),
+           paste0(strrep(" ", oc$indent_context),")")
+          ),
+      collapse = "\n")
 
   return(invisible(output))
 }
 
 #' wrap the datapasta around itself
-#' @param s input string
-#' @param n number of characters for text (includes column name on line 1)
+#' @param col_struct input structure - a split apart column definition
+#' @param defn_width total number of characters in a line (includes column name and indent on line 1)
 #' @param indent_context the level of indent in spaces in the current editor pane
 #' @param add_comma add one final comma to the end of the wrapped column def? Useful when pasting together columns.
 #' @return w wrapped string
 
-tortellini <- function(s, n = 80, indent_context = 0, add_comma = TRUE) {
+tortellini <- function(col_struct, defn_width = 80, indent_context = 0, add_comma = TRUE) {
+
+  split_s <- list(paste(col_struct$name, col_struct$call),
+         col_struct$data,
+         col_struct$close)
+
+  joined_s <- paste0(paste0(split_s[[1]],
+                            paste0(split_s[[2]], collapse = ", ")),
+                     split_s[[3]])
+
+  ## calculate indent context
 
   ## if the string is less than n chars then
   ## don't worry about splitting
-  if (nchar(s) > n) {
+  if ((nchar(joined_s) + indent_context) > defn_width) {
 
   ## determine the initial offset
-  offset <- attr(regexpr("^.*?c\\(", s), "match.length") - 1L + indent_context
+  offset <- nchar(split_s[[1]]) + indent_context
 
-  ## split the string at commas
-  split_s <- strsplit(s, ",")[[1]]
+  ## try to fit the whole defn within n chars, but draw a line at data with of 20
+  ## so we have something to work with
+  group_length <- max(defn_width - offset, 20)
 
   ## determine the groups of strings by splitting at n chars
-  ## additional 1 is for the comma to be added back
-  groups <- cumsum(nchar(split_s) + 1L) %/% n
+  ## additional 2 is for the comma space to be added back
+  groups <- (indent_context + nchar(split_s[[1]]) + cumsum(nchar(split_s[[2]]) + 2L)) %/% group_length
 
-  ## paste the first group of strings back together
-  wrapped_s <- paste0(strrep(" ", indent_context),
-                      paste0(split_s[groups == groups[1]], collapse = ",")
-               )
+  ## paste groups together
+  wrapped_data <- sapply(unique(groups),
+                      function(x)
+                        paste0(split_s[[2]][groups == x], collapse = ","))
 
-  ## for the remaining groups, subtract the offset
-  ## from the width limit then re-calculate groupings
-  split_s_rem <- split_s[groups != groups[1]]
-  groups_rem <- cumsum(nchar(split_s_rem) + 1L) %/% (n - offset)
-  ngroups <- length(unique(groups_rem))
+  ## for group 1 add the definition call
+  ## needs whitespace trimmed because it had indent_context added which needs to be
+  ## added at front of line
+  wrapped_data[1] <- paste0(strrep(" ", indent_context), split_s[[1]], trimws(wrapped_data[1]))
 
-  ## paste the remaining groups together
-  wrapped_s[2:(ngroups+1)] <- sapply(unique(groups_rem),
-                                     function(x) paste0(
-                                       strrep(" ", offset),
-                                       paste0(split_s_rem[groups_rem == x], collapse = ",")))
+  ## for groups after group 1, add the offset
+  wrapped_data[2:length(wrapped_data)] <- paste0(strrep(" ", offset), wrapped_data[2:length(wrapped_data)])
+
+  ## join parts together for final output
+  wrapped_s <- paste0(paste0(wrapped_data, collapse = ",\n"),
+         split_s[3])
 
   } else { ## if no splitting is required
 
-    wrapped_s <- paste0(strrep(" ", indent_context), s)
+    wrapped_s <- joined_s
 
   }
 
   ## append a new comma and newline to the end of each
   w <- paste0(wrapped_s, collapse = ",\n")
-  w <- if(add_comma) paste0(w, ",\n") else paste0(w, "\n")
+  w <- if(add_comma) paste0(w, ",") else w
 
   return(w)
 
