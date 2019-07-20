@@ -122,7 +122,6 @@ test_that("Columns with non-valid names can be parsed as a data.frame, with name
   )
 })
 
-
 test_that("meaningful rownames are included when input_table is a data.frame", {
   expect_equal(
     eval(parse(text = dfdt_construct(mtcars[1:3, 1:3], class = "data.frame"))),
@@ -189,3 +188,10 @@ test_that("data.frame output is aligned when multiple cols and args are used", {
 )')
 
 })
+
+test_that("1 col data.frames paste without repetition", {
+  expect_equal(eval(parse(text = dfdt_construct(data.frame(x = c(1,2,3)),
+                                 class = "data.frame"))),
+               data.frame(x = c(1,2,3)))
+  })
+

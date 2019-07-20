@@ -100,7 +100,8 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
     }
     col_types <- lapply(input_table, base::class) # prevent clobbering by local class variable
     #Store types as characters so the char lengths can be computed
-    input_table <- as.data.frame(lapply(input_table, as.character), stringsAsFactors = FALSE)
+    input_table <- as.data.frame(lapply(input_table, as.character),
+                                 stringsAsFactors = FALSE)
     #Store types as characters so the char lengths can be computed
     cols <- as.list(input_table)
   }
@@ -162,23 +163,24 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
                         indent_context = oc$indent_context,
                         add_comma = TRUE),
            if (check_names_length > 0)
-             tortellini(list(name = pad_to("check.names", charw),
-                             call = "= ",
-                             data = "FALSE",
-                             close =  ""),
+              tortellini(list(name = pad_to("check.names", charw),
+                              call = "= ",
+                              data = "FALSE",
+                              close =  ""),
                         indent_context = oc$indent_context,
                         add_comma = TRUE),
            if (row_names_length > 0)
-                 tortellini(list(name = pad_to("row.names", charw),
-                                 call = "= c(",
-                                 data = lapply(row_names, render_type, rep("character", length(row_names))),
-                                 close =  ")"),
-                                 indent_context = oc$indent_context,
-                                 add_comma = TRUE),
-           paste0(sapply(list_of_cols[1:(length(list_of_cols) - 1)],
-                         function(x) tortellini(x,
-                                                indent_context = oc$indent_context,
-                                                add_comma = TRUE)),
+              tortellini(list(name = pad_to("row.names", charw),
+                              call = "= c(",
+                              data = lapply(row_names, render_type, rep("character", length(row_names))),
+                              close =  ")"),
+                              indent_context = oc$indent_context,
+                              add_comma = TRUE),
+           if(length(list_of_cols) > 1)
+              paste0(sapply(list_of_cols[seq_len(length(list_of_cols) - 1)],
+                          function(x) tortellini(x,
+                                                 indent_context = oc$indent_context,
+                                                 add_comma = TRUE)),
                   collapse = "\n"),
            sapply(list_of_cols[length(list_of_cols)],
                   function(x) tortellini(x,
