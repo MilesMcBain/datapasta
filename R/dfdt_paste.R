@@ -100,8 +100,10 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
     }
     col_types <- lapply(input_table, base::class) # prevent clobbering by local class variable
     #Store types as characters so the char lengths can be computed
+    #Dont't fix the names with prefixes!
     input_table <- as.data.frame(lapply(input_table, as.character),
-                                 stringsAsFactors = FALSE)
+                                 stringsAsFactors = FALSE,
+                                 check.names = FALSE)
     #Store types as characters so the char lengths can be computed
     cols <- as.list(input_table)
   }

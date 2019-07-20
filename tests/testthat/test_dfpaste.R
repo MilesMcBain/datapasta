@@ -166,13 +166,13 @@ test_that("data.frame output is aligned when multiple cols and args are used", {
                    class = "data.frame"),
 'data.frame(
   stringsAsFactors = FALSE,
+       check.names = FALSE,
          row.names = c("Mazda RX4", "Mazda RX4 Wag", "Datsun 710"),
                mpg = c(21, 21, 22.8),
                cyl = c(6, 6, 4),
               disp = c(160, 160, 108),
-      letters.1.3. = c("a", "b", "c")
-)'
-  )
+    `letters[1:3]` = c("a", "b", "c")
+)')
 
   expect_equal(
     dfdt_construct(data.frame(a_really_reall_really_long_name = c(1000, 2000, 3000),
@@ -195,3 +195,9 @@ test_that("1 col data.frames paste without repetition", {
                data.frame(x = c(1,2,3)))
   })
 
+test_that("Column names are not interferred with", {
+  expect_equal(eval(parse(text = dfdt_construct(data.frame(`99` = c(1,2,3),
+                                                           check.names = FALSE),
+                                 class = "data.frame"))),
+               data.frame(`99` = c(1,2,3),
+                          check.names = FALSE))})
