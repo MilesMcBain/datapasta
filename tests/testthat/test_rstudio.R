@@ -6,6 +6,7 @@ test_that(".rs.readUiPref() returns an integer", {
     skip_on_appveyor()
     skip_on_travis()
     skip_if_not(is_interactive)
+    skip_if_not(rstudioapi::isAvailable())
     expect_type(.rs.readUiPref('num_spaces_for_tab'), type="integer")
 
 })
