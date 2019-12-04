@@ -100,27 +100,29 @@ tribble_construct <- function(input_table, oc = console_context()){
     col_widths <- col_widths[-NA_cols]
   }
 
-  # Header
-  header <- paste0(ifelse(oc$indent_head, yes = strrep(" ", oc$indent_context), no = ""), "tibble::tribble(\n")
 
-  # Column names
-  names_row <- paste0(
-                  paste0(strrep(" ",oc$indent_context+oc$nspc),
-                      paste0(
-                        paste0(
-                          mapply(
-                            pad_to,
-                            paste0("~",input_names_valid),
-                            col_widths
-                          ),
-                          ","
-                        ),
-                        collapse = " "
-                      )
-                    ), "\n"
-                )
 
   if(nrow(input_table) > 0) {
+    ## Header
+    header <- paste0(ifelse(oc$indent_head, yes = strrep(" ", oc$indent_context), no = ""), "tibble::tribble(\n")
+
+    ## Column names
+    names_row <- paste0(
+      paste0(strrep(" ",oc$indent_context+oc$nspc),
+             paste0(
+               paste0(
+                 mapply(
+                   pad_to,
+                   paste0("~",input_names_valid),
+                   col_widths
+                 ),
+                 ","
+               ),
+               collapse = " "
+             )
+             ), "\n"
+    )
+
     body_rows <- lapply(X = as.data.frame(t(input_table), stringsAsFactors = FALSE),
                         FUN =
                           function(col){
@@ -147,14 +149,23 @@ tribble_construct <- function(input_table, oc = console_context()){
     body_rows <- paste0(as.vector(body_rows),collapse = "")
     body_rows <- gsub(pattern = ",\n$", replacement = "\n", x = body_rows)
   } else {
+    header <- paste0(ifelse(oc$indent_head, yes = strrep(" ", oc$indent_context), no = ""), "tibble::tibble(\n")
+
+    names_row <- ""
+
     body_rows <-
+    paste0(
       paste0(
         strrep(" ",oc$indent_context+oc$nspc),
-        paste0(mapply(deparse_as,
-                      input_table,
-                      input_table_types), collapse = ", "),
-        "\n"
-      )
+        input_names_valid,
+        " = ",
+        mapply(deparse_as,
+               input_table,
+               input_table_types),
+        collapse = ",\n"
+      ),
+      "\n"
+    )
   }
 
   # Footer
