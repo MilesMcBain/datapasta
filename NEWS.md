@@ -3,6 +3,8 @@
 * Adds `dt_paste` function for pasting as `data.table` (@jonocarroll, #72, closes #70)
 * Fixes issue with commas inside character vectors getting wrapped on
 * data.frame (and data.table) print is much prettier and robust with all args and cols aligned on '='
+* zero row tibbles are supported with a fall-back to a tibble::tibble() call
+* all _construct functions now return input visibly
 
 # datapasta 3.0.0 'Colander Helmet'
 
