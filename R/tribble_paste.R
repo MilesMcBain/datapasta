@@ -176,7 +176,7 @@ tribble_construct <- function(input_table, oc = console_context()){
 }
 
 deparse_as <- function(column, column_type) {
-  deparse(as(column, column_type))
+  deparse(methods::as(column, column_type))
 }
 
 column_width <- function(column, column_type) {
