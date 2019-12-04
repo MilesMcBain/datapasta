@@ -355,3 +355,16 @@ test_that("blank final row has separator guessed as tab", {
   )
 })
 
+test_that("zero length tibbles work", {
+
+  expect_equal(
+    eval(parse(text = 
+                 datapasta::tribble_construct(
+                              tibble::tibble(a = character(), b = integer()))
+               )
+         ),
+    tibble::tibble(a = character(), b = integer())
+
+  )
+
+})

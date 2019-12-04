@@ -192,7 +192,7 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
           ),
       collapse = "\n")
 
-  return(invisible(output))
+  return(output)
 }
 
 #' wrap the datapasta around itself

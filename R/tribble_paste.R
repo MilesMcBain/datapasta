@@ -78,21 +78,10 @@ tribble_construct <- function(input_table, oc = console_context()){
 
   # Find the max length of data as string in each column
   col_widths <- mapply(input_table,
-                       FUN =
-                         function(df_col, df_col_type){
-                           suppressWarnings(
-                             max( vapply(X = df_col,
-                                        FUN = nchar_type,
-                                         FUN.VALUE = numeric(1),
-                                         df_col_type = df_col_type
-                                  ),
-                              na.rm = TRUE
-                              ) # blank cols will be all NA
-                           )
-                         },
-                       df_col_type = input_table_types
+                       FUN = column_width,
+                       column_type = input_table_types
+                       )
 
-  )
   # Create the vector of names, surrounded by `` if it does not start with a latin character
   input_names <- names(input_table)
   input_names_valid <- ifelse(make.names(input_names) == input_names, input_names, paste0("`", input_names, "`"))
@@ -111,64 +100,103 @@ tribble_construct <- function(input_table, oc = console_context()){
     col_widths <- col_widths[-NA_cols]
   }
 
-  # Header
-  header <- paste0(ifelse(oc$indent_head, yes = strrep(" ", oc$indent_context), no = ""), "tibble::tribble(\n")
-
-  # Column names
-  names_row <- paste0(
-                  paste0(strrep(" ",oc$indent_context+oc$nspc),
-                      paste0(
-                        paste0(
-                          mapply(
-                            pad_to,
-                            paste0("~",input_names_valid),
-                            col_widths
-                          ),
-                          ","
-                        ),
-                        collapse = " "
-                      )
-                    ), "\n"
-                )
 
 
-  # Write correct data types
-  body_rows <- lapply(X = as.data.frame(t(input_table), stringsAsFactors = FALSE),
-                      FUN =
-                        function(col){
-                          paste0(strrep(" ",oc$indent_context+oc$nspc),
-                            paste0(
+  if(nrow(input_table) > 0) {
+    ## Header
+    header <- paste0(ifelse(oc$indent_head, yes = strrep(" ", oc$indent_context), no = ""), "tibble::tribble(\n")
+
+    ## Column names
+    names_row <- paste0(
+      paste0(strrep(" ",oc$indent_context+oc$nspc),
+             paste0(
+               paste0(
+                 mapply(
+                   pad_to,
+                   paste0("~",input_names_valid),
+                   col_widths
+                 ),
+                 ","
+               ),
+               collapse = " "
+             )
+             ), "\n"
+    )
+
+    body_rows <- lapply(X = as.data.frame(t(input_table), stringsAsFactors = FALSE),
+                        FUN =
+                          function(col){
+                            paste0(strrep(" ",oc$indent_context+oc$nspc),
                                    paste0(
-                                     mapply(
-                                       render_type_pad_to,
-                                       col,
-                                       input_table_types,
-                                       col_widths
+                                     paste0(
+                                       mapply(
+                                         render_type_pad_to,
+                                         col,
+                                         input_table_types,
+                                         col_widths
+                                       ),
+                                       ","
                                      ),
-                                     ","
+                                     collapse = " "
                                    ),
-                                   collapse = " "
-                            ),
-                            "\n",
-                            collapse = ""
-                          )
+                                   "\n",
+                                   collapse = ""
+                                   )
 
-                        }
-  )
+                          }
+                        )
+    # Need to remove the final comma that will break everything.
+    body_rows <- paste0(as.vector(body_rows),collapse = "")
+    body_rows <- gsub(pattern = ",\n$", replacement = "\n", x = body_rows)
+  } else {
+    header <- paste0(ifelse(oc$indent_head, yes = strrep(" ", oc$indent_context), no = ""), "tibble::tibble(\n")
 
+    names_row <- ""
 
-
-
-  # Need to remove the final comma that will break everything.
-  body_rows <- paste0(as.vector(body_rows),collapse = "")
-  body_rows <- gsub(pattern = ",\n$", replacement = "\n", x = body_rows)
+    body_rows <-
+    paste0(
+      paste0(
+        strrep(" ",oc$indent_context+oc$nspc),
+        input_names_valid,
+        " = ",
+        mapply(deparse_as,
+               input_table,
+               input_table_types),
+        collapse = ",\n"
+      ),
+      "\n"
+    )
+  }
 
   # Footer
   footer <- paste0(strrep(" ",oc$indent_context+oc$nspc),")\n")
   output <- paste0(header, names_row, body_rows, footer)
 
-  return(invisible(output))
+  return(output)
 }
+
+deparse_as <- function(column, column_type) {
+  deparse(as(column, column_type))
+}
+
+column_width <- function(column, column_type) {
+
+  if (length(column) == 0)
+    return(nchar(deparse(column)))
+  else
+    return(
+      suppressWarnings(
+        max(vapply(X = column,
+                   FUN = nchar_type,
+                   FUN.VALUE = numeric(1),
+                   df_col_type = column_type
+                   ),
+            na.rm = TRUE
+            ) # blank cols will be all NA
+      )
+    )
+}
+
 
 
 #' nchar_type
