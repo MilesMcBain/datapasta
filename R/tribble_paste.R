@@ -172,7 +172,7 @@ tribble_construct <- function(input_table, oc = console_context()){
   footer <- paste0(strrep(" ",oc$indent_context+oc$nspc),")\n")
   output <- paste0(header, names_row, body_rows, footer)
 
-  return(invisible(output))
+  return(output)
 }
 
 deparse_as <- function(column, column_type) {

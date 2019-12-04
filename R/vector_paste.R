@@ -65,7 +65,7 @@ vector_construct <- function(input_vector, oc = console_context()){
                           collapse = ", "),
                         ")\n"
   )
-  return(invisible(vector_form))
+  return(vector_form)
 }
 
 #' vector_paste_vertical
@@ -135,7 +135,7 @@ vector_construct_vertical <- function(input_vector, oc = console_context()){
                         ),
                         ")\n"
   )
-  return(invisible(vector_form))
+  return(vector_form)
 }
 
 #' parse_vector
