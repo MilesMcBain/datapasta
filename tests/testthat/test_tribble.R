@@ -159,6 +159,38 @@ test_that("Data with a comma decimal mark can be parsed correctly", {
   )
 })
 
+
+test_that("dates and datetimes are parsed as strings", {
+  a_table <- read_clip_tbl_guess(readr::read_lines(file = "./iso_dates.txt"))
+  attr(a_table,"col_types") <- NULL
+  expect_equal(
+  {
+    a_table
+  },
+  {
+    as.data.frame(
+    tibble::tribble(
+                                  ~name,  ~code,  ~start_date,         ~end_datetime,
+                   "City of Gold Coast", "3430", "2019-09-06", "2019-09-12 00:00:00",
+                  "Noosa Shire Council", "5740", "2019-09-06", "2019-09-12 00:00:00",
+          "Scenic Rim Regional Council", "6510", "2019-09-06", "2019-09-12 00:00:00",
+      "Southern Downs Regional Council", "6660", "2019-09-06", "2019-09-12 00:00:00",
+      "Sunshine Coast Regional Council", "6720", "2019-09-06", "2019-09-12 00:00:00",
+                 "Redland City Council", "6250", "2019-09-17", "2019-09-24 00:00:00",
+           "Bundaberg Regional Council", "1820", "2019-11-08", "2019-11-21 00:00:00",
+                   "City of Gold Coast", "3430", "2019-11-08", "2019-11-21 00:00:00",
+            "Livingstone Shire Council", "4530", "2019-11-08", "2019-11-21 00:00:00",
+      "Lockyer Valley Regional Council", "4580", "2019-11-08", "2019-11-21 00:00:00",
+                  "Noosa Shire Council", "5740", "2019-11-08", "2019-11-21 00:00:00",
+          "Scenic Rim Regional Council", "6510", "2019-11-08", "2019-11-21 00:00:00",
+            "Somerset Regional Council", "6580", "2019-11-08", "2019-11-21 00:00:00",
+      "Southern Downs Regional Council", "6660", "2019-11-08", "2019-11-21 00:00:00",
+           "Toowoomba Regional Council", "6910", "2019-11-08", "2019-11-21 00:00:00"
+      )
+  )
+  })
+})
+
 test_that("The decimal mark is returned to .", {
   expect_equal(
     {.global_datapasta_env$decimal_mark},

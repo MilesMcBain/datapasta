@@ -213,6 +213,8 @@ nchar_type <- function(df_col_row, df_col_type){
   add_chars <- switch(df_col_type,
                       "integer" = 1, #for the "L",
                       "character" = 2 + nquote_str(df_col_row) + nslash_str(df_col_row), #2 for outer quotes +1 "\" for each quote and slash in string
+                      "date" = 2 + nquote_str(df_col_row) + nslash_str(df_col_row), #2 for outer quotes +1 "\" for each quote and slash in string
+                      "datetime" = 2 + nquote_str(df_col_row) + nslash_str(df_col_row), #2 for outer quotes +1 "\" for each quote and slash in string
                       "factor" = 2 + nquote_str(df_col_row) + nslash_str(df_col_row),
                       "complex" = 2 + nquote_str(df_col_row) + nslash_str(df_col_row), #Assume we print as a quoted char
                       0) #0 for other types
