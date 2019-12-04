@@ -1,6 +1,8 @@
 # datapasta 3.1.0
 * Exported `_format` functions
-* Adds `dt_paste` function for pasting as `data.table` (@jonocarroll, #72, closes #70)
+* Adds `dt_paste` function for pasting as `data.table` (Thanks @jonocarroll, #72, closes #70)
+* Row names are kept in data.frames and data.tables (Thanks @sowla)
+* Column names that are invalid are now handled with backticks (Thanks @sharlagelfand)
 * Fixes issue with commas inside character vectors getting wrapped on
 * data.frame (and data.table) print is much prettier and robust with all args and cols aligned on '='
 * zero row tibbles are supported with a fall-back to a tibble::tibble() call
