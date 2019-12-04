@@ -4,8 +4,7 @@
 \alias{vector_paste_vertical}
 \title{vector_paste_vertical}
 \usage{
-vector_paste_vertical(input_vector,
-  output_context = guess_output_context())
+vector_paste_vertical(input_vector, output_context = guess_output_context())
 }
 \arguments{
 \item{input_vector}{An input vector to be formatted for output. If supplied, no data is read from the clipboard.}

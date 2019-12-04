@@ -4,8 +4,7 @@
 \alias{tortellini}
 \title{wrap the datapasta around itself}
 \usage{
-tortellini(col_struct, defn_width = 80, indent_context = 0,
-  add_comma = TRUE)
+tortellini(col_struct, defn_width = 80, indent_context = 0, add_comma = TRUE)
 }
 \arguments{
 \item{col_struct}{input structure - a split apart column definition}

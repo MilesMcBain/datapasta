@@ -16,8 +16,12 @@ console_context()
 
 markdown_context()
 
-custom_context(output_mode = "console", nspc = 2, indent_context = 0,
-  indent_head = TRUE)
+custom_context(
+  output_mode = "console",
+  nspc = 2,
+  indent_context = 0,
+  indent_head = TRUE
+)
 }
 \arguments{
 \item{output_mode}{A named output mode, controls the target of the _paste functions options are "rstudioapi" or "console"}
