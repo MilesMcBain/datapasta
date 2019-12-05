@@ -34,7 +34,8 @@ read_rstudio_editor <- function() {
   text <- ctx$selection[[1]]$text
 
   if (identical(text, "")) {
-    if (rstudioapi::hasFun("showDialog")) {
+    quiet <- getOption("datapasta.quiet_manual_paste", FALSE)
+    if (rstudioapi::hasFun("showDialog") && !quiet) {
       rstudioapi::showDialog(
         "datapasta",
         paste(
@@ -42,6 +43,7 @@ read_rstudio_editor <- function() {
         "box in the next screen and then press Save to import your data."
         )
       )
+      options(datapasta.quiet_manual_paste = TRUE)
     }
     text <- ask_user_for_paste()
   }
