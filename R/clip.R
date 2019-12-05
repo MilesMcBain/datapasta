@@ -34,6 +34,20 @@ read_rstudio_editor <- function() {
   text <- ctx$selection[[1]]$text
 
   if (identical(text, "")) {
+    if (rstudioapi::hasFun("showDialog")) {
+      rstudioapi::showDialog(
+        "datapasta",
+        paste(
+        "The clipboard isn't accessible. Paste your copied text into the text",
+        "box in the next screen and then press Save to import your data."
+        )
+      )
+    }
+    text <- ask_user_for_paste()
+  }
+
+  if (identical(text, "")) {
+    # okay, for real there's nothing selected and nothing we can do about it
     return("")
   }
 
@@ -44,4 +58,12 @@ read_rstudio_editor <- function() {
   on.exit(unlink(tmpfile))
   cat(text, file = tmpfile, sep = "\n")
   scan(tmpfile, what = character(), sep = "\n", blank.lines.skip = FALSE, quiet = TRUE)
+}
+
+ask_user_for_paste <- function() {
+  tmpfile <- tempfile()
+  cat("", file = tmpfile)
+  on.exit(unlink(tmpfile))
+  utils::file.edit(tmpfile)
+  paste(readLines(tmpfile, warn = FALSE), collapse = "\n")
 }
