@@ -33,11 +33,15 @@ read_rstudio_editor <- function() {
   # currently selected in the active editor
   text <- ctx$selection[[1]]$text
 
+  if (identical(text, "")) {
+    return("")
+  }
+
   # clipr::read_clip() uses scan() internally --
   # (I guess utils::readClipboard does this on Windows?) --
   # so we have to jump through some hoops to introduce the editor text to scan()
   tmpfile <- tempfile()
   on.exit(unlink(tmpfile))
   cat(text, file = tmpfile, sep = "\n")
-  scan(tmpfile, what = character(), sep = "\n", blank.lines.skip = FALSE)
+  scan(tmpfile, what = character(), sep = "\n", blank.lines.skip = FALSE, quiet = TRUE)
 }
