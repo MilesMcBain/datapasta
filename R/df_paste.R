@@ -37,14 +37,10 @@ df_format <- function(input_table, output_context = clipboard_context()){
 df_construct <- function(input_table, oc = console_context()) {
 
   if(missing(input_table)){
-    input_table <- tryCatch({read_clip_tbl_guess()},
-                            error = function(e) {
-                              return(NULL)
-                            })
+    input_table <- read_clip_tbl_guess()
 
     if(is.null(input_table)){
-      if(!clipr::clipr_available()) message(.global_datapasta_env$no_clip_msg)
-      else message("Could not paste clipboard as data.frame. Text could not be parsed as table.")
+      message("Could not paste clipboard as data.frame. Text could not be parsed as table.")
       return(NULL)
     }
     #Parse data types from string using readr::parse_guess

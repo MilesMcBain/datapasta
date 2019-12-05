@@ -145,13 +145,9 @@ vector_construct_vertical <- function(input_vector, oc = console_context()){
 #'
 parse_vector <- function(input_vector){
   if(missing(input_vector)){
-    input_vector <- tryCatch({clipr::read_clip()},
-                                 error = function(e) {
-                                     return(NULL)
-                                 })
+    input_vector <- read_clip_or_editor()
     if(is.null(input_vector)){
-        if(!clipr::clipr_available()) message(.global_datapasta_env$no_clip_msg)
-        else message("Could not paste clipboard as a vector. Text could not be parsed.")
+        message("Could not paste clipboard as a vector. Text could not be parsed.")
         return(NULL)
     }
   }

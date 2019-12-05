@@ -43,14 +43,10 @@ tribble_format <- function(input_table, output_context = console_context()){
 tribble_construct <- function(input_table, oc = console_context()){
   # Determine input. Either clipboard or supplied table.
   if(missing(input_table)){
-    input_table <- tryCatch({read_clip_tbl_guess()},
-                            error = function(e) {
-                              return(NULL)
-                            })
+    input_table <- read_clip_tbl_guess()
 
     if(is.null(input_table)){
-      if(!clipr::clipr_available()) message(.global_datapasta_env$no_clip_msg)
-      else message("Could not paste clipboard as tibble. Text could not be parsed as table.")
+      message("Could not paste clipboard as tibble. Text could not be parsed as table.")
       return(NULL)
     }
     # Parse data types from string using readr::guess_parser
@@ -301,8 +297,12 @@ guess_sep <- function(char_vec){
 #' and it tries to guess the separator.
 #'
 #' @return a parsed table from the clipboard. Separator is guessed.
-read_clip_tbl_guess <- function (x = clipr::read_clip(), ...)
+read_clip_tbl_guess <- function (x = NULL, ...)
 {
+  if (is.null(x)) {
+    # if no text is provided, look in clipboard or RStudio editor
+    x <- read_clip_or_editor()
+  }
   if (is.null(x))
     return(NULL)
   if(length(x) < 2)  #You're just a header row, get outta here!
