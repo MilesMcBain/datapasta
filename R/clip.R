@@ -61,6 +61,11 @@ read_rstudio_editor <- function() {
 }
 
 ask_user_for_paste <- function() {
+  if (!requireNamespace("utils", quietly = TRUE)) {
+    warning("The `utils` is not available, but could be used to help ",
+            "you manually enter your clipboard text.")
+    return("")
+  }
   tmpfile <- tempfile()
   cat("", file = tmpfile)
   on.exit(unlink(tmpfile))
