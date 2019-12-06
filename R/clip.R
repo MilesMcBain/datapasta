@@ -11,9 +11,13 @@ read_clip_or_editor <- function() {
   if (!clipr_readable || is.null(x) || identical(x, "")) {
     x <- read_rstudio_editor()
     if (identical(x, "")) {
-      # clipboard failed but nothing selected
-      stop("The clipboard is not accessible, but you can paste your text into ",
-           "an RStudio editor, select it, and run the datapasta addin again.")
+      # not in RStudio or no text selected
+      x <- ask_user_for_paste()
+    }
+    if (identical(x, "")) {
+      # at this point: clipboard not available, not in RStudio or no text is
+      # selected in the editor, and user declined to paste text into the input
+      stop(.global_datapasta_env$no_clip_msg)
     }
   }
   x
@@ -21,8 +25,7 @@ read_clip_or_editor <- function() {
 
 read_rstudio_editor <- function() {
   if (!rstudioapi::hasFun("getSourceEditorContext")) {
-    # just throwing the no clipboard message because we're not in RStudio
-    stop(.global_datapasta_env$no_clip_msg)
+    return("")
   }
   ctx <- rstudioapi::getSourceEditorContext()
   if (length(ctx$selection) > 1) {
@@ -32,21 +35,6 @@ read_rstudio_editor <- function() {
   # returns a length-one string of the text
   # currently selected in the active editor
   text <- ctx$selection[[1]]$text
-
-  if (identical(text, "")) {
-    quiet <- getOption("datapasta.quiet_manual_paste", FALSE)
-    if (rstudioapi::hasFun("showDialog") && !quiet) {
-      rstudioapi::showDialog(
-        "datapasta",
-        paste(
-        "The clipboard isn't accessible. Paste your copied text into the text",
-        "box in the next screen and then press Save to import your data."
-        )
-      )
-      options(datapasta.quiet_manual_paste = TRUE)
-    }
-    text <- ask_user_for_paste()
-  }
 
   if (identical(text, "")) {
     # okay, for real there's nothing selected and nothing we can do about it
@@ -67,9 +55,25 @@ ask_user_for_paste <- function() {
             "you manually enter your clipboard text.")
     return("")
   }
+  quiet <- getOption("datapasta.quiet_manual_paste", FALSE)
+  if (!quiet) {
+    msg <- paste(
+      "The clipboard isn't accessible. Paste your copied text into the %s",
+      "to import your data."
+    )
+    if (rstudioapi::hasFun("showDialog") && !quiet) {
+      rstudioapi::showDialog(
+        "datapasta",
+        sprintf(msg, "text box in the next screen and then press Save"))
+    } else {
+      message(sprintf(msg, "editor that will open and then save and exit"))
+      readline("Press enter to continue...")
+    }
+    options(datapasta.quiet_manual_paste = TRUE)
+  }
   tmpfile <- tempfile()
   cat("", file = tmpfile)
   on.exit(unlink(tmpfile))
   utils::file.edit(tmpfile)
-  paste(readLines(tmpfile, warn = FALSE), collapse = "\n")
+  scan(tmpfile, what = character(), sep = "\n", blank.lines.skip = FALSE, quiet = TRUE)
 }
