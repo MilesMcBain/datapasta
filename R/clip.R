@@ -46,7 +46,11 @@ read_rstudio_editor <- function() {
   # so we have to jump through some hoops to introduce the editor text to scan()
   text <- paste(text, collapse = "\n")
   txtcon <- textConnection(text)
-  scan(txtcon, what = character(), sep = "\n", blank.lines.skip = FALSE, quiet = TRUE)
+  read_file_to_clipr_vec(txtcon)
+}
+
+read_file_to_clipr_vec <- function(file) {
+  scan(file, what = character(), sep = "\n", blank.lines.skip = FALSE, quiet = TRUE)
 }
 
 ask_user_for_paste <- function() {
@@ -75,5 +79,5 @@ ask_user_for_paste <- function() {
   cat("", file = tmpfile)
   on.exit(unlink(tmpfile))
   utils::file.edit(tmpfile)
-  scan(tmpfile, what = character(), sep = "\n", blank.lines.skip = FALSE, quiet = TRUE)
+  read_file_to_clipr_vec(tmpfile)
 }
