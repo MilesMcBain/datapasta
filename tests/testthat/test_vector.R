@@ -137,3 +137,50 @@ test_that("vector_construct escapes backslashes correctly",{
   )))},
   {c("\\\\my-server\\DATA\\libraries")})
 })
+
+test_that("vectors of length 1 are handled correctly",{
+
+  expect_equal({
+    eval(parse(text =
+                 vector_construct("Mint	Fedora	Debian	Ubuntu	OpenSUSE")))
+    },
+    {
+      c("Mint", "Fedora", "Debian", "Ubuntu", "OpenSUSE")
+    })
+
+  expect_equal({
+    eval(parse(text =
+                 vector_construct("Mint, Fedora, Debian, Ubuntu, OpenSUSE")))
+    },
+    {
+      c("Mint", "Fedora", "Debian", "Ubuntu", "OpenSUSE")
+    })
+
+  expect_equal({
+    eval(parse(text =
+                 vector_construct("Mint Fedora Debian Ubuntu OpenSUSE")))
+    },
+    {
+      c("Mint", "Fedora", "Debian", "Ubuntu", "OpenSUSE")
+    })
+
+  expect_equal({
+    eval(parse(text =
+                 vector_construct("  Mint  Fedora  Debian  Ubuntu  OpenSUSE  ")))
+    },
+    {
+      c("Mint", "Fedora", "Debian", "Ubuntu", "OpenSUSE")
+    })
+})
+
+test_that("readr integer guessing is still possible",
+          {
+            ## This ability was changed in readr 1.2.0
+            ## much of datapasta depends on this but since many clipboard tests
+            ## are skipped on CRAN it was not picked up until later.
+            ## This tests the behaviour persists so I will get a notification if
+            ## it is changed further.
+            expect_equal(
+              {readr::guess_parser(c("1", "2", "3"), guess_integer = TRUE)},
+              {"integer"}
+          )})

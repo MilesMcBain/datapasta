@@ -25,7 +25,7 @@ vector_paste <- function(input_vector, output_context = guess_output_context()){
 #' @param input_vector An input vector to be formatted for output. If supplied, no data is read from the clipboard.
 #' @param output_context an optional output context that defines the output indentation.
 #' @return nothing.
-#'
+#' @export
 #'
 vector_format <- function(input_vector, output_context = console_context()){
   if(!interactive()) stop("Cannot write to clipboard in non-interactive sessions.")
@@ -46,11 +46,13 @@ vector_construct <- function(input_vector, oc = console_context()){
 
   if( missing(input_vector) ){
     input_vector <- parse_vector()
-    vector_type <- readr::guess_parser(input_vector)
+    vector_type <- readr::guess_parser(input_vector,
+                                       guess_integer = TRUE)
   }else{
     if(class(input_vector) == "character" && length(input_vector == 1)){ #Passed in a single string, going to try to break it up.
       input_vector <- parse_vector(input_vector)
-      vector_type <- readr::guess_parser(input_vector)
+      vector_type <- readr::guess_parser(input_vector,
+                                         guess_integer = TRUE)
     }else{ #You passed in a vector assume you have it delimited and set to a type you want.
       vector_type <- class(input_vector)
       input_vector <- as.character(input_vector)
@@ -63,7 +65,7 @@ vector_construct <- function(input_vector, oc = console_context()){
                           collapse = ", "),
                         ")\n"
   )
-  return(invisible(vector_form))
+  return(vector_form)
 }
 
 #' vector_paste_vertical
@@ -113,11 +115,13 @@ vector_format_vertical <- function(input_vector, output_context = clipboard_cont
 vector_construct_vertical <- function(input_vector, oc = console_context()){
   if( missing(input_vector) ){
     input_vector <- parse_vector()
-    vector_type <- readr::guess_parser(input_vector)
+    vector_type <- readr::guess_parser(input_vector,
+                                       guess_integer = TRUE)
   }else{
     if(class(input_vector) == "character" && length(input_vector == 1)){ #Passed in a single string, going to try to break it up.
       input_vector <- parse_vector(input_vector)
-      vector_type <- readr::guess_parser(input_vector)
+      vector_type <- readr::guess_parser(input_vector,
+                                         guess_integer = TRUE)
     }else{ #You passed in a vector assume you have it delimited and set to a type you want.
       vector_type <- class(input_vector)
       input_vector <- as.character(input_vector)
@@ -131,7 +135,7 @@ vector_construct_vertical <- function(input_vector, oc = console_context()){
                         ),
                         ")\n"
   )
-  return(invisible(vector_form))
+  return(vector_form)
 }
 
 #' parse_vector
@@ -157,9 +161,16 @@ parse_vector <- function(input_vector){
       strsplit(
         x = input_vector,
         split = "\t|,",
-        perl= TRUE))
-    )
-  }else{
+        perl= TRUE)))
+
+   ## If it's still length 1, it had no delimeters, we can try to split on spaces.
+     if (!length(input_vector) > 1){
+      input_vector <- unlist(strsplit(x = input_vector,
+                               split = "\\s+",
+                               perl = TRUE))
+     }
+
+  } else {
     input_vector <- trimws(input_vector)
   }
   #strip ending comma delim

@@ -159,6 +159,38 @@ test_that("Data with a comma decimal mark can be parsed correctly", {
   )
 })
 
+
+test_that("dates and datetimes are parsed as strings", {
+  a_table <- read_clip_tbl_guess(readr::read_lines(file = "./iso_dates.txt"))
+  attr(a_table,"col_types") <- NULL
+  expect_equal(
+  {
+    a_table
+  },
+  {
+    as.data.frame(
+    tibble::tribble(
+                                  ~name,  ~code,  ~start_date,         ~end_datetime,
+                   "City of Gold Coast", "3430", "2019-09-06", "2019-09-12 00:00:00",
+                  "Noosa Shire Council", "5740", "2019-09-06", "2019-09-12 00:00:00",
+          "Scenic Rim Regional Council", "6510", "2019-09-06", "2019-09-12 00:00:00",
+      "Southern Downs Regional Council", "6660", "2019-09-06", "2019-09-12 00:00:00",
+      "Sunshine Coast Regional Council", "6720", "2019-09-06", "2019-09-12 00:00:00",
+                 "Redland City Council", "6250", "2019-09-17", "2019-09-24 00:00:00",
+           "Bundaberg Regional Council", "1820", "2019-11-08", "2019-11-21 00:00:00",
+                   "City of Gold Coast", "3430", "2019-11-08", "2019-11-21 00:00:00",
+            "Livingstone Shire Council", "4530", "2019-11-08", "2019-11-21 00:00:00",
+      "Lockyer Valley Regional Council", "4580", "2019-11-08", "2019-11-21 00:00:00",
+                  "Noosa Shire Council", "5740", "2019-11-08", "2019-11-21 00:00:00",
+          "Scenic Rim Regional Council", "6510", "2019-11-08", "2019-11-21 00:00:00",
+            "Somerset Regional Council", "6580", "2019-11-08", "2019-11-21 00:00:00",
+      "Southern Downs Regional Council", "6660", "2019-11-08", "2019-11-21 00:00:00",
+           "Toowoomba Regional Council", "6910", "2019-11-08", "2019-11-21 00:00:00"
+      )
+  )
+  })
+})
+
 test_that("The decimal mark is returned to .", {
   expect_equal(
     {.global_datapasta_env$decimal_mark},
@@ -292,4 +324,79 @@ test_that("Date columns fall back to string pasting", {
 test_that("DFs/Tibbles with factors generate a warning about string conversion",{
   expect_warning(tribble_construct(head(iris)),
                  "have been converted from factor to character in tribble output.")
+})
+
+test_that("Data with backlashes is escaped in tribbles correctly", {
+  skip_if_not(is_clipr_available, skip_msg)
+  skip_on_cran()
+  skip_if_not(is_RStudio_session)
+  expect_equal(
+    {clipr::write_clip(readr::read_lines(file = "./escapes.txt"))
+      eval(parse(text = tribble_construct()))},
+    {
+tibble::tribble(
+  ~Usual.notation, ~Signif..stars,                                ~English.translation, ~The.null.is...,
+               NA,             NA,                                                  NA,              NA,
+        "$p>.05$",             NA,                       "The test wasn't significant",      "Retained",
+        "$p<.05$",            "*",       "The test was significant at $\\alpha = .05$",      "Rejected",
+               NA,             NA,   "but not at  $\\alpha =.01$ or $\\alpha = .001$.",              NA,
+        "$p<.01$",           "**",       "The test was significant at $\\alpha = .05$",      "Rejected",
+               NA,             NA, "and $\\alpha = .01$ but not at  $\\alpha = .001$.",              NA,
+       "$p<.001$",          "***",            "The test was significant at all levels",              NA
+  )}
+  )
+})
+
+test_that("Columns with non-valid names can be parsed, with names surrounded by backticks", {
+  skip_if_not(is_clipr_available, skip_msg)
+  skip_on_cran()
+  skip_if_not(is_RStudio_session)
+  expect_equal(
+    {clipr::write_clip(readr::read_lines(file = "./non_valid_colnames.txt"))
+      eval(parse(text = tribble_construct()))},
+    {
+      tibble::tribble(
+        ~`!!`, ~`2015`, ~`%`, ~`TRUE`,
+        1L,     "b",   3L,   "D"
+      )
+    }
+  )
+})
+
+test_that("Columns that are completely blank (NA) are dropped", {
+  skip_if_not(is_clipr_available, skip_msg)
+  skip_on_cran()
+  skip_if_not(is_RStudio_session)
+  expect_equal(
+    {clipr::write_clip(readr::read_lines(file = "./athletes.txt"))
+      eval(parse(text = tribble_construct()))},
+    {tibble::tribble(
+            ~Country, ~Average.height,   ~Weight, ~BMI, ~Average.height,   ~Weight, ~BMI,
+       "Netherlands",        "1.83 m", "87.4 kg", 26.1,        "1.69 m", "72.3 kg", 25.3,
+            "Latvia",        "1.81 m", "88.8 kg", 27.1,        "1.69 m", "75.4 kg", 26.4,
+           "Denmark",        "1.81 m", "86.2 kg", 26.3,        "1.68 m", "69.4 kg", 24.6
+       )}
+  )
+})
+
+test_that("blank final row has separator guessed as tab", {
+
+  expect_equal(
+    guess_sep(c("A\tB\tC", "1\t5\t9", "2\t6\t", "3\t7\t10", "4\t8\t11")),
+    "\t"
+  )
+})
+
+test_that("zero length tibbles work", {
+
+  expect_equal(
+    eval(parse(text = 
+                 datapasta::tribble_construct(
+                              tibble::tibble(a = character(), b = integer()))
+               )
+         ),
+    tibble::tibble(a = character(), b = integer())
+
+  )
+
 })

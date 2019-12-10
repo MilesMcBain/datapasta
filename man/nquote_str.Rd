@@ -7,7 +7,7 @@
 nquote_str(char_vec)
 }
 \arguments{
-\item{char_vec}{the sring to count quotes in}
+\item{char_vec}{the string to count quotes in}
 }
 \value{
 a number, possibly 0.

@@ -19,11 +19,14 @@ zzz_rs_dfiddle <- function(){
     tryCatch( expr = eval(parse(text = doc_context$text), envir = eval_env),
               error = function(e) NULL)
 
-  if(tibble::is_tibble(selection_result) | is.data.frame(selection_result)){
+  if(tibble::is_tibble(selection_result) |
+     is.data.frame(selection_result)){
     if(tibble::is_tibble(selection_result)) {
       table_form <- tribble_construct(selection_result, oc = rstudio_context())
+    } else if (data.table::is.data.table(selection_result)) {
+      table_form <- dfdt_construct(selection_result, oc = rstudio_context(), class = "data.table")
     } else {
-      table_form <- df_construct(selection_result, oc = rstudio_context())
+      table_form <- dfdt_construct(selection_result, oc = rstudio_context(), class = "data.frame")
     }
     nlines <- n_lines(table_form)
     end_of_range <- last_line_content_length(table_form) + indent_context + 1
@@ -42,7 +45,7 @@ zzz_rs_dfiddle <- function(){
       paste0(split_naked_vec(doc_context$text), collapse=", ")
     vector_form <- paste0("c(",regular_delimited,")")
     insert_range <- rstudioapi::document_range(doc_context$range$start,
-                                               c(doc_context$range$start[2], nchar(vector_form)+1)
+                                               c(doc_context$range$start[1], nchar(vector_form)+1)
                                                )
   } # parse to a vector
 
@@ -66,7 +69,7 @@ zzz_rs_dfiddle <- function(){
     regular_delimited <- paste0(split_vert_vec(doc_context$text), collapse = ",")
     vector_form <- paste0(strrep(" ", indent_context),"c(",regular_delimited,")")
     insert_range <- rstudioapi::document_range(doc_context$range$start,
-                                               c(doc_context$range$start[2], nchar(vector_form)+1)
+                                               c(doc_context$range$start[1], nchar(vector_form)+1)
     )
 
   } # pivot horiz vector
@@ -114,7 +117,7 @@ zzz_rs_toggle_quotes <- function(){
                           paste0(content , collapse = ","),
                           ")")
     insert_range <- rstudioapi::document_range(doc_context$range$start,
-                                               c(doc_context$range$start[2], nchar(vector_form)+1)
+                                               c(doc_context$range$start[1], nchar(vector_form)+1)
     )
 
   }
