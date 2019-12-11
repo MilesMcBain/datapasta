@@ -376,8 +376,8 @@ read_clip_tbl_guess <- function (x = clipr::read_clip(), ...)
   x_table <- do.call(utils::read.table, args = .dots)
 
   # Determine if row 1 a header
-  types_header <- lapply(x_table[1,], readr::guess_parser, guess_integer = TRUE)
-  types_body <- lapply(x_table[-1,], readr::guess_parser, guess_integer = TRUE)
+  types_header <- lapply(x_table[1, , drop = FALSE], readr::guess_parser, guess_integer = TRUE)
+  types_body <- lapply(x_table[-1, , drop = FALSE], readr::guess_parser, guess_integer = TRUE)
   if( !identical(types_header, types_body) ){
     # Row 1 is a header
     x_table <- first_row_to_header(x_table)
