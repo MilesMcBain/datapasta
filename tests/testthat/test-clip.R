@@ -2,6 +2,7 @@ context("clipboard alternatives")
 
 test_that("read_file_to_clipr_vec", {
   skip_if_not(clipr::clipr_available())
+  skip_on_cran()
 
   # Example text
   text <- readr::read_lines(file = "./brisbane_weather.txt")
