@@ -10,7 +10,9 @@ Authors@R: c(
     person("Andrew", "Collier", email = "andrew@exegetic.biz", role = "ctb"),
     person("Sharla", "Gelfand", email = "sharla.gelfand@gmail.com", role = "aut"),
     person("Suthira", "Owlarn", email = "suthira.owlarn@gmail.com", role = "aut", 
-    comment = c(ORCID = "0000-0002-3258-1415")))
+    comment = c(ORCID = "0000-0002-3258-1415")),
+    person("Garrick", "Aden-Buie", email = "garrick@adenbuie.com", role = "ctb",
+    comment = c(ORCID = "0000-0002-7111-0077")))
 Description: RStudio addins and R functions that make copy-pasting vectors and tables to text painless.
 Depends:
     R (>= 3.3.0)
@@ -19,6 +21,7 @@ Suggests:
     testthat,
     knitr,
     rmarkdown,
+    utils,
     covr,
     data.table
 Imports:

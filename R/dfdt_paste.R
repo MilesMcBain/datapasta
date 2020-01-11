@@ -69,18 +69,15 @@ dt_format <- function(input_table, output_context = clipboard_context()){
 dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
 
   if(missing(input_table)){
-    input_table <- tryCatch({read_clip_tbl_guess()},
-                            error = function(e) {
-                              return(NULL)
-                            })
+    input_table <- read_clip_tbl_guess()
 
     if (is.null(class)) stop("Requires either \"data.frame\" or \"data.table\" class")
 
-    if(is.null(input_table)){
-      if(!clipr::clipr_available()) message(.global_datapasta_env$no_clip_msg)
-      else message("Could not paste clipboard as data.frame/data.table. Text could not be parsed as table.")
+     if(is.null(input_table)){
+      message("Could not paste clipboard as data.frame/data.table. Text could not be parsed as table.")
       return(NULL)
-    }
+     }
+
     #Parse data types from string using readr::parse_guess
     col_types <- lapply(input_table, readr::guess_parser, guess_integer = TRUE)
     cols <- as.list(input_table)
