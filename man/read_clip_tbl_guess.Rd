@@ -4,7 +4,7 @@
 \alias{read_clip_tbl_guess}
 \title{read_clip_table_guess}
 \usage{
-read_clip_tbl_guess(x = clipr::read_clip(), ...)
+read_clip_tbl_guess(x = NULL, ...)
 }
 \arguments{
 \item{x}{contents of the clipboard}
