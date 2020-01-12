@@ -1,0 +1,72 @@
+---
+title: "Datapasta in the cloud"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Datapasta in the cloud}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+It is now possible to paste data as formatted code in RStudio Server/Cloud, and ssh sessions. (Thanks [Garrick Aden-Buie](https://github.com/gadenbuie) and [Jon Harmon](https://github.com/jonthegeek)!)
+
+There is no way to connect your local machine's clipboard to the R session running on a cloud instance. So `datapasta` cannot work as per local usage.
+
+What has been developed instead are two kinds of fallback behaviour that capture
+most of the magic!
+
+## Fallback 1: Text selection
+
+If `datapasta` detects the clipboard is not available and the editor is RStudio,
+it will check to see if there is a text selection active (highlighted text).
+
+Given a selection, it will read that text instead of the clipboard and proceed
+as per the called function, e.g. attempt to parse that text as data and paste as
+a `tribble` if `tribble_paste` was called.
+
+The imagined workflow here is:
+
+1. Copy data from external application
+2. Paste as text into an RStudio pane (exposing it to your remote R session)
+3. Select text and call datapasta function/addin
+4. Text is transformed into code defining data.
+
+## Fallback 2: Pop-up text editor
+
+Again if there is no clipboard available, but in this case there is no text
+selected in RStudio (or you're not in RStudio), `datapasta` will open a
+temporary file and then call `utils::file.edit()` on it.
+
+In RStudio server/cloud this will pop-up a modal text editor window where text
+can be pasted. When the editor is closed, the text will be read by `datapasta`
+and then things will proceed as if that data had come from the clipboard. The
+temporary file is deleted immediately after being read.
+
+If you're not in RStudio, but on the command line in an ssh session, this will
+open a command line text editor instead of the modal window.
+
+The workflow in this case is:
+
+1. Copy data from external application
+2. Call datapasta function/addin
+3. Text editor window opens, paste text into it
+4. Text is transformed into code defining data and inserted at the cursor
+   position.
+   
+### Configuration
+
+The first time the pop-up text editor is about to be opened in each session,
+`datapasta` issues a message in a modal dialogue to explain what is about to
+happen. This can be disabled with:
+
+```{R eval = FALSE}
+
+options(datapasta.quiet_manual_paste = TRUE)
+
+```
