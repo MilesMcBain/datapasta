@@ -240,7 +240,7 @@ Will paste the following on the clipboard:
 # Usage without RStudio
 The `rstudioapi` package enables the calling of addins and output to the cursor. If the API is not detected, all the `_paste()` functions, and `dpasta` will output their text to the console, ready for copying and pasting to an editor window.
 
-In this scenario you may wish to avoid installation of the `rstudioapi` package dependency. Use `install.packages("datapsata", dependencies = "Depends")` to avoid API installation, but be sure to follow up with `install.packages(c("readr","clipr"))`. 
+In this scenario you may wish to avoid installation of the `rstudioapi` package dependency. Use `install.packages("datapasta", dependencies = "Depends")` to avoid API installation, but be sure to follow up with `install.packages(c("readr","clipr"))`. 
 
 *note:* The `dpasta()` function can be used without `clipr` installed, but you're missing out on a fair amount of awesomeness if you limit yourself to that.
 
