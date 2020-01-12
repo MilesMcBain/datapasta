@@ -1,0 +1,7 @@
+pandoc: 2.2.1
+pkgdown: 1.4.1
+pkgdown_sha: ~
+articles:
+  datapasta-in-the-cloud: datapasta-in-the-cloud.html
+  how-to-datapasta: how-to-datapasta.html
+

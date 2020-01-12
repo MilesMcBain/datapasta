@@ -1,0 +1,41 @@
+destination: docs
+reference:
+  - title: "Data pasting functions"
+    desc: >
+      The good stuff. All of these have RStudio addin bindings.
+    contents:
+      - tribble_paste
+      - vector_paste
+      - vector_paste_vertical
+      - df_paste
+      - dt_paste
+  - tile: "Data printing functions"
+    desc: >
+      analagous to 'dput'
+    contents:
+      - dpasta
+  - title: "Data formatting functions"
+    desc: >
+      Send data formatted as code to the clipboard instead of automatically pasting.
+    contents:
+      - tribble_format
+      - vector_format
+      - vector_format_vertical
+      - df_format
+      - dt_format
+  - title: "Data returning functions"
+    desc: >
+      Return data formatted as code as a character vector.
+    contents:
+      - tribble_construct
+      - vector_construct
+      - vector_construct_vertical
+      - dfdt_construct
+  - title: "Configuration functions"
+    desc: >
+      Change the behaviour of datapasta.
+    contents:
+      - dp_set_max_rows
+      - dp_set_decimal_mark
+  
+
