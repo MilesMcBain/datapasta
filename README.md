@@ -49,7 +49,7 @@ c("Mint",
 * `dt_paste` which is the same as `df_paste`, but for `data.table`.
 
 ### Massaging data in source
-There are two Addins that can help with creating and aliging data in your editor:
+There are two Addins that can help with creating and aligning data in your editor:
 
 * `Fiddle Selection` will perform magic on a selection. It can be used to: 
     - Turn raw data delimited by any combination of commas, spaces, and newlines into a `c()` expression
@@ -92,7 +92,7 @@ On system without access to the clipboard (or without `clipr` installed) `datapa
 This package is made possible by [mdlincon's clipr](https://github.com/mdlincoln/clipr), and Hadley's packages [tibble](https://github.com/hadley/tibble) and [readr](https://github.com/hadley/tibble) (for data-type guessing). I especially appreciate `clipr's` thoughtful approach to the clipboard on Linux, which pretty much every other R clipboard package just nope'd out on.
 
 # Future developments
-I am interested in expanding the types of objects supported by the output functions `dpasta`. I would also like to eventualy have `Fiddle Selection` to pivot function calls and named vectors. Feel free to contribute your ideas to the open issues.
+I am interested in expanding the types of objects supported by the output functions `dpasta`. I would also like to eventually have `Fiddle Selection` to pivot function calls and named vectors. Feel free to contribute your ideas to the open issues.
 
 # Bonus
 

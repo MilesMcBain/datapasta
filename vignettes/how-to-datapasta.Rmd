@@ -130,7 +130,7 @@ data.frame(
 
 For a shortcut you could try `ctrl + shift + d`.
 
-## Outputting data from your R evironment
+## Outputting data from your R environment
 
 ### Output to R with `dpasta()`
 All of the above addin functions can be called directly with an R object argument. When run, this will result in the object being output at the current cursor. Usually the next line. To make things more magical, a there is a single function `dpasta` that will match the argument with the appropriate `_paste()` function based on its class. This means:
@@ -181,7 +181,7 @@ tibble::tribble(
 
 There are two addins that operate on RStudio cursor selections to make your life easier:
 
-### Fiddle Selections unitl they're better
+### Fiddle Selections until they're better
 
 `Fiddle Selection` is intended to remove some fiddly tasks from your workflow. It can turn raw data like `1 2 3` into `c(1,2,3)`, then pivot from that to:
 ```
@@ -195,7 +195,7 @@ and back again to `c(1,2,3)`. The parser here is really flexible too. It will ac
 
 ### Toggle Quotes
 
-`Toggle Vector Quotes` will convert a selected expression like `c(a,b,c)` to a quoted version i.e `c("a","b","c")`. If it's already quoted it will convert the other way to a bare version. All elements will be quoted if there's a mixture. It also works with vertically algined expressions.
+`Toggle Vector Quotes` will convert a selected expression like `c(a,b,c)` to a quoted version i.e `c("a","b","c")`. If it's already quoted it will convert the other way to a bare version. All elements will be quoted if there's a mixture. It also works with vertically aligned expressions.
 
 With the combination of these two you can get really lazy e.g. go from: 
 ```
@@ -244,7 +244,7 @@ In this scenario you may wish to avoid installation of the `rstudioapi` package 
 
 *note:* The `dpasta()` function can be used without `clipr` installed, but you're missing out on a fair amount of awesomeness if you limit yourself to that.
 
-## Custom Behaviour for Your Unique Slowflake Setup
+## Custom Behaviour for Your Unique Snowflake Setup
 
 Custom behaviour can be created by taking advantage of the `_construct()` variants of the `_paste()` functions, as these return their output as an R object which can then be written to an appropriate buffer or clipboard.
 
@@ -266,7 +266,7 @@ clipr::write_clip(trib_call) #Send it back to the clipboard.
 ## Upping the row guard
 For your protection, `datapasta` will initially refuse to output R objects of 200 or more rows. Up the row limit for your specific scenario with `dp_set_max_rows(n)`. Large numbers of rows could take a long time to format. In extreme cases you could crash your R/RStudio session.
 
-## Deailing with "," decimal marks
+## Dealing with "," decimal marks
 Use `dp_set_decimal_mark(",")` to handle numbers like `3,14`.
 
 

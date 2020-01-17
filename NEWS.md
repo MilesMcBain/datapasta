@@ -34,7 +34,7 @@
 # datapasta 1.1.0 'CopyPesto'
 
 * Added `df_paste()` which pastes a table from the clipboard using a nicely formatted call to `data.frame()` rather than `tribble()`
-* Better handling for empty lines that get accidently copied onto clipboard with table. Gracefully ignored.
+* Better handling for empty lines that get accidentally copied onto clipboard with table. Gracefully ignored.
 
 # datapasta 1.0.0
 
@@ -46,8 +46,8 @@
 # datapasta 0.2
 
 * Added graceful error handling on failed parse of text on clipboard to table.
-* `tribble_paste()` and `vector_paste()` now pastse NA's as unquoted, so R will parse as propper NA.
-* `tribble_paste()` can parse an paste table text copied from raw delimited file e.g. csv, tsv, pipe delimited, seimi-colon delimited.
+* `tribble_paste()` and `vector_paste()` now pastes NA's as unquoted, so R will parse as proper NA.
+* `tribble_paste()` can parse an paste table text copied from raw delimited file e.g. csv, tsv, pipe delimited, semi-colon delimited.
 * `vector_paste()` uses a space between elements.
 
 # datapasta 0.1.1
