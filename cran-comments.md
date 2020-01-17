@@ -1,12 +1,17 @@
 ## Test Environments
 
-## r-hub
-Ubuntu Linux 16.04 LTS, R-devel, GCC
-Windows Server 2008 R2 SP1, R-release, 32/64 bit (windows-x86_64-release)
-Windows Server 2008 R2 SP1, R-devel, 32/64 bit (windows-x86_64-devel)
+### r-hub
+
+Windows Server 2008 R2 SP1, R-devel, 32/64 bit
+Fedora Linux, R-devel, clang, gfortran
+Debian Linux, R-devel, GCC
+Ubuntu Linux 16.04 LTS, R-release, GCC
+macOS 10.11 El Capitan, R-release
 
 ### winbuilder
-R Under development (unstable) (2018-01-23 r74154)
+
+R Under development (unstable) (2020-01-07 r77633)
+R version 3.6.2 (2019-12-12)
 
 ## R CMD check results
 
