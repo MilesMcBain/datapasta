@@ -7,7 +7,7 @@
 * data.frame (and data.table) print is much prettier and robust with all args and cols aligned on '='
 * zero row tibbles are supported with a fall-back to a tibble::tibble() call
 * all _construct functions now return input visibly
-* Fallback behaviour added to allow usage with remote R sessions like RStudio Server/Cloud, or ssh command line. (Thanks @gadenbuie, @jonthegeek)
+* Fallback behaviour added to allow usage with remote R sessions like RStudio Server/Cloud, or ssh command line. See 'datapasta in the cloud' vignette. (Thanks @gadenbuie, @jonthegeek)
 
 # datapasta 3.0.0 'Colander Helmet'
 

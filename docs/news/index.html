@@ -138,7 +138,7 @@
 <li>data.frame (and data.table) print is much prettier and robust with all args and cols aligned on ‘=’</li>
 <li>zero row tibbles are supported with a fall-back to a tibble::tibble() call</li>
 <li>all _construct functions now return input visibly</li>
-<li>Fallback behaviour added to allow usage with remote R sessions like RStudio Server/Cloud, or ssh command line. (Thanks <a href='https://github.com/gadenbuie'>@gadenbuie</a>, <a href='https://github.com/jonthegeek'>@jonthegeek</a>)</li>
+<li>Fallback behaviour added to allow usage with remote R sessions like RStudio Server/Cloud, or ssh command line. See ‘datapasta in the cloud’ vignette. (Thanks <a href='https://github.com/gadenbuie'>@gadenbuie</a>, <a href='https://github.com/jonthegeek'>@jonthegeek</a>)</li>
 </ul>
 </div>
     <div id="datapasta-3-0-0-colander-helmet" class="section level1">
@@ -183,7 +183,7 @@
 <ul>
 <li>Added <code><a href="../reference/df_paste.html">df_paste()</a></code> which pastes a table from the clipboard using a nicely formatted call to <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code> rather than <code>tribble()</code>
 </li>
-<li>Better handling for empty lines that get accidently copied onto clipboard with table. Gracefully ignored.</li>
+<li>Better handling for empty lines that get accidentally copied onto clipboard with table. Gracefully ignored.</li>
 </ul>
 </div>
     <div id="datapasta-1-0-0" class="section level1">
@@ -204,9 +204,9 @@
 <ul>
 <li>Added graceful error handling on failed parse of text on clipboard to table.</li>
 <li>
-<code><a href="../reference/tribble_paste.html">tribble_paste()</a></code> and <code><a href="../reference/vector_paste.html">vector_paste()</a></code> now pastse NA’s as unquoted, so R will parse as propper NA.</li>
+<code><a href="../reference/tribble_paste.html">tribble_paste()</a></code> and <code><a href="../reference/vector_paste.html">vector_paste()</a></code> now pastes NA’s as unquoted, so R will parse as proper NA.</li>
 <li>
-<code><a href="../reference/tribble_paste.html">tribble_paste()</a></code> can parse an paste table text copied from raw delimited file e.g. csv, tsv, pipe delimited, seimi-colon delimited.</li>
+<code><a href="../reference/tribble_paste.html">tribble_paste()</a></code> can parse an paste table text copied from raw delimited file e.g. csv, tsv, pipe delimited, semi-colon delimited.</li>
 <li>
 <code><a href="../reference/vector_paste.html">vector_paste()</a></code> uses a space between elements.</li>
 </ul>

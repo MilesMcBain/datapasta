@@ -88,7 +88,7 @@
       <h1>How to Datapasta</h1>
                         <h4 class="author">Miles McBain</h4>
             
-            <h4 class="date">2020-01-12</h4>
+            <h4 class="date">2020-01-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/milesmcbain/datapasta/blob/master/vignettes/how-to-datapasta.Rmd"><code>vignettes/how-to-datapasta.Rmd</code></a></small>
       <div class="hidden name"><code>how-to-datapasta.Rmd</code></div>
@@ -255,9 +255,9 @@ OpenSUSE</code></pre>
 <a class="sourceLine" id="cb7-11" title="11">)</a></code></pre></div>
 <p>For a shortcut you could try <code>ctrl + shift + d</code>.</p>
 </div>
-<div id="outputting-data-from-your-r-evironment" class="section level2">
+<div id="outputting-data-from-your-r-environment" class="section level2">
 <h2 class="hasAnchor">
-<a href="#outputting-data-from-your-r-evironment" class="anchor"></a>Outputting data from your R evironment</h2>
+<a href="#outputting-data-from-your-r-environment" class="anchor"></a>Outputting data from your R environment</h2>
 <div id="output-to-r-with-dpasta" class="section level3">
 <h3 class="hasAnchor">
 <a href="#output-to-r-with-dpasta" class="anchor"></a>Output to R with <code>dpasta()</code>
@@ -296,9 +296,9 @@ OpenSUSE</code></pre>
 <h2 class="hasAnchor">
 <a href="#avoiding-fiddly-data-formatting" class="anchor"></a>Avoiding fiddly data formatting</h2>
 <p>There are two addins that operate on RStudio cursor selections to make your life easier:</p>
-<div id="fiddle-selections-unitl-theyre-better" class="section level3">
+<div id="fiddle-selections-until-theyre-better" class="section level3">
 <h3 class="hasAnchor">
-<a href="#fiddle-selections-unitl-theyre-better" class="anchor"></a>Fiddle Selections unitl they’re better</h3>
+<a href="#fiddle-selections-until-theyre-better" class="anchor"></a>Fiddle Selections until they’re better</h3>
 <p><code>Fiddle Selection</code> is intended to remove some fiddly tasks from your workflow. It can turn raw data like <code>1 2 3</code> into <code><a href="https://rdrr.io/r/base/c.html">c(1,2,3)</a></code>, then pivot from that to:</p>
 <pre><code><a href="https://rdrr.io/r/base/c.html">c(1,
   2,
@@ -309,7 +309,7 @@ OpenSUSE</code></pre>
 <div id="toggle-quotes" class="section level3">
 <h3 class="hasAnchor">
 <a href="#toggle-quotes" class="anchor"></a>Toggle Quotes</h3>
-<p><code>Toggle Vector Quotes</code> will convert a selected expression like <code><a href="https://rdrr.io/r/base/c.html">c(a,b,c)</a></code> to a quoted version i.e <code><a href="https://rdrr.io/r/base/c.html">c("a","b","c")</a></code>. If it’s already quoted it will convert the other way to a bare version. All elements will be quoted if there’s a mixture. It also works with vertically algined expressions.</p>
+<p><code>Toggle Vector Quotes</code> will convert a selected expression like <code><a href="https://rdrr.io/r/base/c.html">c(a,b,c)</a></code> to a quoted version i.e <code><a href="https://rdrr.io/r/base/c.html">c("a","b","c")</a></code>. If it’s already quoted it will convert the other way to a bare version. All elements will be quoted if there’s a mixture. It also works with vertically aligned expressions.</p>
 <p>With the combination of these two you can get really lazy e.g. go from:</p>
 <pre><code>some stuff I typed
 
@@ -350,9 +350,9 @@ c("some",
 <p>The <code>rstudioapi</code> package enables the calling of addins and output to the cursor. If the API is not detected, all the <code>_paste()</code> functions, and <code>dpasta</code> will output their text to the console, ready for copying and pasting to an editor window.</p>
 <p>In this scenario you may wish to avoid installation of the <code>rstudioapi</code> package dependency. Use <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("datapasta", dependencies = "Depends")</a></code> to avoid API installation, but be sure to follow up with <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages(c("readr","clipr"))</a></code>.</p>
 <p><em>note:</em> The <code><a href="../reference/dpasta.html">dpasta()</a></code> function can be used without <code>clipr</code> installed, but you’re missing out on a fair amount of awesomeness if you limit yourself to that.</p>
-<div id="custom-behaviour-for-your-unique-slowflake-setup" class="section level2">
+<div id="custom-behaviour-for-your-unique-snowflake-setup" class="section level2">
 <h2 class="hasAnchor">
-<a href="#custom-behaviour-for-your-unique-slowflake-setup" class="anchor"></a>Custom Behaviour for Your Unique Slowflake Setup</h2>
+<a href="#custom-behaviour-for-your-unique-snowflake-setup" class="anchor"></a>Custom Behaviour for Your Unique Snowflake Setup</h2>
 <p>Custom behaviour can be created by taking advantage of the <code>_construct()</code> variants of the <code>_paste()</code> functions, as these return their output as an R object which can then be written to an appropriate buffer or clipboard.</p>
 <p>for example, if you copied the Brisbane weather forecast from above to the clipboard and then called:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">trib_call &lt;-<span class="st"> </span><span class="kw"><a href="../reference/tribble_construct.html">tribble_construct</a></span>()</a></code></pre></div>
@@ -370,9 +370,9 @@ c("some",
 <a href="#upping-the-row-guard" class="anchor"></a>Upping the row guard</h2>
 <p>For your protection, <code>datapasta</code> will initially refuse to output R objects of 200 or more rows. Up the row limit for your specific scenario with <code><a href="../reference/dp_set_max_rows.html">dp_set_max_rows(n)</a></code>. Large numbers of rows could take a long time to format. In extreme cases you could crash your R/RStudio session.</p>
 </div>
-<div id="deailing-with-decimal-marks" class="section level2">
+<div id="dealing-with-decimal-marks" class="section level2">
 <h2 class="hasAnchor">
-<a href="#deailing-with-decimal-marks" class="anchor"></a>Deailing with “,” decimal marks</h2>
+<a href="#dealing-with-decimal-marks" class="anchor"></a>Dealing with “,” decimal marks</h2>
 <p>Use <code><a href="../reference/dp_set_decimal_mark.html">dp_set_decimal_mark(",")</a></code> to handle numbers like <code>3,14</code>.</p>
 </div>
 </div>
@@ -389,20 +389,20 @@ c("some",
 <li><a href="#pasting-a-table-as-a-formatted-tibble-definition-with-tribble_paste">Pasting a table as a formatted tibble definition with <code>tribble_paste()</code></a></li>
       <li><a href="#pasting-a-list-as-a-horizontal-vector-with-vector_paste">Pasting a list as a horizontal vector with <code>vector_paste()</code></a></li>
       <li><a href="#pasting-a-list-as-a-vertical-vector-with-vector_paste_vertical">Pasting a list as a vertical vector with <code>vector_paste_vertical()</code></a></li>
-      <li><a href="#outputting-data-from-your-r-evironment">Outputting data from your R evironment</a></li>
+      <li><a href="#outputting-data-from-your-r-environment">Outputting data from your R environment</a></li>
       <li><a href="#avoiding-fiddly-data-formatting">Avoiding fiddly data formatting</a></li>
       <li><a href="#output-to-clipboard-with-dmdclip">Output to clipboard with <code>dmdclip()</code></a></li>
       </ul>
 </li>
       <li>
 <a href="#usage-without-rstudio">Usage without RStudio</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#custom-behaviour-for-your-unique-slowflake-setup">Custom Behaviour for Your Unique Slowflake Setup</a></li>
+<li><a href="#custom-behaviour-for-your-unique-snowflake-setup">Custom Behaviour for Your Unique Snowflake Setup</a></li>
       </ul>
 </li>
       <li>
 <a href="#configurable-options">Configurable Options</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#upping-the-row-guard">Upping the row guard</a></li>
-      <li><a href="#deailing-with-decimal-marks">Deailing with “,” decimal marks</a></li>
+      <li><a href="#dealing-with-decimal-marks">Dealing with “,” decimal marks</a></li>
       </ul>
 </li>
       </ul>
