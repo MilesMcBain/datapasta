@@ -12,4 +12,6 @@ is_rstudio_selection <- function(){
          context$selection[[1]]$range$end)
 }
 
+is_tibble <-  function(x) inherits(x, "tbl_df")
 
+is_data.table <- function(x) inherits(x, "data.table")

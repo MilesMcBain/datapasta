@@ -7,7 +7,7 @@
 #'
 #' @export
 dmdclip <- function(input){
-  if(tibble::is_tibble(input)){
+  if(is_tibble(input)){
     tribble_format(input, output_context = markdown_context())
   }else if(is.data.frame(input)){
     df_format(input, output_context = markdown_context())
@@ -25,9 +25,9 @@ dmdclip <- function(input){
 #'
 #' @export
 dpasta <- function(input){
-  if(tibble::is_tibble(input)){
+  if(is_tibble(input)){
     tribble_paste(input, output_context = guess_output_context())
-  }else if(data.table::is.data.table(input)){ # data.table inherits data.frame so test this first
+  }else if(is_data.table(input)){ # data.table inherits data.frame so test this first
     dt_paste(input, output_context = guess_output_context())
   }else if(is.data.frame(input)){
     df_paste(input, output_context = guess_output_context())

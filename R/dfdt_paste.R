@@ -82,7 +82,7 @@ dfdt_construct <- function(input_table, oc = console_context(), class = NULL) {
     col_types <- lapply(input_table, readr::guess_parser, guess_integer = TRUE)
     cols <- as.list(input_table)
   }else{
-    if(!is.data.frame(input_table) && !tibble::is_tibble(input_table)){
+    if(!is.data.frame(input_table) && !is_tibble(input_table)){
       message("Could not format input_table as table. Unexpected class.")
       return(NULL)
     }

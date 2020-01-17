@@ -54,7 +54,7 @@ tribble_construct <- function(input_table, oc = console_context()){
     # Parse data types from string using readr::guess_parser
     input_table_types <- attr(input_table, "col_types")
   }else{
-    if(!is.data.frame(input_table) && !tibble::is_tibble(input_table)){
+    if(!is.data.frame(input_table) && !is_tibble(input_table)){
       message("Could not format input_table as table. Unexpected class.")
       return(NULL)
     }
