@@ -64,7 +64,7 @@ tribble_construct <- function(input_table, oc = console_context()){
     }
     input_table_types <- lapply(input_table, class)
     #Store types as characters so the char lengths can be computed
-    input_table <- as.data.frame(lapply(input_table, as.character), stringsAsFactors = FALSE)
+    input_table <- as.data.frame(lapply(input_table, as.character), stringsAsFactors = FALSE, check.names = FALSE)
   }
   # Warn if there is any factors, they will be converted to strings.
   factor_cols <- which(input_table_types == "factor")
