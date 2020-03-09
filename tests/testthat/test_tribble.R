@@ -363,6 +363,21 @@ test_that("Columns with non-valid names can be parsed, with names surrounded by 
   )
 })
 
+test_that("Input tibbles with columns with non-valid names can be parsed, with names surrounded by backticks", {
+  expect_equal(
+    {eval( parse(text = tribble_construct(tibble::tribble(
+      ~`!!`, ~`2015`, ~`%`, ~`TRUE`,
+      1L,     "b",   3L,   "D"
+    ))) )},
+    {
+      tibble::tribble(
+        ~`!!`, ~`2015`, ~`%`, ~`TRUE`,
+        1L,     "b",   3L,   "D"
+      )
+    }
+  )
+})
+
 test_that("Columns that are completely blank (NA) are dropped", {
   skip_if_not(is_clipr_available, skip_msg)
   skip_on_cran()
@@ -390,7 +405,7 @@ test_that("blank final row has separator guessed as tab", {
 test_that("zero length tibbles work", {
 
   expect_equal(
-    eval(parse(text = 
+    eval(parse(text =
                  datapasta::tribble_construct(
                               tibble::tibble(a = character(), b = integer()))
                )
