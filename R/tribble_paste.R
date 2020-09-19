@@ -1,4 +1,3 @@
-globalVariables(c(".rs.readUiPref",".global_datapasta_env"), "datapasta") #ignore this function in R CMD checks, since it is part of RStudio runtime
 .global_datapasta_env <- new.env(parent=emptyenv())
 .global_datapasta_env$decimal_mark <- "."
 .global_datapasta_env$max_rows <- 200
@@ -451,7 +450,8 @@ rstudio_context <- function(){
   output_context <- list()
   output_context$indent_head <- FALSE #head already at cursor
   output_context$output_mode <- "rstudioapi"
-  output_context$nspc <- .rs.readUiPref('num_spaces_for_tab')
+  output_context$nspc <- 
+    rstudioapi::readRStudioPreference("num_spaces_for_tab", 4)
   context <- rstudioapi::getActiveDocumentContext()
   context_row <- context$selection[[1]]$range$start["row"]
   if(all(context$selection[[1]]$range$start == context$selection[[1]]$range$end)){

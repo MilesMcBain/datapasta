@@ -1,6 +1,6 @@
 Package: datapasta
 Title: R Tools for Data Copy-Pasta
-Version: 3.1.0
+Version: 3.1.0.9000
 Authors@R: c(
     person("Miles", "McBain", email = "miles.mcbain@gmail.com", role = c("aut", "cre"), 
     comment = c(ORCID = "0000-0003-2865-2548")),
