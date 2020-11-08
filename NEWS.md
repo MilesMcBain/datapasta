@@ -1,3 +1,7 @@
+# datapasta 3.2.0
+* Compatibility with {rstudioapi} emulation in VSCode
+* Fixed Datetime handling for data piped to `dpasta`
+
 # datapasta 3.1.0 'Leave to Simmer'
 * Exported `_format` functions
 * Adds `dt_paste` function for pasting as `data.table` (Thanks @jonocarroll, #72, closes #70)
