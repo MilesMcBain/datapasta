@@ -162,33 +162,49 @@ test_that("Data with a comma decimal mark can be parsed correctly", {
 
 test_that("dates and datetimes are parsed as strings", {
   a_table <- read_clip_tbl_guess(readr::read_lines(file = "./iso_dates.txt"))
-  attr(a_table,"col_types") <- NULL
-  expect_equal(
-  {
-    a_table
-  },
-  {
-    as.data.frame(
+
+  char_tibble <-   
     tibble::tribble(
                                   ~name,  ~code,  ~start_date,         ~end_datetime,
-                   "City of Gold Coast", "3430", "2019-09-06", "2019-09-12 00:00:00",
-                  "Noosa Shire Council", "5740", "2019-09-06", "2019-09-12 00:00:00",
-          "Scenic Rim Regional Council", "6510", "2019-09-06", "2019-09-12 00:00:00",
-      "Southern Downs Regional Council", "6660", "2019-09-06", "2019-09-12 00:00:00",
-      "Sunshine Coast Regional Council", "6720", "2019-09-06", "2019-09-12 00:00:00",
-                 "Redland City Council", "6250", "2019-09-17", "2019-09-24 00:00:00",
-           "Bundaberg Regional Council", "1820", "2019-11-08", "2019-11-21 00:00:00",
-                   "City of Gold Coast", "3430", "2019-11-08", "2019-11-21 00:00:00",
-            "Livingstone Shire Council", "4530", "2019-11-08", "2019-11-21 00:00:00",
-      "Lockyer Valley Regional Council", "4580", "2019-11-08", "2019-11-21 00:00:00",
-                  "Noosa Shire Council", "5740", "2019-11-08", "2019-11-21 00:00:00",
-          "Scenic Rim Regional Council", "6510", "2019-11-08", "2019-11-21 00:00:00",
-            "Somerset Regional Council", "6580", "2019-11-08", "2019-11-21 00:00:00",
-      "Southern Downs Regional Council", "6660", "2019-11-08", "2019-11-21 00:00:00",
-           "Toowoomba Regional Council", "6910", "2019-11-08", "2019-11-21 00:00:00"
+                   "City of Gold Coast", 3430, "2019-09-06", "2019-09-12 00:00:00",
+                  "Noosa Shire Council", 5740, "2019-09-06", "2019-09-12 00:00:00",
+          "Scenic Rim Regional Council", 6510, "2019-09-06", "2019-09-12 00:00:00",
+      "Southern Downs Regional Council", 6660, "2019-09-06", "2019-09-12 00:00:00",
+      "Sunshine Coast Regional Council", 6720, "2019-09-06", "2019-09-12 00:00:00",
+                 "Redland City Council", 6250, "2019-09-17", "2019-09-24 00:00:00",
+           "Bundaberg Regional Council", 1820, "2019-11-08", "2019-11-21 00:00:00",
+                   "City of Gold Coast", 3430, "2019-11-08", "2019-11-21 00:00:00",
+            "Livingstone Shire Council", 4530, "2019-11-08", "2019-11-21 00:00:00",
+      "Lockyer Valley Regional Council", 4580, "2019-11-08", "2019-11-21 00:00:00",
+                  "Noosa Shire Council", 5740, "2019-11-08", "2019-11-21 00:00:00",
+          "Scenic Rim Regional Council", 6510, "2019-11-08", "2019-11-21 00:00:00",
+            "Somerset Regional Council", 6580, "2019-11-08", "2019-11-21 00:00:00",
+      "Southern Downs Regional Council", 6660, "2019-11-08", "2019-11-21 00:00:00",
+           "Toowoomba Regional Council", 6910, "2019-11-08", "2019-11-21 00:00:01"
       )
-  )
+
+  #check readr guessing
+  expect_equal({
+    attr(a_table,"col_types")
+    },
+    {
+      list(
+        V1 = "character",
+        V2 = "integer",
+        V3 = "date",
+        V4 = "datetime")
+    })
+
+  a_tibble <- readr::read_csv(file = "./iso_dates.txt")
+  ## check dates are handled sensibly when data is input directly
+expect_equal(
+  { 
+    eval(parse(text = tribble_construct(a_tibble))) 
+  },
+  {
+    char_tibble
   })
+
 })
 
 test_that("The decimal mark is returned to .", {

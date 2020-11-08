@@ -75,7 +75,7 @@ tribble_construct <- function(input_table, oc = console_context()){
   col_widths <- mapply(input_table,
                        FUN = column_width,
                        column_type = input_table_types
-                       )
+                      )
 
   # Create the vector of names, surrounded by `` if it does not start with a latin character
   input_names <- names(input_table)
@@ -205,13 +205,16 @@ nchar_type <- function(df_col_row, df_col_type){
 
   if(length(df_col_type) > 1) df_col_type <- "complex" # We can't really handle it.
 
+  stringish_length <- function(df_col_row) 2 + nquote_str(df_col_row) + nslash_str(df_col_row) #2 for outer quotes +1 "\" for each quote and slash in string
+
   add_chars <- switch(df_col_type,
                       "integer" = 1, #for the "L",
-                      "character" = 2 + nquote_str(df_col_row) + nslash_str(df_col_row), #2 for outer quotes +1 "\" for each quote and slash in string
-                      "date" = 2 + nquote_str(df_col_row) + nslash_str(df_col_row), #2 for outer quotes +1 "\" for each quote and slash in string
-                      "datetime" = 2 + nquote_str(df_col_row) + nslash_str(df_col_row), #2 for outer quotes +1 "\" for each quote and slash in string
-                      "factor" = 2 + nquote_str(df_col_row) + nslash_str(df_col_row),
-                      "complex" = 2 + nquote_str(df_col_row) + nslash_str(df_col_row), #Assume we print as a quoted char
+                      "character" = stringish_length(df_col_row),
+                      "date" = stringish_length(df_col_row),
+                      "Date" = stringish_length(df_col_row),
+                      "datetime" = stringish_length(df_col_row),
+                      "factor" = stringish_length(df_col_row),
+                      "complex" = stringish_length(df_col_row),
                       0) #0 for other types
   return(n_chars + add_chars)
 
