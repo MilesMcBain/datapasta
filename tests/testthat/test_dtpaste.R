@@ -110,7 +110,7 @@ test_that("Columns with non-valid names can be parsed as a table, with names sur
     {clipr::write_clip(readr::read_lines(file = "./non_valid_colnames.txt"))
       eval(parse(text = dfdt_construct(class = "data.table")))},
     {
-      data.frame(stringsAsFactors=FALSE,
+      data.table::data.table(stringsAsFactors=FALSE,
                  check.names=FALSE,
                  `!!` = c(1L),
                  `2015` = c("b"),
