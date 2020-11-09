@@ -122,6 +122,24 @@ test_that("Columns with non-valid names can be parsed as a data.frame, with name
   )
 })
 
+test_that("Input tibbles with columns with non-valid names can be parsed as a data.frame, with names surrounded by backticks and check.names FALSE", {
+  expect_equal(
+    {eval( parse(text = dfdt_construct(tibble::tribble(
+      ~`!!`, ~`2015`, ~`%`, ~`TRUE`,
+      1L,     "b",   3L,   "D"
+    ), class = "data.frame")) )},
+    {
+      data.frame(stringsAsFactors=FALSE,
+                 check.names=FALSE,
+                 `!!` = c(1L),
+                 `2015` = c("b"),
+                 `%` = c(3L),
+                 `TRUE` = c("D")
+      )
+    }
+  )
+})
+
 test_that("meaningful rownames are included when input_table is a data.frame", {
   expect_equal(
     eval(parse(text = dfdt_construct(mtcars[1:3, 1:3], class = "data.frame"))),
