@@ -45,6 +45,20 @@ test_that("vector_construct handles numeric correctly ", {
   },
   "c(7L, 8L, 7L, 6L, 6L, NA, 6L, 9L)\n"
   )
+  expect_equal({
+    suppressWarnings(clipr::write_clip(content = c(7,
+                                                   8,
+                                                   7,
+                                                   6,
+                                                   6,
+                                                   "",
+                                                   6,
+                                                   9))
+    )
+    vector_construct()
+  },
+  "c(7L, 8L, 7L, 6L, 6L, NA, 6L, 9L)\n"
+  )
 })
 
 

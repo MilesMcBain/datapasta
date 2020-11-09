@@ -23,6 +23,9 @@ read_clip_or_editor <- function() {
   x
 }
 
+
+
+
 read_rstudio_editor <- function() {
   if (!rstudioapi::hasFun("getSourceEditorContext")) {
     return("")

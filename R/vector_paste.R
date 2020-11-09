@@ -181,5 +181,11 @@ parse_vector <- function(input_vector){
   input_vector <- ifelse(grepl(pattern = "(^\".*\"$)|(^\'.*\'$)", input_vector),
                          yes = substr(input_vector, 2, nchar(input_vector)-1),
                          no = input_vector)
+
+  # set empty entries to NA
+  NA_entry <- function(x) {
+    !nzchar(trimws(x)) | x == "NA"
+  } 
+  input_vector[NA_entry(input_vector)] <- NA
   input_vector
 }
