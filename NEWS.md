@@ -1,5 +1,6 @@
-# datapasta 3.2.0
-* Compatibility with {rstudioapi} emulation in VSCode
+# datapasta 3.1.1
+
+* Compatibility with {rstudioapi} emulation in VSCode.
 * Fixed Datetime handling for data piped to `dpasta`
 * Column names in backticks in piped tables now work as per clipboard. (Thanks @sharlagelfand)
 
