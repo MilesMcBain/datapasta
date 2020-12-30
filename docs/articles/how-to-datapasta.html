@@ -6,19 +6,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>How to Datapasta • datapasta</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="How to Datapasta">
-<meta property="og:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="datapasta">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">datapasta</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.1</span>
       </span>
     </div>
 
@@ -67,7 +67,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/milesmcbain/datapasta">
+  <a href="https://github.com/milesmcbain/datapasta/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -82,13 +82,14 @@
 
       
 
-      </header><div class="row">
+      </header><link href="how-to-datapasta_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="how-to-datapasta_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>How to Datapasta</h1>
+      <h1 data-toc-skip>How to Datapasta</h1>
                         <h4 class="author">Miles McBain</h4>
             
-            <h4 class="date">2020-01-17</h4>
+            <h4 class="date">2020-12-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/milesmcbain/datapasta/blob/master/vignettes/how-to-datapasta.Rmd"><code>vignettes/how-to-datapasta.Rmd</code></a></small>
       <div class="hidden name"><code>how-to-datapasta.Rmd</code></div>
@@ -192,22 +193,23 @@
 </tbody>
 </table>
 <p>And make this appear at the current cursor:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span>(</a>
-<a class="sourceLine" id="cb1-2" title="2">                                  <span class="op">~</span>X,          <span class="op">~</span>Location, <span class="op">~</span>Min, <span class="op">~</span>Max,</a>
-<a class="sourceLine" id="cb1-3" title="3">                    <span class="st">"Partly cloudy."</span>,         <span class="st">"Brisbane"</span>,   19L,   29L,</a>
-<a class="sourceLine" id="cb1-4" title="4">                    <span class="st">"Partly cloudy."</span>, <span class="st">"Brisbane Airport"</span>,   18L,   27L,</a>
-<a class="sourceLine" id="cb1-5" title="5">                  <span class="st">"Possible shower."</span>,       <span class="st">"Beaudesert"</span>,   15L,   30L,</a>
-<a class="sourceLine" id="cb1-6" title="6">                    <span class="st">"Partly cloudy."</span>,        <span class="st">"Chermside"</span>,   17L,   29L,</a>
-<a class="sourceLine" id="cb1-7" title="7">    <span class="st">"Shower or two. Possible storm."</span>,           <span class="st">"Gatton"</span>,   15L,   32L,</a>
-<a class="sourceLine" id="cb1-8" title="8">                  <span class="st">"Possible shower."</span>,          <span class="st">"Ipswich"</span>,   15L,   30L,</a>
-<a class="sourceLine" id="cb1-9" title="9">                    <span class="st">"Partly cloudy."</span>,    <span class="st">"Logan Central"</span>,   18L,   29L,</a>
-<a class="sourceLine" id="cb1-10" title="10">                     <span class="st">"Mostly sunny."</span>,            <span class="st">"Manly"</span>,   20L,   26L,</a>
-<a class="sourceLine" id="cb1-11" title="11">                    <span class="st">"Partly cloudy."</span>,    <span class="st">"Mount Gravatt"</span>,   17L,   28L,</a>
-<a class="sourceLine" id="cb1-12" title="12">                  <span class="st">"Possible shower."</span>,            <span class="st">"Oxley"</span>,   17L,   30L,</a>
-<a class="sourceLine" id="cb1-13" title="13">                    <span class="st">"Partly cloudy."</span>,        <span class="st">"Redcliffe"</span>,   19L,   27L</a>
-<a class="sourceLine" id="cb1-14" title="14">    )</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span><span class="op">(</span>
+                                  <span class="op">~</span><span class="va">X</span>,          <span class="op">~</span><span class="va">Location</span>, <span class="op">~</span><span class="va">Min</span>, <span class="op">~</span><span class="va">Max</span>,
+                    <span class="st">"Partly cloudy."</span>,         <span class="st">"Brisbane"</span>,   <span class="fl">19L</span>,   <span class="fl">29L</span>,
+                    <span class="st">"Partly cloudy."</span>, <span class="st">"Brisbane Airport"</span>,   <span class="fl">18L</span>,   <span class="fl">27L</span>,
+                  <span class="st">"Possible shower."</span>,       <span class="st">"Beaudesert"</span>,   <span class="fl">15L</span>,   <span class="fl">30L</span>,
+                    <span class="st">"Partly cloudy."</span>,        <span class="st">"Chermside"</span>,   <span class="fl">17L</span>,   <span class="fl">29L</span>,
+    <span class="st">"Shower or two. Possible storm."</span>,           <span class="st">"Gatton"</span>,   <span class="fl">15L</span>,   <span class="fl">32L</span>,
+                  <span class="st">"Possible shower."</span>,          <span class="st">"Ipswich"</span>,   <span class="fl">15L</span>,   <span class="fl">30L</span>,
+                    <span class="st">"Partly cloudy."</span>,    <span class="st">"Logan Central"</span>,   <span class="fl">18L</span>,   <span class="fl">29L</span>,
+                     <span class="st">"Mostly sunny."</span>,            <span class="st">"Manly"</span>,   <span class="fl">20L</span>,   <span class="fl">26L</span>,
+                    <span class="st">"Partly cloudy."</span>,    <span class="st">"Mount Gravatt"</span>,   <span class="fl">17L</span>,   <span class="fl">28L</span>,
+                  <span class="st">"Possible shower."</span>,            <span class="st">"Oxley"</span>,   <span class="fl">17L</span>,   <span class="fl">30L</span>,
+                    <span class="st">"Partly cloudy."</span>,        <span class="st">"Redcliffe"</span>,   <span class="fl">19L</span>,   <span class="fl">27L</span>
+    <span class="op">)</span></pre></div>
 <p><code><a href="https://tibble.tidyverse.org/reference/tribble.html">tibble::tribble()</a></code> or ‘<strong>transposed</strong> tibble’ is a really neat function that allows a <code>tibble</code> to be written in human readable format (Thanks be to Hadley).</p>
-<p>To paste data as a <code>tribble()</code> call, just copy the table header and data rows, then paste into the source editor using the addin <code>Paste as tribble</code>. For best results, assign the addin to a memorable keyboard shortcut, e.g. <code>ctrl + shift + t</code>. See <a href="https://support.rstudio.com/hc/en-us/articles/206382178-Customizing-Keyboard-Shortcuts">Customizing Keyboard Shortcuts</a>.</p>
+<p>To paste data as a <code>tribble()</code> call, just copy the table header and data rows, then paste into the source editor using the addin <code>Paste as tribble</code>. For best results, assign the addin to a memorable keyboard shortcut, e.g. <code>ctrl + shift + t</code>. See <a href="https://support.rstudio.com/hc/en-us/articles/206382178-Customizing-Keyboard-Shortcuts">Customizing Keyboard Shortcuts</a>.</p>
 <p><code><a href="../reference/tribble_paste.html">tribble_paste()</a></code> is a flexible function that guesses the separator and types of the data it pulls from the clipboard. Mostly this seems to work well. Occasionally it epic-fails. The supported separators are <code>\|</code> (pipe), <code>\t</code> (tab), <code>,</code> (comma), <code>;</code>(semicolon). Most data copied from the internet or spreadsheets will be tab delimited. It will also attempt to recognise a lack of a header row and create a default for you, although this is not always possible.</p>
 </div>
 <div id="pasting-a-list-as-a-horizontal-vector-with-vector_paste" class="section level2">
@@ -225,7 +227,8 @@ Debian
 Ubuntu
 OpenSUSE</code></pre>
 <p>to</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Mint"</span>, <span class="st">"Fedora"</span>, <span class="st">"Debian"</span>, <span class="st">"Ubuntu"</span>, <span class="st">"OpenSUSE"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Mint"</span>, <span class="st">"Fedora"</span>, <span class="st">"Debian"</span>, <span class="st">"Ubuntu"</span>, <span class="st">"OpenSUSE"</span><span class="op">)</span></pre></div>
 <p>This is pasted into the source editor at the current cursor.</p>
 <p>Just like <code><a href="../reference/tribble_paste.html">tribble_paste()</a></code>, <code><a href="../reference/vector_paste.html">vector_paste()</a></code> has a flexible parser that can guess the type and separator of the data. The supported separators are <code>\|</code> (pipe), <code>\t</code> (tab), <code>,</code> (comma), <code>;</code>(semicolon) and end of line. The recommended keyboard shortcut is <code>crtl + alt + shift + v</code>.</p>
 </div>
@@ -234,25 +237,27 @@ OpenSUSE</code></pre>
 <a href="#pasting-a-list-as-a-vertical-vector-with-vector_paste_vertical" class="anchor"></a>Pasting a list as a vertical vector with <code>vector_paste_vertical()</code>
 </h2>
 <p>Given the same types of list inputs as above, the <code>Paste as vector (vertical)</code> addin pastes the output with each element on its own line, e.g.:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Mint"</span>,</a>
-<a class="sourceLine" id="cb6-2" title="2">  <span class="st">"Fedora"</span>,</a>
-<a class="sourceLine" id="cb6-3" title="3">  <span class="st">"Debian"</span>,</a>
-<a class="sourceLine" id="cb6-4" title="4">  <span class="st">"Ubuntu"</span>,</a>
-<a class="sourceLine" id="cb6-5" title="5">  <span class="st">"OpenSUSE"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Mint"</span>,
+  <span class="st">"Fedora"</span>,
+  <span class="st">"Debian"</span>,
+  <span class="st">"Ubuntu"</span>,
+  <span class="st">"OpenSUSE"</span><span class="op">)</span></pre></div>
 <p>This is much nicer for long lists. I have found this is actually the version I use more often. I recommend using <code>ctrl + shift + v</code> as keyboard shortcut.</p>
 <p>##Pasting as a data.frame with <code><a href="../reference/df_paste.html">df_paste()</a></code> The parser here is identical to <code><a href="../reference/tribble_paste.html">tribble_paste()</a></code> and has all the same type and separator guessing goodness. The difference is the output will be a formatted call to <code><a href="https://rdrr.io/r/base/data.frame.html">base::data.frame()</a></code>. Some sensible line wrapping rules etc are implemented. Useful for purists and educators alike. Special thanks to Jonathan Carroll for contributing this feature.</p>
 <p>So the Brisbane weather table from above becomes:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(</a>
-<a class="sourceLine" id="cb7-2" title="2">           <span class="dt">X =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Partly cloudy."</span>, <span class="st">"Partly cloudy."</span>, <span class="st">"Possible shower."</span>,</a>
-<a class="sourceLine" id="cb7-3" title="3">                 <span class="st">"Partly cloudy."</span>, <span class="st">"Shower or two. Possible storm."</span>,</a>
-<a class="sourceLine" id="cb7-4" title="4">                 <span class="st">"Possible shower."</span>, <span class="st">"Partly cloudy."</span>, <span class="st">"Mostly sunny."</span>, <span class="st">"Partly cloudy."</span>,</a>
-<a class="sourceLine" id="cb7-5" title="5">                 <span class="st">"Possible shower."</span>, <span class="st">"Partly cloudy."</span>),</a>
-<a class="sourceLine" id="cb7-6" title="6">    <span class="dt">Location =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Brisbane"</span>, <span class="st">"Brisbane Airport"</span>, <span class="st">"Beaudesert"</span>, <span class="st">"Chermside"</span>,</a>
-<a class="sourceLine" id="cb7-7" title="7">                 <span class="st">"Gatton"</span>, <span class="st">"Ipswich"</span>, <span class="st">"Logan Central"</span>, <span class="st">"Manly"</span>,</a>
-<a class="sourceLine" id="cb7-8" title="8">                 <span class="st">"Mount Gravatt"</span>, <span class="st">"Oxley"</span>, <span class="st">"Redcliffe"</span>),</a>
-<a class="sourceLine" id="cb7-9" title="9">         <span class="dt">Min =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">19</span>, <span class="dv">18</span>, <span class="dv">15</span>, <span class="dv">17</span>, <span class="dv">15</span>, <span class="dv">15</span>, <span class="dv">18</span>, <span class="dv">20</span>, <span class="dv">17</span>, <span class="dv">17</span>, <span class="dv">19</span>),</a>
-<a class="sourceLine" id="cb7-10" title="10">         <span class="dt">Max =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">29</span>, <span class="dv">27</span>, <span class="dv">30</span>, <span class="dv">29</span>, <span class="dv">32</span>, <span class="dv">30</span>, <span class="dv">29</span>, <span class="dv">26</span>, <span class="dv">28</span>, <span class="dv">30</span>, <span class="dv">27</span>)</a>
-<a class="sourceLine" id="cb7-11" title="11">)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
+           X <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Partly cloudy."</span>, <span class="st">"Partly cloudy."</span>, <span class="st">"Possible shower."</span>,
+                 <span class="st">"Partly cloudy."</span>, <span class="st">"Shower or two. Possible storm."</span>,
+                 <span class="st">"Possible shower."</span>, <span class="st">"Partly cloudy."</span>, <span class="st">"Mostly sunny."</span>, <span class="st">"Partly cloudy."</span>,
+                 <span class="st">"Possible shower."</span>, <span class="st">"Partly cloudy."</span><span class="op">)</span>,
+    Location <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Brisbane"</span>, <span class="st">"Brisbane Airport"</span>, <span class="st">"Beaudesert"</span>, <span class="st">"Chermside"</span>,
+                 <span class="st">"Gatton"</span>, <span class="st">"Ipswich"</span>, <span class="st">"Logan Central"</span>, <span class="st">"Manly"</span>,
+                 <span class="st">"Mount Gravatt"</span>, <span class="st">"Oxley"</span>, <span class="st">"Redcliffe"</span><span class="op">)</span>,
+         Min <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">19</span>, <span class="fl">18</span>, <span class="fl">15</span>, <span class="fl">17</span>, <span class="fl">15</span>, <span class="fl">15</span>, <span class="fl">18</span>, <span class="fl">20</span>, <span class="fl">17</span>, <span class="fl">17</span>, <span class="fl">19</span><span class="op">)</span>,
+         Max <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">29</span>, <span class="fl">27</span>, <span class="fl">30</span>, <span class="fl">29</span>, <span class="fl">32</span>, <span class="fl">30</span>, <span class="fl">29</span>, <span class="fl">26</span>, <span class="fl">28</span>, <span class="fl">30</span>, <span class="fl">27</span><span class="op">)</span>
+<span class="op">)</span></pre></div>
 <p>For a shortcut you could try <code>ctrl + shift + d</code>.</p>
 </div>
 <div id="outputting-data-from-your-r-environment" class="section level2">
@@ -263,33 +268,37 @@ OpenSUSE</code></pre>
 <a href="#output-to-r-with-dpasta" class="anchor"></a>Output to R with <code>dpasta()</code>
 </h3>
 <p>All of the above addin functions can be called directly with an R object argument. When run, this will result in the object being output at the current cursor. Usually the next line. To make things more magical, a there is a single function <code>dpasta</code> that will match the argument with the appropriate <code>_paste()</code> function based on its class. This means:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">iris <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb8-2" title="2"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb8-3" title="3"><span class="st">  </span><span class="kw"><a href="../reference/dpasta.html">dpasta</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="va">iris</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/dpasta.html">dpasta</a></span><span class="op">(</span><span class="op">)</span></pre></div>
 <p>results in:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(</a>
-<a class="sourceLine" id="cb9-2" title="2">      <span class="dt">Sepal.Length =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">5.1</span>, <span class="fl">4.9</span>, <span class="fl">4.7</span>, <span class="fl">4.6</span>, <span class="dv">5</span>, <span class="fl">5.4</span>),</a>
-<a class="sourceLine" id="cb9-3" title="3">       <span class="dt">Sepal.Width =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">3.5</span>, <span class="dv">3</span>, <span class="fl">3.2</span>, <span class="fl">3.1</span>, <span class="fl">3.6</span>, <span class="fl">3.9</span>),</a>
-<a class="sourceLine" id="cb9-4" title="4">      <span class="dt">Petal.Length =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1.4</span>, <span class="fl">1.4</span>, <span class="fl">1.3</span>, <span class="fl">1.5</span>, <span class="fl">1.4</span>, <span class="fl">1.7</span>),</a>
-<a class="sourceLine" id="cb9-5" title="5">       <span class="dt">Petal.Width =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span>),</a>
-<a class="sourceLine" id="cb9-6" title="6">           <span class="dt">Species =</span> <span class="kw"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"setosa"</span>, <span class="st">"setosa"</span>, <span class="st">"setosa"</span>, <span class="st">"setosa"</span>, <span class="st">"setosa"</span>,</a>
-<a class="sourceLine" id="cb9-7" title="7">                                 <span class="st">"setosa"</span>))</a>
-<a class="sourceLine" id="cb9-8" title="8">   )</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
+      Sepal.Length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5.1</span>, <span class="fl">4.9</span>, <span class="fl">4.7</span>, <span class="fl">4.6</span>, <span class="fl">5</span>, <span class="fl">5.4</span><span class="op">)</span>,
+       Sepal.Width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3.5</span>, <span class="fl">3</span>, <span class="fl">3.2</span>, <span class="fl">3.1</span>, <span class="fl">3.6</span>, <span class="fl">3.9</span><span class="op">)</span>,
+      Petal.Length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1.4</span>, <span class="fl">1.4</span>, <span class="fl">1.3</span>, <span class="fl">1.5</span>, <span class="fl">1.4</span>, <span class="fl">1.7</span><span class="op">)</span>,
+       Petal.Width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span><span class="op">)</span>,
+           Species <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"setosa"</span>, <span class="st">"setosa"</span>, <span class="st">"setosa"</span>, <span class="st">"setosa"</span>, <span class="st">"setosa"</span>,
+                                 <span class="st">"setosa"</span><span class="op">)</span><span class="op">)</span>
+   <span class="op">)</span></pre></div>
 <p>while:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">mpg <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-2" title="2"><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>class) <span class="op">%&gt;%</span><span class="st">  </span><span class="co">#just to fit neatly on this page</span></a>
-<a class="sourceLine" id="cb10-3" title="3"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-4" title="4"><span class="st">  </span><span class="kw"><a href="../reference/dpasta.html">dpasta</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit">
+<span class="va">mpg</span> <span class="op">%&gt;%</span>
+  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">class</span><span class="op">)</span> <span class="op">%&gt;%</span>  <span class="co">#just to fit neatly on this page</span>
+  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/dpasta.html">dpasta</a></span><span class="op">(</span><span class="op">)</span></pre></div>
 <p>will give you:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span>(</a>
-<a class="sourceLine" id="cb11-2" title="2">     <span class="op">~</span>manufacturer, <span class="op">~</span>model, <span class="op">~</span>displ, <span class="op">~</span>year, <span class="op">~</span>cyl,        <span class="op">~</span>trans, <span class="op">~</span>drv, <span class="op">~</span>cty, <span class="op">~</span>hwy,  <span class="op">~</span>fl,</a>
-<a class="sourceLine" id="cb11-3" title="3">            <span class="st">"audi"</span>,   <span class="st">"a4"</span>,    <span class="fl">1.8</span>, 1999L,   4L,    <span class="st">"auto(l5)"</span>,  <span class="st">"f"</span>,  18L,  29L,  <span class="st">"p"</span>, </a>
-<a class="sourceLine" id="cb11-4" title="4">            <span class="st">"audi"</span>,   <span class="st">"a4"</span>,    <span class="fl">1.8</span>, 1999L,   4L,  <span class="st">"manual(m5)"</span>,  <span class="st">"f"</span>,  21L,  29L,  <span class="st">"p"</span>,</a>
-<a class="sourceLine" id="cb11-5" title="5">            <span class="st">"audi"</span>,   <span class="st">"a4"</span>,      <span class="dv">2</span>, 2008L,   4L,  <span class="st">"manual(m6)"</span>,  <span class="st">"f"</span>,  20L,  31L,  <span class="st">"p"</span>,</a>
-<a class="sourceLine" id="cb11-6" title="6">            <span class="st">"audi"</span>,   <span class="st">"a4"</span>,      <span class="dv">2</span>, 2008L,   4L,    <span class="st">"auto(av)"</span>,  <span class="st">"f"</span>,  21L,  30L,  <span class="st">"p"</span>,</a>
-<a class="sourceLine" id="cb11-7" title="7">            <span class="st">"audi"</span>,   <span class="st">"a4"</span>,    <span class="fl">2.8</span>, 1999L,   6L,    <span class="st">"auto(l5)"</span>,  <span class="st">"f"</span>,  16L,  26L,  <span class="st">"p"</span>,</a>
-<a class="sourceLine" id="cb11-8" title="8">            <span class="st">"audi"</span>,   <span class="st">"a4"</span>,    <span class="fl">2.8</span>, 1999L,   6L,  <span class="st">"manual(m5)"</span>,  <span class="st">"f"</span>,  18L,  26L,  <span class="st">"p"</span></a>
-<a class="sourceLine" id="cb11-9" title="9">     )</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span><span class="op">(</span>
+     <span class="op">~</span><span class="va">manufacturer</span>, <span class="op">~</span><span class="va">model</span>, <span class="op">~</span><span class="va">displ</span>, <span class="op">~</span><span class="va">year</span>, <span class="op">~</span><span class="va">cyl</span>,        <span class="op">~</span><span class="va">trans</span>, <span class="op">~</span><span class="va">drv</span>, <span class="op">~</span><span class="va">cty</span>, <span class="op">~</span><span class="va">hwy</span>,  <span class="op">~</span><span class="va">fl</span>,
+            <span class="st">"audi"</span>,   <span class="st">"a4"</span>,    <span class="fl">1.8</span>, <span class="fl">1999L</span>,   <span class="fl">4L</span>,    <span class="st">"auto(l5)"</span>,  <span class="st">"f"</span>,  <span class="fl">18L</span>,  <span class="fl">29L</span>,  <span class="st">"p"</span>, 
+            <span class="st">"audi"</span>,   <span class="st">"a4"</span>,    <span class="fl">1.8</span>, <span class="fl">1999L</span>,   <span class="fl">4L</span>,  <span class="st">"manual(m5)"</span>,  <span class="st">"f"</span>,  <span class="fl">21L</span>,  <span class="fl">29L</span>,  <span class="st">"p"</span>,
+            <span class="st">"audi"</span>,   <span class="st">"a4"</span>,      <span class="fl">2</span>, <span class="fl">2008L</span>,   <span class="fl">4L</span>,  <span class="st">"manual(m6)"</span>,  <span class="st">"f"</span>,  <span class="fl">20L</span>,  <span class="fl">31L</span>,  <span class="st">"p"</span>,
+            <span class="st">"audi"</span>,   <span class="st">"a4"</span>,      <span class="fl">2</span>, <span class="fl">2008L</span>,   <span class="fl">4L</span>,    <span class="st">"auto(av)"</span>,  <span class="st">"f"</span>,  <span class="fl">21L</span>,  <span class="fl">30L</span>,  <span class="st">"p"</span>,
+            <span class="st">"audi"</span>,   <span class="st">"a4"</span>,    <span class="fl">2.8</span>, <span class="fl">1999L</span>,   <span class="fl">6L</span>,    <span class="st">"auto(l5)"</span>,  <span class="st">"f"</span>,  <span class="fl">16L</span>,  <span class="fl">26L</span>,  <span class="st">"p"</span>,
+            <span class="st">"audi"</span>,   <span class="st">"a4"</span>,    <span class="fl">2.8</span>, <span class="fl">1999L</span>,   <span class="fl">6L</span>,  <span class="st">"manual(m5)"</span>,  <span class="st">"f"</span>,  <span class="fl">18L</span>,  <span class="fl">26L</span>,  <span class="st">"p"</span>
+     <span class="op">)</span></pre></div>
 </div>
 </div>
 <div id="avoiding-fiddly-data-formatting" class="section level2">
@@ -330,9 +339,10 @@ c("some",
 </h2>
 <p><code><a href="../reference/dmdclip.html">dmdclip()</a></code> can help you take the data to somewhere that uses markdown format, for example a Stack Overflow question or Github issue. This function will copy the resulting formatted data object call to the clipboard, inserting 4 spaces at the head of each line, which is markdown syntax for a pre-formatted block.</p>
 <p>So:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">iris <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-2" title="2"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-3" title="3"><span class="st">  </span><span class="kw"><a href="../reference/dmdclip.html">dmdclip</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit">
+<span class="va">iris</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/dmdclip.html">dmdclip</a></span><span class="op">(</span><span class="op">)</span></pre></div>
 <p>Will paste the following on the clipboard:</p>
 <pre><code><a href="https://rdrr.io/r/base/data.frame.html">    data.frame(
        Sepal.Length = c(5.1, 4.9, 4.7, 4.6, 5, 5.4),
@@ -355,11 +365,12 @@ c("some",
 <a href="#custom-behaviour-for-your-unique-snowflake-setup" class="anchor"></a>Custom Behaviour for Your Unique Snowflake Setup</h2>
 <p>Custom behaviour can be created by taking advantage of the <code>_construct()</code> variants of the <code>_paste()</code> functions, as these return their output as an R object which can then be written to an appropriate buffer or clipboard.</p>
 <p>for example, if you copied the Brisbane weather forecast from above to the clipboard and then called:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">trib_call &lt;-<span class="st"> </span><span class="kw"><a href="../reference/tribble_construct.html">tribble_construct</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit">
+<span class="va">trib_call</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tribble_construct.html">tribble_construct</a></span><span class="op">(</span><span class="op">)</span></pre></div>
 <p><code>trib_call</code> now contains a the tribble call as a character vector. You could then write this with:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/write.html">write</a></span>(trib_call, <span class="dt">file =</span> ..your desired location..)</a>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="kw">write</span>(trib_call, <span class="dt">file =</span> ..your desired location..)</a>
 <a class="sourceLine" id="cb17-2" title="2"><span class="co">#OR</span></a>
-<a class="sourceLine" id="cb17-3" title="3">clipr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/clipr/man/write_clip.html">write_clip</a></span>(trib_call) <span class="co">#Send it back to the clipboard.</span></a></code></pre></div>
+<a class="sourceLine" id="cb17-3" title="3">clipr<span class="op">::</span><span class="kw">write_clip</span>(trib_call) <span class="co">#Send it back to the clipboard.</span></a></code></pre></div>
 </div>
 </div>
 <div id="configurable-options" class="section level1">
@@ -378,36 +389,11 @@ c("some",
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li>
-<a href="#typical-usage-with-rstudio">Typical Usage with Rstudio</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#pasting-a-table-as-a-formatted-tibble-definition-with-tribble_paste">Pasting a table as a formatted tibble definition with <code>tribble_paste()</code></a></li>
-      <li><a href="#pasting-a-list-as-a-horizontal-vector-with-vector_paste">Pasting a list as a horizontal vector with <code>vector_paste()</code></a></li>
-      <li><a href="#pasting-a-list-as-a-vertical-vector-with-vector_paste_vertical">Pasting a list as a vertical vector with <code>vector_paste_vertical()</code></a></li>
-      <li><a href="#outputting-data-from-your-r-environment">Outputting data from your R environment</a></li>
-      <li><a href="#avoiding-fiddly-data-formatting">Avoiding fiddly data formatting</a></li>
-      <li><a href="#output-to-clipboard-with-dmdclip">Output to clipboard with <code>dmdclip()</code></a></li>
-      </ul>
-</li>
-      <li>
-<a href="#usage-without-rstudio">Usage without RStudio</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#custom-behaviour-for-your-unique-snowflake-setup">Custom Behaviour for Your Unique Snowflake Setup</a></li>
-      </ul>
-</li>
-      <li>
-<a href="#configurable-options">Configurable Options</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#upping-the-row-guard">Upping the row guard</a></li>
-      <li><a href="#dealing-with-decimal-marks">Dealing with “,” decimal marks</a></li>
-      </ul>
-</li>
-      </ul>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
 
@@ -418,7 +404,7 @@ c("some",
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

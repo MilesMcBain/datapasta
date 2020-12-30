@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -53,7 +57,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -67,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">datapasta</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.1</span>
       </span>
     </div>
 
@@ -103,7 +107,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/milesmcbain/datapasta">
+  <a href="https://github.com/milesmcbain/datapasta/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -121,13 +125,24 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Changelog <small></small></h1>
+      <h1 data-toc-skip>Changelog <small></small></h1>
       <small>Source: <a href='https://github.com/milesmcbain/datapasta/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="datapasta-3-1-0-leave-to-simmer" class="section level1">
-<h1 class="page-header">
-<a href="#datapasta-3-1-0-leave-to-simmer" class="anchor"></a>datapasta 3.1.0 ‘Leave to Simmer’<small> Unreleased </small>
+    <div id="datapasta-311" class="section level1">
+<h1 class="page-header" data-toc-text="3.1.1">
+<a href="#datapasta-311" class="anchor"></a>datapasta 3.1.1<small> Unreleased </small>
+</h1>
+<ul>
+<li>Compatibility with {rstudioapi} emulation in VSCode.</li>
+<li>Fixed Datetime handling for data piped to <code>dpasta</code>
+</li>
+<li>Column names in backticks in piped tables now work as per clipboard. (Thanks <a href='https://github.com/sharlagelfand'>@sharlagelfand</a>)</li>
+</ul>
+</div>
+    <div id="datapasta-310-leave-to-simmer" class="section level1">
+<h1 class="page-header" data-toc-text="3.1.0">
+<a href="#datapasta-310-leave-to-simmer" class="anchor"></a>datapasta 3.1.0 ‘Leave to Simmer’<small> 2020-01-17 </small>
 </h1>
 <ul>
 <li>Exported <code>_format</code> functions</li>
@@ -141,9 +156,9 @@
 <li>Fallback behaviour added to allow usage with remote R sessions like RStudio Server/Cloud, or ssh command line. See ‘datapasta in the cloud’ vignette. (Thanks <a href='https://github.com/gadenbuie'>@gadenbuie</a>, <a href='https://github.com/jonthegeek'>@jonthegeek</a>)</li>
 </ul>
 </div>
-    <div id="datapasta-3-0-0-colander-helmet" class="section level1">
-<h1 class="page-header">
-<a href="#datapasta-3-0-0-colander-helmet" class="anchor"></a>datapasta 3.0.0 ‘Colander Helmet’<small> 2018-01-24 </small>
+    <div id="datapasta-300-colander-helmet" class="section level1">
+<h1 class="page-header" data-toc-text="3.0.0">
+<a href="#datapasta-300-colander-helmet" class="anchor"></a>datapasta 3.0.0 ‘Colander Helmet’<small> 2018-01-24 </small>
 </h1>
 <ul>
 <li>When pasting from clipboard it now attempts to guess if there is no header row, in the case where the clipboard is all data. If you’re lucky it will create a default header for you when pasting (V1, V2, V3 etc.).</li>
@@ -154,18 +169,18 @@
 <li>Complies with new CRAN policy on clipboard use. You cannot write to the clipboard in non-interactive sessions with <code><a href="../reference/dmdclip.html">dmdclip()</a></code> - Why would you?. Tests containing clipboard use are skipped on CI and CRAN.</li>
 </ul>
 </div>
-    <div id="datapasta-2-0-1" class="section level1">
-<h1 class="page-header">
-<a href="#datapasta-2-0-1" class="anchor"></a>datapasta 2.0.1<small> Unreleased </small>
+    <div id="datapasta-201" class="section level1">
+<h1 class="page-header" data-toc-text="2.0.1">
+<a href="#datapasta-201" class="anchor"></a>datapasta 2.0.1<small> Unreleased </small>
 </h1>
 <ul>
 <li>Added a trailing newline after all pastes, this works much nicer for console output.</li>
 <li>Fixed handling of backslashes. Relying on built-in function deparse() for escaping chars that need it.</li>
 </ul>
 </div>
-    <div id="datapasta-2-0-0-fusilli-jerry" class="section level1">
-<h1 class="page-header">
-<a href="#datapasta-2-0-0-fusilli-jerry" class="anchor"></a>datapasta 2.0.0 ‘Fusilli Jerry’<small> 2017-03-26 </small>
+    <div id="datapasta-200-fusilli-jerry" class="section level1">
+<h1 class="page-header" data-toc-text="2.0.0">
+<a href="#datapasta-200-fusilli-jerry" class="anchor"></a>datapasta 2.0.0 ‘Fusilli Jerry’<small> 2017-03-26 </small>
 </h1>
 <ul>
 <li>Added the ability to parse objects from R and output as neatly formatted tibbles, dataframes and vectors with <code>dpasta</code>. The clipboard is not involved.</li>
@@ -176,9 +191,9 @@
 <li>User can now paste natural looking comma separated lists as vectors, with automatic comma-splitting and whitespace trimming.</li>
 </ul>
 </div>
-    <div id="datapasta-1-1-0-copypesto" class="section level1">
-<h1 class="page-header">
-<a href="#datapasta-1-1-0-copypesto" class="anchor"></a>datapasta 1.1.0 ‘CopyPesto’<small> 2017-01-09 </small>
+    <div id="datapasta-110-copypesto" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.0">
+<a href="#datapasta-110-copypesto" class="anchor"></a>datapasta 1.1.0 ‘CopyPesto’<small> 2017-01-09 </small>
 </h1>
 <ul>
 <li>Added <code><a href="../reference/df_paste.html">df_paste()</a></code> which pastes a table from the clipboard using a nicely formatted call to <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code> rather than <code>tribble()</code>
@@ -186,9 +201,9 @@
 <li>Better handling for empty lines that get accidentally copied onto clipboard with table. Gracefully ignored.</li>
 </ul>
 </div>
-    <div id="datapasta-1-0-0" class="section level1">
-<h1 class="page-header">
-<a href="#datapasta-1-0-0" class="anchor"></a>datapasta 1.0.0<small> 2016-11-29 </small>
+    <div id="datapasta-100" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.0">
+<a href="#datapasta-100" class="anchor"></a>datapasta 1.0.0<small> 2016-11-29 </small>
 </h1>
 <ul>
 <li>Added new addin ‘Paste as vector (vertical)’ to provide nicer formatting for long lists.</li>
@@ -197,9 +212,9 @@
 <li>Added vignette, automated tests etc in prep for CRAN submission.</li>
 </ul>
 </div>
-    <div id="datapasta-0-2" class="section level1">
-<h1 class="page-header">
-<a href="#datapasta-0-2" class="anchor"></a>datapasta 0.2<small> Unreleased </small>
+    <div id="datapasta-02" class="section level1">
+<h1 class="page-header" data-toc-text="0.2">
+<a href="#datapasta-02" class="anchor"></a>datapasta 0.2<small> Unreleased </small>
 </h1>
 <ul>
 <li>Added graceful error handling on failed parse of text on clipboard to table.</li>
@@ -211,9 +226,9 @@
 <code><a href="../reference/vector_paste.html">vector_paste()</a></code> uses a space between elements.</li>
 </ul>
 </div>
-    <div id="datapasta-0-1-1" class="section level1">
-<h1 class="page-header">
-<a href="#datapasta-0-1-1" class="anchor"></a>datapasta 0.1.1<small> Unreleased </small>
+    <div id="datapasta-011" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.1">
+<a href="#datapasta-011" class="anchor"></a>datapasta 0.1.1<small> Unreleased </small>
 </h1>
 <ul>
 <li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
@@ -223,20 +238,10 @@
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#datapasta-3-1-0-leave-to-simmer">3.1.0</a></li>
-        <li><a href="#datapasta-3-0-0-colander-helmet">3.0.0</a></li>
-        <li><a href="#datapasta-2-0-1">2.0.1</a></li>
-        <li><a href="#datapasta-2-0-0-fusilli-jerry">2.0.0</a></li>
-        <li><a href="#datapasta-1-1-0-copypesto">1.1.0</a></li>
-        <li><a href="#datapasta-1-0-0">1.0.0</a></li>
-        <li><a href="#datapasta-0-2">0.2</a></li>
-        <li><a href="#datapasta-0-1-1">0.1.1</a></li>
-      </ul>
-    </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 
 </div>
@@ -248,7 +253,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

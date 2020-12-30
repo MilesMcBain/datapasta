@@ -1,4 +1,4 @@
-# datapasta 3.1.0 'Leave to Simmer'
+# datapasta 3.1.1 'Leave to Simmer'
 [![CRAN status.](http://www.r-pkg.org/badges/version/datapasta)](http://www.r-pkg.org/pkg/datapasta)
 [![Downloads](http://cranlogs.r-pkg.org/badges/datapasta)](https://CRAN.R-project.org/package=datapasta)
 
