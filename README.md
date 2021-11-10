@@ -1,15 +1,13 @@
-# datapasta 3.1.1 'Leave to Simmer'
-[![CRAN status.](http://www.r-pkg.org/badges/version/datapasta)](http://www.r-pkg.org/pkg/datapasta)
+# datapasta 3.1.1 'Leave to Simmer' <img src="https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/hex_web.png" align="right" width="200"/>
+[![CRAN status.](http://www.r-pkg.org/badges/version/datapasta)](http://www.r-pkg.org/pkg/datapasta) 
 [![Downloads](http://cranlogs.r-pkg.org/badges/datapasta)](https://CRAN.R-project.org/package=datapasta)
-
-<img src="https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/hex_web.png" width="200"/>
-
-# The Goods
-![pow!](https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/tribble_paste.gif)
 
 # Introducing datapasta
 
 `datapasta` is about reducing resistance associated with copying and pasting data to and from R. It is a response to the realisation that I often found myself using intermediate programs like Sublime to munge text into suitable formats. Addins and functions in `datapasta` support a wide variety of input and output situations, so it (probably) "just works". Hopefully tools in this package will remove such intermediate steps and associated frustrations from our data slinging workflows.  
+
+# The Goods
+![pow!](https://raw.githubusercontent.com/milesmcbain/datapasta/master/inst/media/tribble_paste.gif)
 
 # Prerequisites
 * Linux users will need to install either `xsel` or `xclip`. These applications provide an interface to X selections (clipboard-like).
