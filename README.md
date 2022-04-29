@@ -1,4 +1,5 @@
 # datapasta 3.1.1 'Leave to Simmer'
+[![r-universe status badge](https://milesmcbain.r-universe.dev/badges/datapasta)](https://milesmcbain.r-universe.dev)
 [![CRAN status.](http://www.r-pkg.org/badges/version/datapasta)](http://www.r-pkg.org/pkg/datapasta)
 [![Downloads](http://cranlogs.r-pkg.org/badges/datapasta)](https://CRAN.R-project.org/package=datapasta)
 
@@ -18,8 +19,24 @@
 
 # Installation
 
-1. Get the package: `install.packages("datapasta")`
+## R Universe (preferred)
+
+1. install with R universe repo:
+
+```
+install.packages(
+   "datapasta", 
+   repos = c(mm = "https://milesmcbain.r-universe.dev", getOption("repos")))
+```
+
 2. Set the keyboard shortcuts using **Tools** -> **Addins** -> **Browse Addins**, then click **Keyboard Shortcuts...**
+
+
+## CRAN (outdated)
+
+For now, no further versions of `datapasta` will be going to CRAN. There are some known bugs in the CRAN version that have been fixed in `3.1.1`.
+
+1. `install.packages("datapasta")`
 
 # Usage
 
