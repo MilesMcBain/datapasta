@@ -18,4 +18,3 @@ nothing.
 \description{
 Parse either: the current clipboard, or a supplied argument, as a table and paste in at the cursor location in data.frame format.
 }
-

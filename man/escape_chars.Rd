@@ -15,4 +15,3 @@ the original char_vec with an extra "\" inserted before each character that need
 \description{
 Title
 }
-

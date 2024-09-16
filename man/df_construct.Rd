@@ -17,4 +17,3 @@ a character string containing the input formatted as a data.frame definition.
 \description{
 Parse the current clipboard as a table and return in data.frame format.
 }
-

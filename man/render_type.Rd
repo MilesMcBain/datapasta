@@ -19,4 +19,3 @@ character vector. The type attribute contains the type guessed by `readr`.
 Renders a character vector as R types for pasting into Rstudio.
 Strings are quoted. Numbers, NA, logicals etc are not.
 }
-

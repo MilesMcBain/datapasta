@@ -2,10 +2,10 @@
 % Please edit documentation in R/tribble_paste.R
 \name{clipboard_context}
 \alias{clipboard_context}
-\alias{console_context}
-\alias{custom_context}
-\alias{markdown_context}
 \alias{rstudio_context}
+\alias{console_context}
+\alias{markdown_context}
+\alias{custom_context}
 \title{custom_context}
 \usage{
 clipboard_context()
@@ -35,4 +35,3 @@ an output context. An input to _paste, _format, _contruct functions used to form
 the _context fuctions define lists of parameters for text formatting.
 The specific contexts return hard-coded values appropriate to the context they describe, while custom_context allows definition of new contexts for custom formatting.
 }
-

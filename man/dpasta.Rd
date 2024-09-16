@@ -15,4 +15,3 @@ nothing
 \description{
 Formats input and insersts at either the current cursor or the console.
 }
-
