@@ -240,7 +240,7 @@ nslash_str <- function(char_vec){
 #' @return char_vec left-padded with spaces to char_length.
 #'
 pad_to <-function(char_vec, char_length){
-  paste0(strrep(" ",char_length - nchar(char_vec)),char_vec)
+  paste0(strrep(" ", pmax(0, char_length - nchar(char_vec))),char_vec)
 }
 
 #' render_type
@@ -453,7 +453,7 @@ rstudio_context <- function(){
   output_context <- list()
   output_context$indent_head <- FALSE #head already at cursor
   output_context$output_mode <- "rstudioapi"
-  output_context$nspc <- 
+  output_context$nspc <-
     rstudioapi::readRStudioPreference("num_spaces_for_tab", 4)
   context <- rstudioapi::getActiveDocumentContext()
   context_row <- context$selection[[1]]$range$start["row"]
