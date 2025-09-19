@@ -7,6 +7,7 @@ test_that("readPreference() returns an integer", {
     skip_on_travis()
     skip_if_not(is_interactive)
     skip_if_not(rstudioapi::isAvailable())
+    skip_if_not(rstudioapi::hasFun("readRStudioPreference"))
     expect_equal(rstudioapi::readPreference('num_spaces_for_tab', 4), 4)
 
 })

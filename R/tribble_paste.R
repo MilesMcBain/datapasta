@@ -453,8 +453,10 @@ rstudio_context <- function(){
   output_context <- list()
   output_context$indent_head <- FALSE #head already at cursor
   output_context$output_mode <- "rstudioapi"
-  output_context$nspc <- 
+  output_context$nspc <- 4
+  if (rstudioapi::hasFun("readRStudioPreference")) {
     rstudioapi::readRStudioPreference("num_spaces_for_tab", 4)
+  }
   context <- rstudioapi::getActiveDocumentContext()
   context_row <- context$selection[[1]]$range$start["row"]
   if(all(context$selection[[1]]$range$start == context$selection[[1]]$range$end)){
