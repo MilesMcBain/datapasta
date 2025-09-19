@@ -83,6 +83,25 @@ There are two R functions available that accept R objects and output formatted t
 * `dpasta` accepts tibbles, data.frames, and vectors. Data is output in a format that matches in input class. Formatted text is pasted at the cursor.
 
 * `dmdclip` accepts the same inputs as `dpasta` but inserts the formatted text onto the clipboard, preceded by 4 spaces so that is can be as pasted as a preformatted block to Github, Stackoverflow etc.
+
+## Use with Positron
+
+`datapasta` works in Positron, but addins are not supported. You can use the functions directly from the console, or assign them keyboard shortcuts.
+For example, to assign `datapasta::tribble_paste()` the shortcut <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>t</kbd>, run the command **Preferences: Open Keyboard Shortcuts (JSON)** and add the following JSON to the array of shortcuts: 
+
+```json
+{
+    "key": "Ctrl+Shift+t",
+    "command": "workbench.action.executeCode.console",
+    "when": "editorTextFocus",
+    "args": {
+        "langId": "r",
+        "code": "datapasta::tribble_paste()",
+        "focus": true
+    }
+}
+```
+
     
 ## Use with other editors
 
