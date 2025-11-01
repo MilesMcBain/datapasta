@@ -241,7 +241,7 @@ nslash_str <- function(char_vec){
 #' @return char_vec left-padded with spaces to char_length.
 #'
 pad_to <-function(char_vec, char_length){
-  paste0(strrep(" ",char_length - nchar(char_vec)),char_vec)
+  paste0(strrep(" ", pmax(0, char_length - nchar(char_vec))),char_vec)
 }
 
 #' render_type
