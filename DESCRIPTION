@@ -1,15 +1,15 @@
 Package: datapasta
 Title: R Tools for Data Copy-Pasta
-Version: 3.1.1
+Version: 3.2.1
 Authors@R: c(
-    person("Miles", "McBain", email = "miles.mcbain@gmail.com", role = c("aut", "cre"), 
+    person("Miles", "McBain", email = "miles.mcbain@gmail.com", role = c("aut", "cre"),
     comment = c(ORCID = "0000-0003-2865-2548")),
-    person("Jonathan", "Carroll", email = "rpkg@jcarroll.com.au", role = "aut", 
+    person("Jonathan", "Carroll", email = "rpkg@jcarroll.com.au", role = "aut",
     comment = c(ORCID = "0000-0002-1404-5264")),
     person("Mark", "Dulhunty", role = "ctb"),
     person("Andrew", "Collier", email = "andrew@exegetic.biz", role = "ctb"),
     person("Sharla", "Gelfand", email = "sharla.gelfand@gmail.com", role = "aut"),
-    person("Suthira", "Owlarn", email = "suthira.owlarn@gmail.com", role = "aut", 
+    person("Suthira", "Owlarn", email = "suthira.owlarn@gmail.com", role = "aut",
     comment = c(ORCID = "0000-0002-3258-1415")),
     person("Garrick", "Aden-Buie", email = "garrick@adenbuie.com", role = "aut",
     comment = c(ORCID = "0000-0002-7111-0077")))

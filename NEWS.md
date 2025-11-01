@@ -1,3 +1,7 @@
+# datapasta 3.2.1
+
+* Fix a lonstanding issue with indentation detection and padding. Tribble intentation should be more predictable now. Technically a non-backward compatible change.
+
 # datapasta 3.1.1
 
 * Compatibility with {rstudioapi} emulation in VSCode.
@@ -35,7 +39,7 @@
 * Package can now operate in a close to fully featured way in editors other than RStudio. Output goes to console rather than cursor.
 * Added hooks for output customisation with `_construct()` functions that return the formatted output as an R character vector.
 * The decimal mark can be set for numeric data with `dp_set_decimal_mark`.
-* User can now paste natural looking comma separated lists as vectors, with automatic comma-splitting and whitespace trimming.  
+* User can now paste natural looking comma separated lists as vectors, with automatic comma-splitting and whitespace trimming.
 
 # datapasta 1.1.0 'CopyPesto'
 

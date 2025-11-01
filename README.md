@@ -1,4 +1,4 @@
-# datapasta 3.1.1 'Leave to Simmer'
+# datapasta 3.2.1 'Leave to Simmer'
 [![r-universe status badge](https://milesmcbain.r-universe.dev/badges/datapasta)](https://milesmcbain.r-universe.dev)
 [![CRAN status.](http://www.r-pkg.org/badges/version/datapasta)](http://www.r-pkg.org/pkg/datapasta)
 [![Downloads](http://cranlogs.r-pkg.org/badges/datapasta)](https://CRAN.R-project.org/package=datapasta)
@@ -10,7 +10,7 @@
 
 # Introducing datapasta
 
-`datapasta` is about reducing resistance associated with copying and pasting data to and from R. It is a response to the realisation that I often found myself using intermediate programs like Sublime to munge text into suitable formats. Addins and functions in `datapasta` support a wide variety of input and output situations, so it (probably) "just works". Hopefully tools in this package will remove such intermediate steps and associated frustrations from our data slinging workflows.  
+`datapasta` is about reducing resistance associated with copying and pasting data to and from R. It is a response to the realisation that I often found myself using intermediate programs like Sublime to munge text into suitable formats. Addins and functions in `datapasta` support a wide variety of input and output situations, so it (probably) "just works". Hopefully tools in this package will remove such intermediate steps and associated frustrations from our data slinging workflows.
 
 # Prerequisites
 * Linux users will need to install either `xsel` or `xclip`. These applications provide an interface to X selections (clipboard-like).
@@ -25,7 +25,7 @@
 
 ```
 install.packages(
-   "datapasta", 
+   "datapasta",
    repos = c(mm = "https://milesmcbain.r-universe.dev", getOption("repos")))
 ```
 
@@ -48,11 +48,11 @@ At the moment this package contains these RStudio addins that paste data to the 
 
 * `tribble_paste` which pastes a table as a nicely formatted call to `tibble::tribble()`
     - Recommend <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>t</kbd> as shortcut.
-    - Table can be delimited with tab, comma, pipe or semicolon. 
+    - Table can be delimited with tab, comma, pipe or semicolon.
 * `vector_paste` which will paste delimited data as a vector definition, e.g. `c("a", "b")` etc.
     - Recommend <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>v</kbd> as shortcut.
 * `vector_paste_vertical` which will paste delimited data as a vertically formatted vector definition.
-    - Recommend <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>v</kbd> as shortcut 
+    - Recommend <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>v</kbd> as shortcut
     - example output:
 ```
 c("Mint",
@@ -68,7 +68,7 @@ c("Mint",
 ### Massaging data in source
 There are two Addins that can help with creating and aligning data in your editor:
 
-* `Fiddle Selection` will perform magic on a selection. It can be used to: 
+* `Fiddle Selection` will perform magic on a selection. It can be used to:
     - Turn raw data delimited by any combination of commas, spaces, and newlines into a `c()` expression
     - Pivot a `c()` expr between horizontal and vertical layout.
     - Reflow messy `tribble()` and `data.frame()` exprs.
@@ -83,7 +83,7 @@ There are two R functions available that accept R objects and output formatted t
 * `dpasta` accepts tibbles, data.frames, and vectors. Data is output in a format that matches in input class. Formatted text is pasted at the cursor.
 
 * `dmdclip` accepts the same inputs as `dpasta` but inserts the formatted text onto the clipboard, preceded by 4 spaces so that is can be as pasted as a preformatted block to Github, Stackoverflow etc.
-    
+
 ## Use with other editors
 
 The only hard dependency of `datapasta` is `readr` for type guessing. All the above `*paste` functions can be called directly instead of as an addin, and will fall back to console output if the `rstudioapi` is not available.
@@ -92,17 +92,17 @@ On system without access to the clipboard (or without `clipr` installed) `datapa
 
 ### Custom Installation
 
-`datapasta` imports `clipr` and `rstudioapi` so as to make installation smooth and easy for most users. If you wish to avoid installing an `rstudioapi` you will never use you can use: 
+`datapasta` imports `clipr` and `rstudioapi` so as to make installation smooth and easy for most users. If you wish to avoid installing an `rstudioapi` you will never use you can use:
 
 * `install.packages("datapasta", dependencies = "Depends")`.
-* Followed by `install.packages("clipr")` to enable clipboard features. 
+* Followed by `install.packages("clipr")` to enable clipboard features.
 
 
 # Pitfalls
 
 * `tribble_paste` works well with CSVs, excel files, and html tables, but is currently brittle with respect to irregular table structures like merged cells or multi-line column headings. For some reason Wikipedia seems chock full of these. :(
 * Quoted csv data, where the quotes contain commas will not be parsed correctly.
-* Nested list columns have limited support with `tribble_paste()`/`dpasta()`. Nested lists of length 1 fail unless all are length 1 - It's complicated. You still get some output so it might be viable to fix and reflow with `Fiddle Selection`.  Tread with caution.  
+* Nested list columns have limited support with `tribble_paste()`/`dpasta()`. Nested lists of length 1 fail unless all are length 1 - It's complicated. You still get some output so it might be viable to fix and reflow with `Fiddle Selection`.  Tread with caution.
 
 # Prior art
 
