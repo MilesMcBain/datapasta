@@ -185,7 +185,7 @@ parse_vector <- function(input_vector){
   # set empty entries to NA
   NA_entry <- function(x) {
     !nzchar(trimws(x)) | x == "NA"
-  } 
+  }
   input_vector[NA_entry(input_vector)] <- NA
   input_vector
 }

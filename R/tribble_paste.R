@@ -164,7 +164,8 @@ tribble_construct <- function(input_table, oc = console_context()){
   }
 
   # Footer
-  footer <- paste0(strrep(" ",oc$indent_context+oc$nspc),")\n")
+  browser()
+  footer <- paste0(strrep(" ",oc$indent_context),")\n")
   output <- paste0(header, names_row, body_rows, footer)
 
   return(output)
@@ -453,15 +454,11 @@ rstudio_context <- function(){
   output_context <- list()
   output_context$indent_head <- FALSE #head already at cursor
   output_context$output_mode <- "rstudioapi"
-  output_context$nspc <- 
+  output_context$nspc <-
     rstudioapi::readRStudioPreference("num_spaces_for_tab", 4)
   context <- rstudioapi::getActiveDocumentContext()
   context_row <- context$selection[[1]]$range$start["row"]
-  if(all(context$selection[[1]]$range$start == context$selection[[1]]$range$end)){
-    output_context$indent_context <- nchar(context$contents[context_row])
-  } else{
-    output_context$indent_context <- attr(regexpr("^\\s+", context$contents[context_row]),"match.length")+1 #first pos = 1 not 0
-  }
+  output_context$indent_context <- max(attr(regexpr("^\\s+", context$contents[context_row]),"match.length"), 0)
   output_context
 }
 
