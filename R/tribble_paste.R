@@ -147,7 +147,6 @@ tribble_construct <- function(input_table, oc = console_context()){
     header <- paste0(ifelse(oc$indent_head, yes = strrep(" ", oc$indent_context), no = ""), "tibble::tibble(\n")
 
     names_row <- ""
-
     body_rows <-
     paste0(
       paste0(
@@ -164,7 +163,6 @@ tribble_construct <- function(input_table, oc = console_context()){
   }
 
   # Footer
-  browser()
   footer <- paste0(strrep(" ",oc$indent_context),")\n")
   output <- paste0(header, names_row, body_rows, footer)
 
@@ -280,7 +278,7 @@ render_type <- function(char_vec, char_type){
                      "factor" = ifelse(nchar(char_vec)!=0, deparse(char_vec), "NA"),
                      "character" = ifelse(nchar(char_vec)!=0, deparse(char_vec), "NA"),
                      "list" = char_vec,
-                     paste0('"',char_vec,'"')
+                     paste0('"', char_vec,'"')
     )
   }
   output
